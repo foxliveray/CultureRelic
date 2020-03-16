@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>菜单管理--左边树结构</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/res/component/layui/css/layui.css" />
+    <link rel="stylesheet" href="/res/component/layui_ext/dtree/dtree.css" media="all" />
+    <link rel="stylesheet" href="/res/component/layui_ext/dtree/font/dtreefont.css" media="all" />
+</head>
+<body>
+    <!-- 存放树的容器 -->
+    <ul id="menuTree" class="dtree" data-id="0"></ul>
+
+    <script type="text/javascript" src="/res/component/layui/layui.js"></script>
+    <script type="text/javascript" src="/res/component/layui_ext/dtree/dtree.js"></script>
+    <script type="text/javascript">
+        var menuTree;
+        layui.extend({
+            dtree: '/res/component/layui_ext/dtree/dtree'   // {/}的意思即代表采用自有路径，即不跟随 base 路径
+        }).use(['dtree','layer','jquery'], function(){
+            var dtree = layui.dtree, layer = layui.layer, $ = layui.jquery;
+
+            // 初始化树
+            menuTree = dtree.render({
+                elem: "#menuTree",
+                //data: treedata.data, // 使用data加载
+                dataStyle: "layuiStyle",  //使用layui风格的数据格式
+                response:{message:"msg",statusCode:0},  //修改response中返回数据的定义
+                url: "/menu/loadMenuManagerLeftTreeJson", // 使用url加载（可与data加载同时存在）
+                dataFormat: "list",  //配置data的风格为list
+            });
+
+            // 绑定节点点击
+            dtree.on("node('menuTree')" ,function(obj){
+                //layer.msg(JSON.stringify(obj.param));
+                window.parent.right.reloadTable(obj.param.nodeId);
+            });
+        });
+
+    </script>
+</body>
+</html>

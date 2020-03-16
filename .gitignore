@@ -4,6 +4,8 @@ target/
 !**/src/main/**
 !**/src/test/**
 
+*/.DS_Store
+
 ### Maven template
 pom.xml.tag
 pom.xml.releaseBackup
