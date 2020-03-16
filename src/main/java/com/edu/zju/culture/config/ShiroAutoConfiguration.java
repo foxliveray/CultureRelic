@@ -46,7 +46,7 @@ public class ShiroAutoConfiguration {
      * 声明凭证匹配器
      */
     @Bean("credentialsMatcher")
-    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+    public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
         credentialsMatcher.setHashAlgorithmName(hashAlgorithmName);
         credentialsMatcher.setHashIterations(hashIterations);
@@ -57,7 +57,7 @@ public class ShiroAutoConfiguration {
      * 声明userRealm
      */
     @Bean("userRealm")
-    public UserRealm userRealm(CredentialsMatcher credentialsMatcher){
+    public UserRealm userRealm(CredentialsMatcher credentialsMatcher) {
         UserRealm userRealm = new UserRealm();
         //注入凭证匹配器
         userRealm.setCredentialsMatcher(credentialsMatcher);
@@ -68,7 +68,7 @@ public class ShiroAutoConfiguration {
      * 配置SecurityManager
      */
     @Bean("securityManager")
-    public SecurityManager securityManager(UserRealm userRealm){
+    public SecurityManager securityManager(UserRealm userRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //注入userRealm
         securityManager.setRealm(userRealm);
@@ -79,30 +79,30 @@ public class ShiroAutoConfiguration {
      * 配置shiro的过滤器
      */
     @Bean(SHIRO_FILTER)
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         //设置安全管理器
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         //设置未登录时要跳转的页面
         shiroFilterFactoryBean.setLoginUrl(loginUrl);
-        Map<String,String> filterChainDefinitionMap = new HashMap<>();
+        Map<String, String> filterChainDefinitionMap = new HashMap<>();
         //设置放行的路径
-        if(anonUrls != null && anonUrls.length > 0){
-            for(String anon : anonUrls){
-                filterChainDefinitionMap.put(anon,"anon");
+        if (anonUrls != null && anonUrls.length > 0) {
+            for (String anon : anonUrls) {
+                filterChainDefinitionMap.put(anon, "anon");
             }
         }
         //设置登录的路径
-        if(null!=logOutUrl){
-            filterChainDefinitionMap.put(logOutUrl,"logout");
+        if (null != logOutUrl) {
+            filterChainDefinitionMap.put(logOutUrl, "logout");
         }
         //设置拦截的路径
-        if(authcUrls!=null&&authcUrls.length>0){
-            for(String authc:authcUrls){
-                filterChainDefinitionMap.put(authc,"authc");
+        if (authcUrls != null && authcUrls.length > 0) {
+            for (String authc : authcUrls) {
+                filterChainDefinitionMap.put(authc, "authc");
             }
         }
-        Map<String,Filter> filters = new HashMap<>();
+        Map<String, Filter> filters = new HashMap<>();
         //filters.put("authc",new ShiroLoginFilter);
         shiroFilterFactoryBean.setFilters(filters);
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -113,7 +113,7 @@ public class ShiroAutoConfiguration {
      * 注册shiro的委托过滤器
      */
     @Bean
-    public FilterRegistrationBean<DelegatingFilterProxy> delegatingFilterProxy(){
+    public FilterRegistrationBean<DelegatingFilterProxy> delegatingFilterProxy() {
         FilterRegistrationBean<DelegatingFilterProxy> filterProxyFilterRegistrationBean = new FilterRegistrationBean<>();
         DelegatingFilterProxy proxy = new DelegatingFilterProxy();
         proxy.setTargetFilterLifecycle(true);
@@ -126,14 +126,14 @@ public class ShiroAutoConfiguration {
      * 加入注解的使用，不加入这个注解不生效--开始
      */
     @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
     }
 
     @Bean
-    public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator(){
+    public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
         advisorAutoProxyCreator.setProxyTargetClass(true);
         return advisorAutoProxyCreator;

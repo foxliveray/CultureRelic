@@ -2,9 +2,9 @@ package com.edu.zju.culture.mbg.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
-import java.util.Date;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,16 +16,19 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author y4oung
- * @since 2020-03-13
+ * @since 2020-03-16
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class User implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
-      @TableId(value = "id", type = IdType.AUTO)
+    /**
+     * 用户id
+     */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     private String username;
@@ -55,15 +58,15 @@ public class User implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 最后登录时间
      */
-    private Date loginTime;
+    private LocalDateTime loginTime;
 
     /**
-     * 帐号启用状态：version1->禁用；1->启用
+     * 帐号启用状态：0->禁用；1->启用
      */
     private Integer status;
 
@@ -73,8 +76,38 @@ public class User implements Serializable {
     private String salt;
 
     /**
-     * 类型：0为超级管理员，1则为普通用户
+     * 角色
      */
-    private int type;
+    private Integer type;
+
+    /**
+     * 身份证号
+     */
+    private String number;
+
+    /**
+     * 真实姓名
+     */
+    private String realName;
+
+    /**
+     * 性别
+     */
+    private String gender;
+
+    /**
+     * 年龄
+     */
+    private Integer age;
+
+    /**
+     * 手机号码
+     */
+    private String phone;
+
+    /**
+     * 地址
+     */
+    private String addr;
 
 }

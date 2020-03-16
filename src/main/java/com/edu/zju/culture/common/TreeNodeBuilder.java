@@ -11,20 +11,21 @@ import java.util.List;
 public class TreeNodeBuilder {
     /**
      * 把没有层级关系的集合变成有层级关系的
+     *
      * @param treeNodes
      * @param topPid
      * @return
      */
-    public static List<TreeNode> build(List<TreeNode> treeNodes, Integer topPid){
-        List<TreeNode> nodes=new ArrayList<>();
+    public static List<TreeNode> build(List<TreeNode> treeNodes, Integer topPid) {
+        List<TreeNode> nodes = new ArrayList<>();
         for (TreeNode n1 : treeNodes) {
-            if(n1.getPid()==topPid) {
+            if (n1.getPid() == topPid) {
                 nodes.add(n1);
             }
             for (TreeNode n2 : treeNodes) {
-                if(n1.getId()==n2.getPid()) {
+                if (n1.getId() == n2.getPid()) {
                     n1.getChildren().add(n2);
-                    if(n2.getPid()!=topPid){
+                    if (n2.getPid() != topPid) {
                         n2.setType(1);
                     }
                 }

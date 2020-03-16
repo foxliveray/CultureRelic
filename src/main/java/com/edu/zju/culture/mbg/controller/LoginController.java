@@ -27,15 +27,16 @@ import java.util.Date;
 public class LoginController {
     @Autowired
     private ILogLoginService logLoginService;
+
     @RequestMapping("/login")
-    public ResultObj login(String username,String password){
+    public ResultObj login(String username, String password) {
         Subject subject = SecurityUtils.getSubject();
 
-        AuthenticationToken token = new UsernamePasswordToken(username,password);
-        try{
+        AuthenticationToken token = new UsernamePasswordToken(username, password);
+        try {
             subject.login(token);
             ActiveUser activeUser = (ActiveUser) subject.getPrincipal();
-            WebUtils.getSession().setAttribute("user",activeUser.getUser());
+            WebUtils.getSession().setAttribute("user", activeUser.getUser());
             //记录登录日志 (之后可以把用户Role加进来）
             LogLogin logLogin = new LogLogin();
             logLogin.setLoginname(activeUser.getUser().getUsername());
@@ -44,7 +45,7 @@ public class LoginController {
             logLoginService.save(logLogin);
 
             return ResultObj.LOGIN_SUCCESS;
-        }catch (AuthenticationException e){
+        } catch (AuthenticationException e) {
             e.printStackTrace();
             return ResultObj.LOGIN_ERROR_PASS;
         }

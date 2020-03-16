@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  角色管理 前端控制器
+ * 角色管理 前端控制器
  * </p>
  *
  * @author y4oung
@@ -35,11 +35,11 @@ public class RoleController {
     /**
      * 查询
      */
-    @RequestMapping("/loadAllRole")
-    public DataGridView loadAllRole(RoleVo roleVo){
-        IPage<Role> page=new Page<>(roleVo.getPage(), roleVo.getLimit());
-        QueryWrapper<Role> queryWrapper=new QueryWrapper<>();
-        queryWrapper.like(StringUtils.isNotBlank(roleVo.getName()))
-    }
+//    @RequestMapping("/loadAllRole")
+//    public DataGridView loadAllRole(RoleVo roleVo){
+//        IPage<Role> page=new Page<>(roleVo.getPage(), roleVo.getLimit());
+//        QueryWrapper<Role> queryWrapper=new QueryWrapper<>();
+//        queryWrapper.like(StringUtils.isNotBlank(roleVo.getName()))
+//    }
 }
 

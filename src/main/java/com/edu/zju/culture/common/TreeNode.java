@@ -28,7 +28,7 @@ public class TreeNode {
     private List<TreeNode> children = new ArrayList<TreeNode>();
 
     /**
-     *首页左边导航树的构造器
+     * 首页左边导航树的构造器
      */
     public TreeNode(Integer id, Integer pid, String title, String icon, String href, Boolean spread, Integer type) {
         super();
@@ -43,6 +43,7 @@ public class TreeNode {
 
     /**
      * dtree的数据格式
+     *
      * @param id
      * @param pid
      * @param title

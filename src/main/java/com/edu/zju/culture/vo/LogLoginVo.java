@@ -13,7 +13,7 @@ import java.util.Date;
  * @description
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class LogLoginVo extends LogLogin {
     private static final long serialVersionUID = 1L;
 
@@ -22,9 +22,9 @@ public class LogLoginVo extends LogLogin {
 
     private Integer[] ids; //接受多个删除id
 
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 }
