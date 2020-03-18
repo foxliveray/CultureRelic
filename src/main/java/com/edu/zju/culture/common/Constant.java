@@ -8,10 +8,9 @@ package com.edu.zju.culture.common;
 public class Constant {
     /**
      * 状态码
-     *
      */
-    public static final Integer OK=200;
-    public static final Integer ERROR=-1;
+    public static final Integer OK = 200;
+    public static final Integer ERROR = -1;
 
     /**
      * 菜单权限类型

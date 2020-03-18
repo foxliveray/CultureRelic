@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author y4oung

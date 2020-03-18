@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author y4oung
- * @since 2020-03-18
+ * @since 2020-03-16
  */
 public interface RelicMapper extends BaseMapper<Relic> {
 

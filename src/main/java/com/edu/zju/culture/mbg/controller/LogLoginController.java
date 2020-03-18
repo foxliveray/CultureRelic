@@ -21,7 +21,7 @@ import java.util.Collection;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author y4oung
@@ -37,16 +37,16 @@ public class LogLoginController {
      * 全查询
      */
     @RequestMapping("/loadAllLoginInfo")
-    public DataGridView loadAllLoginInfo(LogLoginVo logLoginVo){
-        IPage<LogLogin> page = new Page<>(logLoginVo.getPage(),logLoginVo.getLimit());
-        QueryWrapper<LogLogin> queryWrapper=new QueryWrapper<>();
-        queryWrapper.like(StringUtils.isNotBlank(logLoginVo.getLoginname()),"loginname",logLoginVo.getLoginname());
-        queryWrapper.like(StringUtils.isNotBlank(logLoginVo.getLoginip()), "loginip",logLoginVo.getLoginip());
-        queryWrapper.ge(logLoginVo.getStartTime()!=null, "logintime", logLoginVo.getStartTime());
-        queryWrapper.le(logLoginVo.getEndTime()!=null, "logintime", logLoginVo.getEndTime());
+    public DataGridView loadAllLoginInfo(LogLoginVo logLoginVo) {
+        IPage<LogLogin> page = new Page<>(logLoginVo.getPage(), logLoginVo.getLimit());
+        QueryWrapper<LogLogin> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotBlank(logLoginVo.getLoginname()), "loginname", logLoginVo.getLoginname());
+        queryWrapper.like(StringUtils.isNotBlank(logLoginVo.getLoginip()), "loginip", logLoginVo.getLoginip());
+        queryWrapper.ge(logLoginVo.getStartTime() != null, "logintime", logLoginVo.getStartTime());
+        queryWrapper.le(logLoginVo.getEndTime() != null, "logintime", logLoginVo.getEndTime());
         queryWrapper.orderByDesc("logintime");
-        this.logLoginService.page(page,queryWrapper);
-        return new DataGridView(page.getTotal(),page.getRecords());
+        this.logLoginService.page(page, queryWrapper);
+        return new DataGridView(page.getTotal(), page.getRecords());
     }
 
     /**
@@ -70,7 +70,7 @@ public class LogLoginController {
     @RequestMapping("/batchDeleteLoginfo")
     public ResultObj batchDeleteLoginfo(LogLoginVo loginfoVo) {
         try {
-            Collection<Serializable> idList=new ArrayList<Serializable>();
+            Collection<Serializable> idList = new ArrayList<Serializable>();
             for (Integer id : loginfoVo.getIds()) {
                 idList.add(id);
             }

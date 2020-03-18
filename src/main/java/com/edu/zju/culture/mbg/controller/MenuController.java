@@ -31,35 +31,36 @@ public class MenuController {
 
     /**
      * 加载菜单json数据
+     *
      * @param permissionVo
      * @return
      */
     @RequestMapping("/loadIndexLeftMenuJson")
-    public List<TreeNode> loadIndexLeftMenuJson(PermissionVo permissionVo){
+    public List<TreeNode> loadIndexLeftMenuJson(PermissionVo permissionVo) {
         //查询所有菜单
         QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("type",Constant.TYPE_MNEU);
-        queryWrapper.eq("available",Constant.AVAILABLE_TRUE);
+        queryWrapper.eq("type", Constant.TYPE_MNEU);
+        queryWrapper.eq("available", Constant.AVAILABLE_TRUE);
         //设置只能查到菜单
         User user = (User) WebUtils.getSession().getAttribute("user");
         List<Permission> list = null;
-        if(user.getType()==Constant.USER_TYPE_SUPER){
+        if (user.getType() == Constant.USER_TYPE_SUPER) {
             list = permissionService.list(queryWrapper);
-        }else{
+        } else {
             //根据用户ID+角色+权限去查询 (待完成）
             list = permissionService.list(queryWrapper);
         }
 
-        List<TreeNode> treeNodes=new ArrayList<>();
+        List<TreeNode> treeNodes = new ArrayList<>();
         for (Permission p : list) {
-            Integer id=p.getId();
-            Integer pid=p.getPid();
-            String title=p.getTitle();
-            String icon=p.getIcon();
-            String href=p.getHref();
-            Integer type = p.getType().equals("menu")?0:1;
-            Boolean spread=p.getOpen()==Constant.OPEN_TRUE?true:false;
-            treeNodes.add(new TreeNode(id, pid, title, icon, href, spread,type));
+            Integer id = p.getId();
+            Integer pid = p.getPid();
+            String title = p.getTitle();
+            String icon = p.getIcon();
+            String href = p.getHref();
+            Integer type = p.getType().equals("menu") ? 0 : 1;
+            Boolean spread = p.getOpen() == Constant.OPEN_TRUE ? true : false;
+            treeNodes.add(new TreeNode(id, pid, title, icon, href, spread, type));
         }
         //构造层级关系
         List<TreeNode> list2 = TreeNodeBuilder.build(treeNodes, 1);
@@ -73,12 +74,12 @@ public class MenuController {
      */
     @RequestMapping("/loadMenuManagerLeftTreeJson")
     public DataGridView loadMenuManagerLeftTreeJson(PermissionVo permissionVo) {
-        QueryWrapper<Permission> queryWrapper=new QueryWrapper<>();
+        QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("type", Constant.TYPE_MNEU);
         List<Permission> list = this.permissionService.list(queryWrapper);
-        List<TreeNode> treeNodes=new ArrayList<>();
+        List<TreeNode> treeNodes = new ArrayList<>();
         for (Permission menu : list) {
-            Boolean spread=menu.getOpen()==1?true:false;
+            Boolean spread = menu.getOpen() == 1 ? true : false;
             treeNodes.add(new TreeNode(menu.getId(), menu.getPid(), menu.getTitle(), spread));
         }
         return new DataGridView(treeNodes);
@@ -88,10 +89,10 @@ public class MenuController {
      * 查询
      */
     @RequestMapping("/loadAllMenu")
-    public DataGridView loadAllMenu(PermissionVo permissionVo){
-        IPage<Permission> page = new Page<>(permissionVo.getPage(),permissionVo.getLimit());
-        QueryWrapper<Permission> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq(permissionVo.getId()!=null, "id", permissionVo.getId()).or().eq(permissionVo.getId()!=null,"pid", permissionVo.getId());
+    public DataGridView loadAllMenu(PermissionVo permissionVo) {
+        IPage<Permission> page = new Page<>(permissionVo.getPage(), permissionVo.getLimit());
+        QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(permissionVo.getId() != null, "id", permissionVo.getId()).or().eq(permissionVo.getId() != null, "pid", permissionVo.getId());
         queryWrapper.eq("type", Constant.TYPE_MNEU);
         queryWrapper.like(StringUtils.isNotBlank(permissionVo.getTitle()), "title", permissionVo.getTitle());
         queryWrapper.orderByAsc("ordernum");
@@ -102,21 +103,22 @@ public class MenuController {
 
     /**
      * 加载最大的排序码
+     *
      * @param
      * @return
      */
     @RequestMapping("/loadMenuMaxOrderNum")
-    public Map<String,Object> loadMenuMaxOrderNum(){
-        Map<String, Object> map=new HashMap<String, Object>();
+    public Map<String, Object> loadMenuMaxOrderNum() {
+        Map<String, Object> map = new HashMap<String, Object>();
 
-        QueryWrapper<Permission> queryWrapper=new QueryWrapper<>();
+        QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
         //倒序查第一条
         queryWrapper.orderByDesc("ordernum");
-        IPage<Permission> page=new Page<>(1, 1);
+        IPage<Permission> page = new Page<>(1, 1);
         List<Permission> list = this.permissionService.page(page, queryWrapper).getRecords();
-        if(list.size()>0) {
-            map.put("value", list.get(0).getOrdernum()+1);
-        }else {
+        if (list.size() > 0) {
+            map.put("value", list.get(0).getOrdernum() + 1);
+        } else {
             map.put("value", 1);
         }
         return map;
@@ -124,6 +126,7 @@ public class MenuController {
 
     /**
      * 添加
+     *
      * @param permissionVo
      * @return
      */
@@ -141,6 +144,7 @@ public class MenuController {
 
     /**
      * 修改
+     *
      * @param permissionVo
      * @return
      */
@@ -159,15 +163,15 @@ public class MenuController {
      * 查询当前的ID的菜单有没有子菜单
      */
     @RequestMapping("checkMenuHasChildrenNode")
-    public Map<String,Object> checkMenuHasChildrenNode(PermissionVo permissionVo){
-        Map<String, Object> map=new HashMap<String, Object>();
+    public Map<String, Object> checkMenuHasChildrenNode(PermissionVo permissionVo) {
+        Map<String, Object> map = new HashMap<String, Object>();
 
-        QueryWrapper<Permission> queryWrapper=new QueryWrapper<>();
+        QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("pid", permissionVo.getId());
         List<Permission> list = this.permissionService.list(queryWrapper);
-        if(list.size()>0) {
+        if (list.size() > 0) {
             map.put("value", true);
-        }else {
+        } else {
             map.put("value", false);
         }
         return map;
@@ -175,6 +179,7 @@ public class MenuController {
 
     /**
      * 删除
+     *
      * @param permissionVo
      * @return
      */

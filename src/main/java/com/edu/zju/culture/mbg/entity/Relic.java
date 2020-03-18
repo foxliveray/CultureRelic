@@ -9,23 +9,23 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author y4oung
- * @since 2020-03-18
+ * @since 2020-03-16
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class Relic implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 文物ID
      */
-      @TableId(value = "relic_id", type = IdType.AUTO)
+    @TableId(value = "relic_id", type = IdType.AUTO)
     private Long relicId;
 
     /**

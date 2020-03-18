@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author y4oung
- * @since 2020-03-18
+ * @since 2020-03-16
  */
 public interface IRelicService extends IService<Relic> {
 

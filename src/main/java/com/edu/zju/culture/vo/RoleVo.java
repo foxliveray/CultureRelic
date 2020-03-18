@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  * @description
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class RoleVo extends Role {
 
     private static final long serialVersionUID = 1L;

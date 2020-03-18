@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author y4oung
- * @since 2020-03-18
+ * @since 2020-03-16
  */
 @Service
 public class RelicServiceImpl extends ServiceImpl<RelicMapper, Relic> implements IRelicService {

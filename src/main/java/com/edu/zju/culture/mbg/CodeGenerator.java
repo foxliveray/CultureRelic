@@ -20,21 +20,21 @@ public class CodeGenerator {
      * 读取控制台内容
      * </p>
      */
-    public static String scanner(String tip){
+    public static String scanner(String tip) {
         Scanner scanner = new Scanner(System.in);
         StringBuilder helper = new StringBuilder();
-        helper.append("请输入"+tip+":");
+        helper.append("请输入" + tip + ":");
         System.out.println(helper.toString());
-        if(scanner.hasNext()){
+        if (scanner.hasNext()) {
             String ipt = scanner.next();
-            if(StringUtils.isNotEmpty(ipt)){
+            if (StringUtils.isNotEmpty(ipt)) {
                 return ipt;
             }
         }
         throw new MybatisPlusException("请输入正确的" + tip + "！");
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
 

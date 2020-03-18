@@ -33,6 +33,7 @@ public class UserRealm extends AuthorizingRealm {
 
     /**
      * 授权
+     *
      * @param principalCollection
      * @return
      */
@@ -43,6 +44,7 @@ public class UserRealm extends AuthorizingRealm {
 
     /**
      * 认证
+     *
      * @param authenticationToken
      * @return
      * @throws AuthenticationException
@@ -50,13 +52,13 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username",authenticationToken.getPrincipal().toString());
+        queryWrapper.eq("username", authenticationToken.getPrincipal().toString());
         User user = userService.getOne(queryWrapper);
-        if(null!=user){
+        if (null != user) {
             ActiveUser activeUser = new ActiveUser();
             activeUser.setUser(user);
             ByteSource credentialsSalt = ByteSource.Util.bytes(user.getSalt());
-            SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(activeUser,user.getPassword(),credentialsSalt,this.getName());
+            SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(activeUser, user.getPassword(), credentialsSalt, this.getName());
             return info;
         }
         return null;
