@@ -98,4 +98,11 @@ public class SystemController {
      */
     @RequestMapping("/toCheckRelic")
     public String toCheckRelic() { return "system/index/checkRelic"; }
+
+    @RequestMapping("/toRoleManager")
+    public String toRoleManager() {
+        return "system/role/roleManager";
+    }
+
+
 }

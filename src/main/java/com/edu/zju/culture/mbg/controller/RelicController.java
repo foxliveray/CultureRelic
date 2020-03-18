@@ -33,7 +33,7 @@ import java.util.UUID;
  * @since 2020-03-16
  */
 @RestController
-@RequestMapping("/mbg/relic")
+@RequestMapping("/relic")
 public class RelicController {
     @Autowired
     CheckRelicService checkRelicService;

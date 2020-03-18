@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * 服务实现类
@@ -18,5 +20,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
-
+    @Override
+    public boolean removeById(Serializable id) {
+        //根据角色ID删除sys_role_permission
+        this.getBaseMapper().deleteRolePermissionByRid(id);
+        //根据角色ID删除sys_role_user
+        this.getBaseMapper().deleteRoleUserByRid(id);
+        return super.removeById(id);
+    }
 }

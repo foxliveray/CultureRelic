@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>角色管理</title>
+    <link href="/res/assets/css/pearone.css" rel="stylesheet" />
+    <link href="/res/component/layui/css/layui.css" rel="stylesheet" />
+    <link href="/res/component/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="/res/admin/css/pearButton.css" rel="stylesheet"/>
+    <link href="/res/admin/css/pearTable.css" rel="stylesheet"/>
+    <style>
+        body{
+            margin:10px;
+            background: whitesmoke;
+        }
+
+    </style>
+</head>
+<body>
+<div class="layui-card">
+    <div class="layui-card-header">查询条件</div>
+    <blockquote class="layui-elem-quote">
+        <form action="" method="post" id="searchFrm" lay-filter="searchFrm" class="layui-form layui-form-pane">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">角色名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="name"  autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">角色备注</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="remark"    autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否可用</label>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="available" value="1"  title="可用" >
+                        <input type="radio" name="available" value="0" title="不可用" >
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="text-align: center;">
+                    <button type="button" class="layui-btn" lay-submit="" lay-filter="doSearch"><span class="layui-icon layui-icon-search"></span>查询</button>
+                    <button type="reset" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-refresh-1"></span>重置</button>
+                </div>
+            </div>
+        </form>
+    </blockquote>
+    <div class="layui-card-body">
+
+        <table class="layui-hide" id="demo" lay-filter="test"></table>
+
+        <div id="roleToolBar" style="display: none;">
+            <button type="button" lay-event="add" class="pear-btn pear-btn-primary pear-btn-sm" plain><span
+                    class="layui-icon layui-icon-add-1"></span>添加角色
+            </button>
+        </div>
+
+        <script type="text/html" id="barDemo">
+            <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
+            <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="del">删除</a>
+            <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="selectPermission">分配权限</a>
+        </script>
+
+    </div>
+
+    <!-- 添加和修改的弹出层开始 -->
+    <div style="display: none;padding: 5px" id="addOrUpdateDiv">
+        <form action="" method="post" class="layui-form layui-form-pane" id="dataFrm" lay-filter="dataFrm">
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色名称</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="id">
+                    <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入角色名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色备注</label>
+                <div class="layui-input-block">
+                    <input type="text" name="remark" autocomplete="off" placeholder="请输入角色备注" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否可用</label>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="available" value="1" title="可用" checked="">
+                        <input type="radio" name="available" value="0" title="不可用" >
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="text-align: center;">
+                    <button type="button" class="layui-btn" lay-submit="" lay-filter="doSubmit" id="doSubmit" ><span class="layui-icon layui-icon-add-1"></span>提交</button>
+                    <button type="reset" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-refresh-1"></span>重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- 添加和修改的弹出层结束 -->
+</div>
+
+<script src="/res/component/layui/layui.js"></script>
+<script>
+    layui.config({
+        version: '1575404972583' //为了更新 js 缓存，可忽略
+    });
+
+    layui.use(['laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider','jquery'], function() {
+        var laypage = layui.laypage //分页
+            ,layer = layui.layer //弹层
+            ,table = layui.table //表格
+            ,carousel = layui.carousel //轮播
+            ,upload = layui.upload //上传
+            ,element = layui.element //元素操作
+            ,slider = layui.slider //滑块
+            ,$ = layui.jquery //jquery
+            ,form=layui.form
+
+
+        //执行一个 table 实例
+        var tableIns = table.render({
+            elem: '#demo',
+            url: '/role/loadAllRole' //数据接口
+            ,title: '登录信息表'
+            ,page: true //开启分页
+            ,toolbar: "#roleToolBar" //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            ,totalRow: false //开启合计行
+            ,height: 'full-250'
+            ,cols: [
+                [ //表头
+                    {
+                        type: 'checkbox',
+                        fixed: 'left'
+                    }, {
+                    field: 'id',
+                    title: 'ID',
+                    width: 80,
+                    sort: true,
+                    fixed: 'left',
+                    totalRowText: '合计：'
+                }, {
+                    field: 'name',
+                    title: '角色名称',
+                    align:'center'
+                }, {
+                    field: 'remark',
+                    title: '角色备注',
+                    align:'center'
+                }, {
+                    field: 'avaiable',
+                    title: '是否可用',
+                    align:'center',
+                    templet:function (d) {
+                        return d.available==1?'<font color=blue>可用</font>':'<font color=red>不可用</font>';
+                    }
+                },{
+                    field: 'createtime',
+                    title: '创建时间',
+                    align:'center'
+                },
+                    {
+                        fixed: 'right',
+                        width: 220,
+                        align: 'center',
+                        toolbar: '#barDemo'
+                    }
+                ]
+            ]
+        });
+
+        //模糊查询
+        form.on("submit(doSearch)",function(data){
+            tableIns.reload({
+                where:data.field,
+                page:{
+                    curr:1
+                }
+            });
+            return false;
+        });
+
+        //监听头工具栏事件
+        table.on('toolbar(test)', function(obj) {
+            switch (obj.event){
+                case 'add':
+                    openAddLayer();
+                    break;
+            }
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,
+                layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'detail') {
+                layer.msg('查看操作');
+            } else if (layEvent === 'del') {
+                deleteInfo(data);
+                // layer.confirm('真的删除行么', function(index) {
+                //     obj.del(); //删除对应行（tr）的DOM结构
+                //     layer.close(index);
+                //     //向服务端发送删除指令
+                //     deleteInfo(data);
+                // });
+            } else if (layEvent === 'edit') {
+                openUpdateRoleLayer(data);
+            }
+        });
+        var mainIndex;
+        var url;
+        //打开添加的弹出层
+        function openAddLayer() {
+            mainIndex = layer.open({
+                type:1,
+                content:$("#addOrUpdateDiv"),
+                area:['800px','600px'],
+                title:'添加角色',
+                success:function(){
+                    $("#dataFrm")[0].reset();
+                    url="/role/addRole";
+                },
+            })
+        }
+
+        //打开修改的弹出层
+        function openUpdateRoleLayer(data){
+            mainIndex=layer.open({
+                type:1,
+                content:$("#addOrUpdateDiv"),
+                area:['800px','600px'],
+                title:'修改角色',
+                success:function(){
+                    $("#dataFrm")[0].reset();
+                    //装载新的数据
+                    form.val("dataFrm",data);
+                    url="/role/updateRole";
+                }
+            });
+        }
+        
+        form.on('submit(doSubmit)',function (data) {
+            $.post(url,data.field,function(res){
+                if(res.code==200){
+                    tableIns.reload();
+                }
+                layer.msg(res.msg);
+                //根据弹出层index关闭他
+                layer.close(mainIndex);
+            });
+            return false;
+        })
+
+        //删除
+        function deleteInfo(data){
+            layer.confirm('你确定要删除这条数据吗?', {icon: 3, title:'提示'}, function(index){
+                $.post("/role/deleteRole",{id:data.id},function(res){
+                    if(res.code==200){
+                        tableIns.reload();
+                    }
+                    layer.msg(res.msg);
+                })
+                layer.close(index);
+            });
+        }
+
+
+
+
+    });
+</script>
+</body>
+</html>
