@@ -97,7 +97,9 @@ public class SystemController {
      * 跳转到鉴定页面
      */
     @RequestMapping("/toCheckRelic")
-    public String toCheckRelic() { return "system/index/checkRelic"; }
+    public String toCheckRelic() {
+        return "system/index/checkRelic";
+    }
 
     @RequestMapping("/toRoleManager")
     public String toRoleManager() {
