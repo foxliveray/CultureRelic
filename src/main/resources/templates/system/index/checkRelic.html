@@ -34,7 +34,7 @@
         var upload = layui.upload;
         var uploadPic = upload.render({
             elem: '.layui-upload-button',
-            url: '/mbg/relic/upload/checkRelic',
+            url: '/relic/upload/checkRelic',
             data: {
                 id: function () {
                     return $("#pid").val();
@@ -67,7 +67,7 @@
         table.render({
             elem: '#demo'
             , height: 800
-            , url: '/mbg/relic/list' //数据接口
+            , url: '/relic/list' //数据接口
             , page: true //开启分页
             , cols: [
                 [ //表头
