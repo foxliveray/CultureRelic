@@ -92,4 +92,10 @@ public class SystemController {
     public String toPermissionRight() {
         return "system/permission/permissionRight";
     }
+
+    /**
+     * 跳转到鉴定页面
+     */
+    @RequestMapping("/toCheckRelic")
+    public String toCheckRelic() { return "system/index/checkRelic"; }
 }

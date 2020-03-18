@@ -71,4 +71,5 @@ public class Relic implements Serializable {
     private Long ownerId;
 
 
+
 }
