@@ -98,4 +98,18 @@ public class SystemController {
     public String toPermissionRight() {
         return "system/permission/permissionRight";
     }
+
+    /**
+     * 跳转到角色管理
+     *
+     */
+    @RequestMapping("/toRoleManager")
+    public String toRoleManager() {
+        return "system/role/roleManager";
+    }
+
+    @RequestMapping("/toCheckRelic")
+    public String toUpload(){
+        return "business/checkRelic";
+    }
 }
