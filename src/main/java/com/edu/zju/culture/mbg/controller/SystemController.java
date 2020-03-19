@@ -101,6 +101,18 @@ public class SystemController {
         return "system/index/checkRelic";
     }
 
+    /**
+     * 跳转到博物馆查看流转页面
+     */
+    @RequestMapping("/toCheckMovement")
+    public String toCheckApply() {
+        return "/system/index/checkMovement";
+    }
+
+    /**
+     *
+     */
+
     @RequestMapping("/toRoleManager")
     public String toRoleManager() {
         return "system/role/roleManager";

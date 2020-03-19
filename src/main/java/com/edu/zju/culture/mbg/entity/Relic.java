@@ -68,6 +68,11 @@ public class Relic implements Serializable {
      */
     private Long ownerId;
 
+    /**
+     * 表示文物是否已上链
+     */
+    private Long relicBlockChainStatus;
+
 
 
 }

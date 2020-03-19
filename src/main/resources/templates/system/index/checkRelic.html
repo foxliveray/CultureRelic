@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+    <style>
+        body {
+            margin: 10px;
+        }
+
+    </style>
 </head>
 <body>
 <table id="demo" lay-filter="test"></table>
@@ -66,7 +72,7 @@
         //第一个实例
         table.render({
             elem: '#demo'
-            , height: 800
+            , height: 830
             , url: '/relic/list' //数据接口
             , page: true //开启分页
             , cols: [
@@ -78,9 +84,10 @@
                     , {field: 'picture', title: '文物图片', width: 350, templet: '<div><img src="{{d.picture}}"></div>'}
                     , {field: 'identityStatus', title: '是否已鉴定', width: 125, sort: true, templet: '#forCheck'}
                     , {field: 'relicStatus', title: '鉴定结果', width: 110, sort: true, templet: '#forCheckResponse'}
-                    , {field: 'identityId', title: '鉴定人ID', width: 110}
+                    , {field: 'identityId', title: '鉴定人ID', width: 100}
                     , {field: 'ownerId', title: '文物所有人ID', width: 135, sort: true}
-                    , {field: '', title: '鉴定', width: 135, toolbar: "#upLoadBar"}
+                    , {field: '', title: '鉴定', width: 110, toolbar: "#upLoadBar"}
+                    , {field: 'relicBlockChainStatus', title: '是否已上链', width: 130}
                 ]
             ]
         });
