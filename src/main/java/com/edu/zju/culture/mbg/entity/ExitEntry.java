@@ -74,6 +74,10 @@ public class ExitEntry implements Serializable {
      * 海关审核意见
      */
     private String exitEntryCustomsResponse;
+    /**
+     *  表示出入境信息是否已上链
+     */
+    private Long exitEntryBlockChainStatus;
 
 
 }

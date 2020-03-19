@@ -71,5 +71,8 @@ public class Movement implements Serializable {
      */
     private String movementResponse;
 
-
+    /**
+     *  表示流转是否已上链
+     */
+    private Long movementBlockChainStatus;
 }

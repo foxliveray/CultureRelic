@@ -102,6 +102,18 @@ public class SystemController {
     }
 
     /**
+     *跳转到政府文物上链审核页面
+     */
+    @RequestMapping("/toGovCheckRelic")
+    public String toGovCheckRelic() {
+        return "system/index/gov_checkRelic";
+    }
+
+    @RequestMapping("/toRoleManager")
+    public String toRoleManager() {
+        return "system/role/roleManager";
+    }
+    /**
      * 跳转到博物馆查看流转页面
      */
     @RequestMapping("/toCheckMovement")
@@ -115,11 +127,6 @@ public class SystemController {
     @RequestMapping("/toCheckOrder")
     public String toCheckOrder() {
         return "/system/index/checkOrder";
-    }
-
-    @RequestMapping("/toRoleManager")
-    public String toRoleManager() {
-        return "system/role/roleManager";
     }
 
 
