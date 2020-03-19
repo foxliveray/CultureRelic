@@ -110,8 +110,12 @@ public class SystemController {
     }
 
     /**
-     *
+     * 跳转到交易所查看交易信息
      */
+    @RequestMapping("/toCheckOrder")
+    public String toCheckOrder() {
+        return "/system/index/checkOrder";
+    }
 
     @RequestMapping("/toRoleManager")
     public String toRoleManager() {

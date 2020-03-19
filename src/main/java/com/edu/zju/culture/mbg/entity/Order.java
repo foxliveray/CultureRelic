@@ -71,5 +71,9 @@ public class Order implements Serializable {
      */
     private String orderResponse;
 
+    /**
+     * 交易是否已上链
+     */
+
 
 }
