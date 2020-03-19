@@ -68,3 +68,6 @@ password: root
 #### 关于部署
 部署至Linux系统时 yml中resources-static-locations以及ChecKRelic.java中路径需要修改
 
+
+    
+
