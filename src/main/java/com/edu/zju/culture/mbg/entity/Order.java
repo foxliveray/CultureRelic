@@ -71,5 +71,10 @@ public class Order implements Serializable {
      */
     private String orderResponse;
 
+    /**
+     *  表示交易是否已上链
+     */
+    private Long orderBlockChainStatus;
+
 
 }

@@ -101,6 +101,14 @@ public class SystemController {
         return "system/index/checkRelic";
     }
 
+    /**
+     *跳转到政府文物上链审核页面
+     */
+    @RequestMapping("/toGovCheckRelic")
+    public String toGovCheckRelic() {
+        return "system/index/gov_checkRelic";
+    }
+
     @RequestMapping("/toRoleManager")
     public String toRoleManager() {
         return "system/role/roleManager";
