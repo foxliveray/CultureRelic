@@ -2,6 +2,7 @@ package com.edu.zju.culture.mbg.controller;
 
 
 import com.edu.zju.culture.common.DataGridView;
+import com.edu.zju.culture.fabric.FabricHelper;
 import com.edu.zju.culture.mbg.entity.Relic;
 import com.edu.zju.culture.mbg.service.CheckRelicService;
 import com.edu.zju.culture.mbg.service.IRelicService;
@@ -92,6 +93,32 @@ public class RelicController {
         List<Relic> allRelic = iRelicService.list();
         DataGridView dataGridView = new DataGridView((long) allRelic.size(), allRelic);
         return dataGridView;
+    }
+    @RequestMapping(value = "/addRelic")
+    public void addRelicToblock(@RequestParam(value = "relicId")Long relicId,@RequestParam(value = "relicBlockChainStatus")Long relicBlockChainStatus,@RequestParam(value = "checkStatus")Integer checkStatus,@RequestParam(value = "movementResponse")String movementResponse,
+                                @RequestParam("govNum")String govNum,@RequestParam("relicName")String relicName,@RequestParam("relicDescribe")String relicDescribe,@RequestParam("picture")String picture,@RequestParam("identityStatus")Integer identityStatus,@RequestParam("relicStatus")Integer relicStatus,@RequestParam("identityId")Long identityId,@RequestParam("ownerId")Long ownerId) throws IOException {
+        Relic relic=new Relic();
+        relic.setRelicId(relicId);
+        relic.setRelicBlockChainStatus(relicBlockChainStatus);
+        relic.setCheckStatus(checkStatus);
+        relic.setMovementResponse(movementResponse);
+        iRelicService.updateById(relic);
+        relic.setOwnerId(ownerId);
+        relic.setIdentityId(identityId);
+        relic.setRelicStatus(relicStatus);
+        relic.setIdentityStatus(identityStatus);
+        relic.setRelicName(relicName);
+        relic.setGovNum(govNum);
+        relic.setPicture(picture);
+        relic.setRelicDescribe(relicDescribe);
+        // 文物上链
+        if(relic.getRelicBlockChainStatus()==1){
+            FabricHelper fabricHelper=new FabricHelper();
+            fabricHelper.init();
+            fabricHelper.addRelic(relic);
+        }
+
+
     }
 }
 
