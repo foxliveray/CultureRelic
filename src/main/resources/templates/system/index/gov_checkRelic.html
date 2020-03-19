@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+</head>
+<body>
+<table id="demo" lay-filter="test"></table>
+<style type="text/css">
+    .layui-table-cell {
+        text-align: center;
+        height: auto;
+        white-space: normal;
+    }
+
+    .layui-table img {
+        max-width: 300px
+    }
+</style>
+
+<script src="/res/component/layui/layui.js"></script>
+<script type="text/html" id="upLoadBar">
+    <button class="layui-btn layui-btn-normal" lay-event="check">上链</button>
+</script>
+
+<script type="text/javascript">
+    layui.use(["jquery", "upload", "form", "layer", "element", "table"], function () {
+        var $ = layui.$,
+            table = layui.table,
+            element = layui.element,
+            layer = layui.layer,
+            upload = layui.upload,
+            form = layui.form;
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , height: 800
+            , url: '/relic/list' //数据接口
+            , page: true //开启分页
+            , cols: [
+                [ //表头
+                    {field: 'relicId', title: '文物ID', width: 90, sort: true,}
+                    , {field: 'govNum', title: '国家认证编号', width: 200, sort: true}
+                    , {field: 'relicName', title: '文物名称', width: 150}
+                    , {field: 'relicDescribe', title: '文物描述', width: 280}
+                    , {field: 'picture', title: '文物图片', width: 350, templet: '<div><img src="{{d.picture}}"></div>'}
+                    , {field: 'identityStatus', title: '是否已鉴定', width: 125, sort: true, templet: '#forCheck'}
+                    , {field: 'relicStatus', title: '鉴定结果', width: 110, sort: true, templet: '#forCheckResponse'}
+                    , {field: 'identityId', title: '鉴定人ID', width: 110}
+                    , {field: 'ownerId', title: '文物所有人ID', width: 135, sort: true}
+                    , {field: 'checkStatus', title: '是否已审核', width: 135, sort: true, templet: '#forGovCheck'}
+                    , {field: 'movementResponse', title: '审核意见', width: 135, sort: true}
+                    , {field: 'relicBlockChainStatus', title: '是否已上链', width: 135, sort: true,templet: '#forAddRelic'}
+                    , {field: '', title: '审核', width: 135, toolbar: "#upLoadBar"}
+                ]
+            ]
+        });
+
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            var tr = obj.tr;
+            if (layEvent == 'check') {
+                layer.open({
+                    type: 1
+                    ,title: '文物上链申请详细信息'
+                    ,area: '500px;'
+                    ,shade: 0.8
+                    ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,btn: ['同意上链', '拒绝上链']
+                    ,btnAlign: 'c'
+                    ,moveType: 1 //拖拽模式，0或者1
+                    ,content: '<div style="padding: 50px; line-height: 22px; color:; font-weight: 300;">文物上链申请ID：'+data.relicId+'<br><br>国家编号：'+data.govNum+'<br><br>文物名称：'+data.relicName+'<br><br>文物描述：'+data.relicDescribe+'<br><br>文物图片：'+data.picture+'<br><br>是否已鉴定：'+data.identityStatus+'<br><br>鉴定结果：'+data.relicStatus+'<br><br>鉴定人ID：'+data.identityId+'<br><br>文物所有人ID：'+data.ownerId+'<br><br>审核意见 \n \n<br>' +
+                        '<textarea id="movementResponse" placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>\n'
+                    ,btn1:function () {
+                        $.ajax({
+                            url:"/relic/addRelic",
+                            scriptCharset: "utf-8",
+                            data: {relicId:data.relicId,govNum:data.govNum,relicName:data.relicName,relicDescribe:data.relicDescribe,picture:data.picture,identityStatus:data.identityStatus,relicStatus:data.relicStatus,identityId:data.identityId,ownerId:data.ownerId,checkStatus:1,relicBlockChainStatus:1,movementResponse:document.getElementById("movementResponse").value},
+                            type: "GET",
+                            success: function (msg) {
+                                 window.location.href="/sys/toGovCheckRelic";
+                            }
+                        });
+                    }
+                    ,btn2:function () {
+                        $.ajax({
+                            url:"/relic/addRelic",
+                            scriptCharset: "utf-8",
+                            data: {relicId:data.relicId,checkStatus:1,relicBlockChainStatus:0,movementResponse:document.getElementById("movementResponse").value},
+                            type: "GET",
+                            success: function (msg) {
+                                window.location.href="/sys/toGovCheckRelic";
+                            }
+                        });
+                    }
+
+                });
+            }
+        });
+        element.init();
+    });
+</script>
+<script type="text/html" id="forCheck">
+    {{# if(d.identityStatus == '0'){d.identityStatus='未鉴定'}}
+    <span style="color: #1890ff">{{d.identityStatus}}</span>
+    {{#} else {d.identityStatus = '已鉴定'}}
+    {{d.identityStatus}}
+    {{#}}}
+</script>
+<script type="text/html" id="forGovCheck">
+    {{# if(d.checkStatus == '1'){d.checkStatus='已审核'}}
+    <span style="color: #1890ff">{{d.checkStatus}}</span>
+    {{#} else {d.checkStatus = '未审核'}}
+    {{d.checkStatus}}
+    {{#}}}
+</script>
+<script type="text/html" id="forAddRelic">
+    {{# if(d.relicBlockChainStatus == '1'){d.relicBlockChainStatus='已上链'}}
+    <span style="color: #1890ff">{{d.relicBlockChainStatus}}</span>
+    {{#} else {d.relicBlockChainStatus = '未上链'}}
+    {{d.relicBlockChainStatus}}
+    {{#}}}
+</script>
+<script type="text/html" id="forCheckResponse">
+    {{# if(d.relicStatus == '0'){d.relicStatus='鉴定为假'}}
+    <span style="color: red">{{d.relicStatus}}</span>
+    {{#} else {d.relicStatus = '鉴定为真'}}
+    {{d.relicStatus}}
+    {{#}}}
+</script>
+</body>
+</html>

@@ -113,6 +113,17 @@ public class SystemController {
     public String toRoleManager() {
         return "system/role/roleManager";
     }
+    /**
+     * 跳转到博物馆查看流转页面
+     */
+    @RequestMapping("/toCheckMovement")
+    public String toCheckApply() {
+        return "/system/index/checkMovement";
+    }
+
+    /**
+     *
+     */
 
 
 }

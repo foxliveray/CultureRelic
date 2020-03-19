@@ -1,6 +1,9 @@
 package com.edu.zju.culture.mbg.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.edu.zju.culture.common.DataGridView;
 import com.edu.zju.culture.fabric.FabricHelper;
 import com.edu.zju.culture.mbg.entity.Relic;
@@ -90,9 +93,11 @@ public class RelicController {
 
     @RequestMapping(value = "/list")
     public DataGridView selectAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) {
-        List<Relic> allRelic = iRelicService.list();
-        DataGridView dataGridView = new DataGridView((long) allRelic.size(), allRelic);
-        return dataGridView;
+
+        IPage<Relic> relicIPage = new Page<>(page, limit);
+        QueryWrapper<Relic> queryWrapper = new QueryWrapper<>();
+        this.iRelicService.page(relicIPage, queryWrapper);
+        return new DataGridView(relicIPage.getTotal(), relicIPage.getRecords());
     }
     @RequestMapping(value = "/addRelic")
     public void addRelicToblock(@RequestParam(value = "relicId")Long relicId,@RequestParam(value = "relicBlockChainStatus")Long relicBlockChainStatus,@RequestParam(value = "checkStatus")Integer checkStatus,@RequestParam(value = "movementResponse")String movementResponse,
