@@ -12,7 +12,7 @@ import cn.hyperchain.sdk.service.ServiceManager;
 import cn.hyperchain.sdk.transaction.Transaction;
 import com.edu.zju.culture.mbg.entity.ExitEntry;
 import com.edu.zju.culture.mbg.entity.Movement;
-import com.edu.zju.culture.mbg.entity.Order;
+import com.edu.zju.culture.mbg.entity.Trade;
 import com.edu.zju.culture.mbg.entity.Relic;
 
 import java.io.IOException;
@@ -122,7 +122,7 @@ public class FabricHelper {
     }
 
     //文物交易上链接口
-    public void addOrder(Order order) throws IOException {
+    public void addOrder(Trade order) throws IOException {
         //加载本地合约bin、abi，当本地存在bin、abi时，可按下面方式直接加载bin、abi
         InputStream inputStream2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("solidity/CultureRelic.abi");
         String abiStr = FileUtil.readFile(inputStream2);
@@ -154,7 +154,7 @@ public class FabricHelper {
 
     }
     //根据ID查询链上的文物交易信息
-    public Order getOrder(int orderId) throws IOException {
+    public Trade getOrder(int orderId) throws IOException {
 
         //加载本地合约bin、abi，当本地存在bin、abi时，可按下面方式直接加载bin、abi
         InputStream inputStream2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("solidity/CultureRelic.abi");
@@ -171,7 +171,7 @@ public class FabricHelper {
         System.out.println("==============================返回数据解码==============================\n");
         byte[] bytes = ByteUtil.fromHex(receiptResponse1.getRet());
         List<?> objects = abi.getFunction("order(uint256)").decodeResult(bytes);
-        Order order=new Order();
+        Trade order=new Trade();
         BigInteger borderId= (BigInteger) objects.get(0);
         BigInteger borderValue=(BigInteger)objects.get(1);
         BigInteger borderStatus=(BigInteger)objects.get(3);

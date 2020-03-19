@@ -45,6 +45,8 @@ public class MovementController {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime localDateTime = LocalDateTime.parse(movementDateChange, dtf);
         movement.setMoveDate(localDateTime);
+        movement.setCheckStatus(0);
+        movement.setMovementBlockChainStatus(0L);
         iMovementService.save(movement);
         return ResultObj.ADD_SUCCESS;
     }

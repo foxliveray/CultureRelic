@@ -17,35 +17,37 @@
 <div class="layui-card">
     <div class="layui-card-header">提交交易申请</div>
     <div style="margin: 15px">
-        <button class="layui-btn" id="uploadMovement">提交交易申请</button>
+        <button class="layui-btn" id="uploadTrade">提交交易申请</button>
     </div>
     <div class="layui-card-body">
-        <table id="checkOrderForm" lay-filter="test"></table>
+        <table id="checkTradeForm" lay-filter="test"></table>
     </div>
 </div>
-<div style="display: none;padding: 5px" id="movementFormLayer">
-    <form action="" method="post" class="layui-form layui-form-pane" id="movementForm" lay-fiter="movementForm">
+
+<div style="display: none;padding: 5px" id="tradeFormLayer">
+    <form action="" method="post" class="layui-form layui-form-pane" id="tradeForm" lay-fiter="tradeForm">
         <div class="layui-form-item">
-            <label class="layui-form-label">流转说明</label>
+            <label class="layui-form-label">交易金额</label>
             <div class="layui-input-block">
-                <input type="text" name="explanation" lay-verify="required" autocomplete="off" placeholder="请输入流转说明"
+                <input type="text" name="orderValue" lay-verify="required" autocomplete="off" placeholder="请输入交易金额"
                        class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">流转类型</label>
+            <label class="layui-form-label">交易类型</label>
             <div class="layui-input-block">
-                <select name="moveType" lay-verify="required" placeholder="请选择">
-                    <option value="">请选择流转方式</option>
-                    <option value="正常流转">正常流转</option>
-                    <option value="捐赠">捐赠</option>
+                <select name="orderStatus" lay-verify="required" placeholder="请选择">
+                    <option value="">请选择交易方式</option>
+                    <option value="0">正在交易</option>
+                    <option value="1">已完成</option>
                 </select>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">发生时间</label>
             <div class="layui-input-block">
-                <input type="text" name="moveDateChange" lay-verify="required" autocomplete="off" placeholder="请输入流转发生时间"
+                <input type="text" name="orderDateChange" lay-verify="required" autocomplete="off"
+                       placeholder="请输入交易发生时间"
                        id="timeInput"
                        class="layui-input">
             </div>
@@ -59,16 +61,16 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">发起人ID</label>
+                <label class="layui-form-label">买方ID</label>
                 <div class="layui-inline">
-                    <input type="text" name="fromId" lay-verify="required" autocomplete="off" placeholder="请输入流转发起人ID"
+                    <input type="text" name="buyerId" lay-verify="required" autocomplete="off" placeholder="请输入流转发起人ID"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">接收人ID</label>
+                <label class="layui-form-label">卖方ID</label>
                 <div class="layui-inline">
-                    <input type="text" name="toId" lay-verify="required" autocomplete="off" placeholder="请输入流转接收人ID"
+                    <input type="text" name="sellerId" lay-verify="required" autocomplete="off" placeholder="请输入流转接收人ID"
                            class="layui-input">
                 </div>
             </div>
@@ -93,32 +95,33 @@
             laydate = layui.laydate;
 
         table.render({
-            elem: '#checkOrderForm',
-            url: '/order/list',
+            elem: '#checkTradeForm',
+            url: '/trade/list',
             page: true,
             cols: [
                 [ //表头
-                    {field: 'orderId', title: '流转ID', width: 90, sort: true,}
-                    , {field: 'orderValue', title: '流转说明', width: 120, sort: true}
-                    , {field: 'orderDate', title: '流转类型', width: 150, templet: "#forType"}
-                    , {field: 'orderStatus', title: '流转发生时间', width: 250}
-                    , {field: 'relicId', title: '文物ID', width: 100}
-                    , {field: 'buyerId', title: '发起人ID', width: 125, sort: true}
-                    , {field: 'sellerId', title: '接受人ID', width: 125, sort: true}
-                    , {field: 'checkStatus', title: '是否已审核', width: 125, sort: true, templet: "#forCheck"}
-                    , {field: 'orderResponse', title: '审核意见', width: 125, sort: true}
+                    {field: 'orderId', title: '交易ID', width: 90, sort: true, align: 'center'}
+                    , {field: 'orderValue', title: '交易金额', width: 120, sort: true, align: 'center'}
+                    , {field: 'orderDate', title: '交易日期', width: 250, align: 'center'}
+                    , {field: 'orderStatus', title: '交易状态', width: 150, templet: "#forStatus", align: 'center'}
+                    , {field: 'relicId', title: '文物ID', width: 100, align: 'center'}
+                    , {field: 'buyerId', title: '买方ID', width: 125, sort: true, align: 'center'}
+                    , {field: 'sellerId', title: '卖方ID', width: 125, sort: true, align: 'center'}
+                    , {field: 'checkStatus', title: '是否已审核', width: 125, sort: true, templet: "#forCheck", align: 'center'}
+                    , {field: 'orderResponse', title: '审核意见', width: 125, sort: true, align: 'center'}
+                    , {field: 'orderBlockChainStatus', title: '交易是否已上链', width: 250, sort: true, templet: "#forBlockChain", align: 'center'}
                 ]
             ]
         })
 
-        $(document).on('click', '#uploadMovement', function () {
-            movementForm = layer.open({
+        $(document).on('click', '#uploadTrade', function () {
+            tradeForm = layer.open({
                 type: 1,
-                content: $("#movementFormLayer"),
+                content: $("#tradeFormLayer"),
                 area: ['800px', '600px'],
                 title: '提交流转申请',
                 success: function () {
-                    url = "/movement/insertMovement";
+                    url = "/trade/insertTrade";
                 }
             })
         })
@@ -130,13 +133,13 @@
         form.on("submit(doSubmit)", function (data) {
             $.post(url, data.field, function (res) {
                 layer.closeAll();
-                if(res.code == 200) {
+                if (res.code == 200) {
                     layer.msg("插入成功");
                 } else {
                     layer.msg("插入失败");
                 }
             })
-        })
+        });
 
     });
 </script>
@@ -147,6 +150,20 @@
     <span style="color: #1890ff">{{d.checkStatus}}</span>
     {{#} else if(d.checkStatus == '1') {d.checkStatus = '已审核'}}
     {{d.checkStatus}}
+    {{#}}}
+</script>
+<script type="text/html" id="forStatus">
+    {{# if(d.orderStatus == '0'){d.orderStatus='正在交易'}}
+    <span style="color: #1890ff">{{d.orderStatus}}</span>
+    {{#} else if(d.orderStatus == '1') {d.orderStatus = '已完成'}}
+    {{d.orderStatus}}
+    {{#}}}
+</script>
+<script type="text/html" id="forBlockChain">
+    {{# if(d.orderBlockChainStatus == '0'){d.orderBlockChainStatus='未上链'}}
+    <span style="color: #1890ff">{{d.orderBlockChainStatus}}</span>
+    {{#} else if(d.orderBlockChainStatus == '1') {d.orderBlockChainStatus = '已上链'}}
+    {{d.orderBlockChainStatus}}
     {{#}}}
 </script>
 </body>

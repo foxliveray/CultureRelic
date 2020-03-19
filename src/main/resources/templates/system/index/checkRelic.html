@@ -77,17 +77,17 @@
             , page: true //开启分页
             , cols: [
                 [ //表头
-                    {field: 'relicId', title: '文物ID', width: 90, sort: true,}
-                    , {field: 'govNum', title: '国家认证编号', width: 200, sort: true}
-                    , {field: 'relicName', title: '文物名称', width: 150}
-                    , {field: 'relicDescribe', title: '文物描述', width: 280}
+                    {field: 'relicId', title: '文物ID', width: 90, sort: true, align: 'center'}
+                    , {field: 'govNum', title: '国家认证编号', width: 200, sort: true, align: 'center'}
+                    , {field: 'relicName', title: '文物名称', width: 150, align: 'center'}
+                    , {field: 'relicDescribe', title: '文物描述', width: 280, align: 'center'}
                     , {field: 'picture', title: '文物图片', width: 350, templet: '<div><img src="{{d.picture}}"></div>'}
-                    , {field: 'identityStatus', title: '是否已鉴定', width: 125, sort: true, templet: '#forCheck'}
-                    , {field: 'relicStatus', title: '鉴定结果', width: 110, sort: true, templet: '#forCheckResponse'}
-                    , {field: 'identityId', title: '鉴定人ID', width: 100}
-                    , {field: 'ownerId', title: '文物所有人ID', width: 135, sort: true}
-                    , {field: '', title: '鉴定', width: 110, toolbar: "#upLoadBar"}
-                    , {field: 'relicBlockChainStatus', title: '是否已上链', width: 130}
+                    , {field: 'identityStatus', title: '是否已鉴定', width: 125, sort: true, templet: '#forCheck', align: 'center'}
+                    , {field: 'relicStatus', title: '鉴定结果', width: 110, sort: true, templet: '#forCheckResponse', align: 'center'}
+                    , {field: 'identityId', title: '鉴定人ID', width: 100, align: 'center'}
+                    , {field: 'ownerId', title: '文物所有人ID', width: 135, sort: true, align: 'center'}
+                    , {field: '', title: '鉴定', width: 110, toolbar: "#upLoadBar", align: 'center'}
+                    , {field: 'relicBlockChainStatus', title: '是否已上链', width: 130, align: 'center'}
                 ]
             ]
         });

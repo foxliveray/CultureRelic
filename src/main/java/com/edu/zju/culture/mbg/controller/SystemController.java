@@ -124,9 +124,17 @@ public class SystemController {
     /**
      * 跳转到交易所查看交易信息
      */
-    @RequestMapping("/toCheckOrder")
+    @RequestMapping("/toCheckTrade")
     public String toCheckOrder() {
-        return "/system/index/checkOrder";
+        return "/system/index/checkTrade";
+    }
+
+    /**
+     * 跳转到海关查看出入境信息
+     */
+    @RequestMapping("/toCheckExitEntry")
+    public String toCheckExitEntry() {
+        return "/system/index/checkExitEntry";
     }
 
 
