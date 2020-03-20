@@ -6,6 +6,7 @@ target/
 
 */.DS_Store
 
+filoop-sdk-1.0.5.jar
 ### Maven template
 pom.xml.tag
 pom.xml.releaseBackup

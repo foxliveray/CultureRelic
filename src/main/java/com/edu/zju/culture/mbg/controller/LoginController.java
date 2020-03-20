@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.Enumeration;
 
 
 /**
@@ -49,5 +50,20 @@ public class LoginController {
             e.printStackTrace();
             return ResultObj.LOGIN_ERROR_PASS;
         }
+    }
+
+    @RequestMapping("/logout")
+    public String logout(){
+        Subject subject = SecurityUtils.getSubject();
+        try {
+            subject.logout();
+            Enumeration em = WebUtils.getSession().getAttributeNames();
+            while(em.hasMoreElements()){
+                WebUtils.getSession().removeAttribute(em.nextElement().toString());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "system/index/login";
     }
 }
