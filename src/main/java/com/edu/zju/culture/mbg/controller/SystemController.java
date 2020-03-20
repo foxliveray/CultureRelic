@@ -122,7 +122,17 @@ public class SystemController {
     }
 
     /**
-     * 跳转到交易所查看交易信息
+     *跳转到政府文物流转审核页面
+     *
+     */
+    @RequestMapping("/toGovCheckMovement")
+    public String toGovCheckMovement() {
+        return "system/index/gov_checkMovement";
+    }
+
+    /**
+     *  跳转到交易所查看交易信息
+     *
      */
     @RequestMapping("/toCheckTrade")
     public String toCheckOrder() {

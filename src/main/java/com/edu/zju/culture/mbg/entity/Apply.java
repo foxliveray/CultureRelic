@@ -46,6 +46,7 @@ public class Apply implements Serializable {
      */
     private Long fromId;
 
+
     /**
      * 是否已审核
      */

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+</head>
+<body>
+<table id="demo" lay-filter="test"></table>
+<style type="text/css">
+    .layui-table-cell {
+        text-align: center;
+        height: auto;
+        white-space: normal;
+    }
+
+    .layui-table img {
+        max-width: 300px
+    }
+</style>
+
+<script src="/res/component/layui/layui.js"></script>
+<script type="text/html" id="upLoadBar">
+    <button class="layui-btn layui-btn-normal" lay-event="check">上链</button>
+</script>
+
+<script type="text/javascript">
+    layui.use(["layer", "table", "laydate", "form"], function () {
+        var url;
+        var $ = layui.$,
+            form = layui.form,
+            layer = layui.layer,
+            table = layui.table,
+            laydate = layui.laydate;
+
+        table.render({
+            elem: '#demo',
+            url: '/movement/list',
+            page: true,
+            cols: [
+                [ //表头
+                    {field: 'movementId', title: '流转ID', width: 90, sort: true,}
+                    , {field: 'explanation', title: '流转说明', width: 120, sort: true}
+                    , {field: 'moveType', title: '流转类型', width: 150, templet: "#forType"}
+                    , {field: 'moveDate', title: '流转发生时间', width: 250}
+                    , {field: 'relicId', title: '文物ID', width: 100}
+                    , {field: 'fromId', title: '发起人ID', width: 125, sort: true}
+                    , {field: 'toId', title: '接受人ID', width: 125, sort: true}
+                    , {field: 'checkStatus', title: '是否已审核', width: 125, sort: true, templet: "#forGovCheck"}
+                    , {field: 'movementResponse', title: '审核意见', width: 125, sort: true}
+                    , {field: 'movementBlockChainStatus', title: '是否已上链', width: 125, sort: true,templet:"#forAddMovement"}
+                    , {field: '', title: '审核', width: 135, toolbar: "#upLoadBar"}
+                ]
+            ]
+        })
+
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            var tr = obj.tr;
+            if (layEvent == 'check') {
+                layer.open({
+                    type: 1
+                    ,title: '流转上链申请详细信息'
+                    ,area: '500px;'
+                    ,shade: 0.8
+                    ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,btn: ['同意上链', '拒绝上链']
+                    ,btnAlign: 'c'
+                    ,moveType: 1 //拖拽模式，0或者1k
+                    ,content: '<div style="padding: 50px; line-height: 22px; color:; font-weight: 300;">文物流转ID：'+data.movementId+'<br><br>流转说明：'+data.explanation+'<br><br>流转类型：'+data.moveType+'<br><br>流转发生时间：'+data.moveDate+'<br><br>文物ID：'+data.relicId+'<br><br>发起人ID：'+data.fromId+'<br><br>接受人ID：'+data.toId+'<br><br>审核状态：'+data.checkStatus+'<br><br>审核意见 \n \n<br>' +
+                        '<textarea id="movementResponse" placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>\n'
+                    ,btn1:function () {
+                        $.ajax({
+                            url:"/movement/addMovement",
+                            scriptCharset: "utf-8",
+                            data: {movementId:data.movementId,explanation:data.explanation,moveType:data.moveType,moveDate:data.moveDate,relicId:data.relicId,fromId:data.fromId,toId:data.toId,checkStatus:1,relicBlockChainStatus:1,movementResponse:document.getElementById("movementResponse").value},
+                            type: "GET",
+                            success: function (msg) {
+                                alert("请稍等片刻，正在上链！上链成功后将为您自动跳转");
+                                setTimeout(window.location.href="/sys/toGovCheckMovement",5000);
+                            }
+                        });
+                    }
+                    ,btn2:function () {
+                        $.ajax({
+                            url:"/relic/addRelic",
+                            scriptCharset: "utf-8",
+                            data: {movementId:data.movementId,checkStatus:1,relicBlockChainStatus:0,movementResponse:document.getElementById("movementResponse").value},
+                            type: "GET",
+                            success: function (msg) {
+                                window.location.href="/sys/toGovCheckMovement";
+                            }
+                        });
+                    }
+
+
+                });
+            }
+        });
+        element.init();
+    });
+</script>
+
+<script type="text/html" id="forGovCheck">
+    {{# if(d.checkStatus == '1'){d.checkStatus='已审核'}}
+    <span style="color: #1890ff">{{d.checkStatus}}</span>
+    {{#} else {d.checkStatus = '未审核'}}
+    {{d.checkStatus}}
+    {{#}}}
+</script>
+<script type="text/html" id="forAddMovement">
+    {{# if(d.movementBlockChainStatus == '1'){d.movementBlockChainStatus='已上链'}}
+    <span style="color: #1890ff">{{d.movementBlockChainStatus}}</span>
+    {{#} else {d.movementBlockChainStatus = '未上链'}}
+    {{d.movementBlockChainStatus}}
+    {{#}}}
+</script>
+
+</body>
+</html>

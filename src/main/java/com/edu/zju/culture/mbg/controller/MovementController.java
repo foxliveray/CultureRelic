@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.edu.zju.culture.common.DataGridView;
 import com.edu.zju.culture.common.ResultObj;
+import com.edu.zju.culture.fabric.FabricHelper;
 import com.edu.zju.culture.mbg.entity.Movement;
+import com.edu.zju.culture.mbg.entity.Relic;
 import com.edu.zju.culture.mbg.service.IMovementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -49,6 +52,37 @@ public class MovementController {
         movement.setMovementBlockChainStatus(0L);
         iMovementService.save(movement);
         return ResultObj.ADD_SUCCESS;
+    }
+    //流转上链
+    @RequestMapping(value = "/addMovement")
+    public void addMovementToblock(@RequestParam(value = "movementId")Long movementId,@RequestParam(value = "relicBlockChainStatus")Long relicBlockChainStatus,@RequestParam(value = "checkStatus")Integer checkStatus,@RequestParam(value = "movementResponse")String movementResponse,
+                                @RequestParam("explanation")String explanation,@RequestParam("moveType")String moveType,@RequestParam("moveDate")String moveDate,@RequestParam("relicId")Long relicId,@RequestParam("fromId")Long fromId,@RequestParam("toId")Long toId) throws IOException {
+
+        Movement movement=new Movement();
+        movement.setMovementId(movementId);
+        movement.setMovementBlockChainStatus(relicBlockChainStatus);
+        movement.setCheckStatus(checkStatus);
+        movement.setMovementResponse(movementResponse);
+        iMovementService.updateById(movement);
+        movement.setExplanation(explanation);
+        movement.setMoveType(moveType);
+        StringBuilder sb = new StringBuilder(moveDate);
+        sb.setCharAt(10, ' ');
+        String str = sb.toString();
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime datetime = LocalDateTime.parse(str, fmt);
+        movement.setMoveDate(datetime);
+        movement.setRelicId(relicId);
+        movement.setFromId(fromId);
+        movement.setToId(toId);
+        // 流转上链
+        if(movement.getMovementBlockChainStatus()==1){
+            FabricHelper fabricHelper=new FabricHelper();
+            fabricHelper.init();
+            fabricHelper.addMovement(movement);
+        }
+
+
     }
 }
 

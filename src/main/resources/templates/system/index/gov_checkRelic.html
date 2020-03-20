@@ -80,7 +80,8 @@
                             data: {relicId:data.relicId,govNum:data.govNum,relicName:data.relicName,relicDescribe:data.relicDescribe,picture:data.picture,identityStatus:data.identityStatus,relicStatus:data.relicStatus,identityId:data.identityId,ownerId:data.ownerId,checkStatus:1,relicBlockChainStatus:1,movementResponse:document.getElementById("movementResponse").value},
                             type: "GET",
                             success: function (msg) {
-                                 window.location.href="/sys/toGovCheckRelic";
+                                 alert("请稍等片刻，正在上链！上链成功后将为您自动跳转");
+                                 setTimeout(window.location.href="/sys/toGovCheckRelic",5000);
                             }
                         });
                     }

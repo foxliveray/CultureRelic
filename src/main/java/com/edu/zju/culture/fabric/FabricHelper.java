@@ -24,10 +24,10 @@ import java.util.List;
 
 public class FabricHelper {
     /**
-     * 私钥小工具中可以看到的账户地址与私钥,请注意：每天都可能有变化！！！
+     * 私钥小工具中可以看到的账户地址与私钥,请注意：每天都可能有变化！！！如果出现操作失败联系ysy拿私钥和地址～
      *
      */
-    public static String json = "{\"address\":\"0x86224aa3a00e557b66d6400bfd07db353eafa435\",\"algo\":\"0x03\",\"encrypted\":\"21a0013a137a0140eb622f41dbbeab256487e1549e3475e13329650184f9c335\",\"version\":\"2.0\",\"privateKeyEncrypted\":false}";
+    public static String json = "{\"address\":\"0x072c8bb9cda10c45aac0bace02a31f10ee760c9a\",\"algo\":\"0x03\",\"encrypted\":\"162b02057c1bdae855880c53445c4a51ce176c2f7dcc091001f894474eff74a8\",\"version\":\"2.0\",\"privateKeyEncrypted\":false}";
     public static SDKClient sdkClient;
     public static AccountService accountService;
     public static Account account;
@@ -122,7 +122,7 @@ public class FabricHelper {
     }
 
     //文物交易上链接口
-    public void addOrder(Trade order) throws IOException {
+    public void addTrade(Trade order) throws IOException {
         //加载本地合约bin、abi，当本地存在bin、abi时，可按下面方式直接加载bin、abi
         InputStream inputStream2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("solidity/CultureRelic.abi");
         String abiStr = FileUtil.readFile(inputStream2);
@@ -131,7 +131,7 @@ public class FabricHelper {
         FuncParams params = new FuncParams();
         params.addParams(order.getOrderId());
         params.addParams(order.getOrderValue());
-        DateTimeFormatter fmt24 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS");
+        DateTimeFormatter fmt24 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String dateStr24 = order.getOrderDate().format(fmt24);
         params.addParams(dateStr24); //24小时转为String
         params.addParams(order.getOrderStatus());
@@ -154,7 +154,7 @@ public class FabricHelper {
 
     }
     //根据ID查询链上的文物交易信息
-    public Trade getOrder(int orderId) throws IOException {
+    public Trade getTrade(int orderId) throws IOException {
 
         //加载本地合约bin、abi，当本地存在bin、abi时，可按下面方式直接加载bin、abi
         InputStream inputStream2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("solidity/CultureRelic.abi");
@@ -179,7 +179,7 @@ public class FabricHelper {
         BigInteger bbuyerId=(BigInteger)objects.get(5);
         BigInteger bsellerId=(BigInteger)objects.get(6);
         String str=(String) objects.get(2);
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS");
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime datetime = LocalDateTime.parse(str, fmt);
         order.setOrderId(borderId.longValue());
         order.setOrderValue(borderValue.intValue());
@@ -207,7 +207,7 @@ public class FabricHelper {
         params.addParams(movement.getMovementId());
         params.addParams(movement.getExplanation());
         params.addParams(movement.getMoveType());
-        DateTimeFormatter fmt24 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS");
+        DateTimeFormatter fmt24 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String dateStr24 = movement.getMoveDate().format(fmt24);
         params.addParams(dateStr24); //24小时转为String
         params.addParams(movement.getRelicId());
@@ -254,7 +254,7 @@ public class FabricHelper {
         BigInteger bcheckStatus=(BigInteger)objects.get(7);
 
         String str=(String) objects.get(3);
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS");
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime datetime = LocalDateTime.parse(str, fmt);
         movement.setMovementId(bmovementId.longValue());
         movement.setExplanation((String)objects.get(1));
