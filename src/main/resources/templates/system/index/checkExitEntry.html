@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+    <style>
+        body {
+            margin: 10px;
+            background: whitesmoke;
+        }
+    </style>
+</head>
+<body>
+<script src="/res/component/layui/layui.js"></script>
+<div class="layui-card">
+    <div class="layui-card-header">提交出入境申请</div>
+    <div style="margin: 15px">
+        <button class="layui-btn" id="uploadExitEntry">提交出入境申请</button>
+    </div>
+    <div class="layui-card-body">
+        <table id="checkExitEntryForm" lay-filter="test"></table>
+    </div>
+</div>
+
+<div style="display: none;padding: 5px" id="ExitEntryFormLayer">
+    <form action="" method="post" class="layui-form layui-form-pane" id="exitEntryForm" lay-fiter="exitEntryForm">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">发起人ID</label>
+                <div class="layui-inline">
+                    <input type="text" name="fromId" lay-verify="required" autocomplete="off" placeholder="请输入发起人ID"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">接收人ID</label>
+                <div class="layui-inline">
+                    <input type="text" name="toId" lay-verify="required" autocomplete="off" placeholder="请输入接收人ID"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文物ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="relicId" lay-verify="required" autocomplete="off" placeholder="请输入文物ID"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">出关地点</label>
+            <div class="layui-input-block">
+                <input type="text" name="origin" lay-verify="required" autocomplete="off" placeholder="请输入出关地点"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">目的地</label>
+            <div class="layui-input-block">
+                <input type="text" name="destination" lay-verify="required" autocomplete="off" placeholder="请输入目的地"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div style="text-align: center;">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="doSubmit" id="doSubmit"><span
+                        class="layui-icon layui-icon-add-1"></span>提交
+                </button>
+            </div>
+        </div>
+
+    </form>
+</div>
+<script type="text/javascript">
+    layui.use(["layer", "table", "laydate", "form"], function () {
+        var url;
+        var $ = layui.$,
+            form = layui.form,
+            layer = layui.layer,
+            table = layui.table,
+            laydate = layui.laydate;
+
+        table.render({
+            elem: '#checkExitEntryForm',
+            url: '/exit-entry/list',
+            page: true,
+            cols: [
+                [ //表头
+                    {field: 'exitEntryId', title: '出入境记录ID', width: 150, sort: true, align: 'center'}
+                    , {field: 'fromId', title: '发起人ID', width: 120, sort: true, align: 'center'}
+                    , {field: 'toId', title: '接受人ID', width: 120, sort: true, align: 'center'}
+                    , {field: 'relicId', title: '文物ID', width: 120, templet: "#forStatus", align: 'center'}
+                    , {field: 'origin', title: '出关地点', width: 125, sort: true, align: 'center'}
+                    , {field: 'destination', title: '目的地', width: 125, sort: true, align: 'center'}
+                    , {field: 'exitEntryCheckStatus', title: '政府是否已审核', width: 150, sort: true, templet: "#forGovernment", align: 'center'}
+                    , {field: 'exitEntryResponse', title: '政府审核意见', width: 150, sort: true, align: 'center'}
+                    , {field: 'exitEntryCustomsStatus', title: '海关是否已审核', width: 150, sort: true, templet: "#forExitEntry", align: 'center'}
+                    , {field: 'exitEntryCustomsResponse', title: '海关审核意见', width: 150, sort: true, align: 'center'}
+                    , {field: 'exitEntryBlockChainStatus', title: '信息是否已上链', width: 150, sort: true, templet: "#forBlockChain", align: 'center'}
+                    , {field: '', title: '审核', width: '120', sort: true}
+                ]
+            ]
+        });
+
+        $(document).on('click', '#uploadExitEntry', function () {
+            exitEntryForm = layer.open({
+                type: 1,
+                content: $("#ExitEntryFormLayer"),
+                area: ['800px', '600px'],
+                title: '提交出入关申请',
+                success: function () {
+                    url = "/exit-entry/insertExitEntry";
+                }
+            })
+        });
+
+        form.on("submit(doSubmit)", function (data) {
+            $.post(url, data.field, function (res) {
+                layer.closeAll();
+                if (res.code == 200) {
+                    layer.msg("插入成功");
+                } else {
+                    layer.msg("插入失败");
+                }
+            })
+        });
+    });
+</script>
+
+<script type="text/html" id="forGovernment">
+    {{# if(d.exitEntryCheckStatus == '0'){d.exitEntryCheckStatus='未审核'}}
+    <span style="color: #1890ff">{{d.exitEntryCheckStatus}}</span>
+    {{#} else if(d.exitEntryCheckStatus == '1') {d.exitEntryCheckStatus = '已审核'}}
+    {{d.exitEntryCheckStatus}}
+    {{#}}}
+</script>
+
+<script type="text/html" id="forExitEntry">
+    {{# if(d.exitEntryCustomsStatus == '0'){d.exitEntryCustomsStatus='未审核'}}
+    <span style="color: #1890ff">{{d.exitEntryCustomsStatus}}</span>
+    {{#} else if(d.exitEntryCustomsStatus == '1') {d.exitEntryCustomsStatus = '已审核'}}
+    {{d.exitEntryCustomsStatus}}
+    {{#}}}
+</script>
+
+<script type="text/html" id="forBlockChain">
+    {{# if(d.exitEntryBlockChainStatus == '0'){d.exitEntryBlockChainStatus='未审核'}}
+    <span style="color: #1890ff">{{d.exitEntryBlockChainStatus}}</span>
+    {{#} else if(d.exitEntryBlockChainStatus == '1') {d.exitEntryBlockChainStatus = '已审核'}}
+    {{d.exitEntryBlockChainStatus}}
+    {{#}}}
+</script>
+</body>
+</html>

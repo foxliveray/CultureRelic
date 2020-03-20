@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+    <style>
+        body {
+            margin: 10px;
+            background: whitesmoke;
+        }
+    </style>
+</head>
+
+<body>
+<script src="/res/component/layui/layui.js"></script>
+<div class="layui-card">
+    <div class="layui-card-header">提交流转申请</div>
+    <div style="margin: 15px">
+        <button class="layui-btn" id="uploadMovement">提交流转申请</button>
+    </div>
+    <div class="layui-card-body">
+        <table id="checkMovementForm" lay-filter="test"></table>
+    </div>
+</div>
+<div style="display: none;padding: 5px" id="movementFormLayer">
+    <form action="" method="post" class="layui-form layui-form-pane" id="movementForm" lay-fiter="movementForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">流转说明</label>
+            <div class="layui-input-block">
+                <input type="text" name="explanation" lay-verify="required" autocomplete="off" placeholder="请输入流转说明"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">流转类型</label>
+            <div class="layui-input-block">
+                <select name="moveType" lay-verify="required" placeholder="请选择">
+                    <option value="">请选择流转方式</option>
+                    <option value="正常流转">正常流转</option>
+                    <option value="捐赠">捐赠</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">发生时间</label>
+            <div class="layui-input-block">
+                <input type="text" name="moveDateChange" lay-verify="required" autocomplete="off" placeholder="请输入流转发生时间"
+                       id="timeInput"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文物ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="relicId" lay-verify="required" autocomplete="off" placeholder="请输入文物ID"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">发起人ID</label>
+                <div class="layui-inline">
+                    <input type="text" name="fromId" lay-verify="required" autocomplete="off" placeholder="请输入流转发起人ID"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">接收人ID</label>
+                <div class="layui-inline">
+                    <input type="text" name="toId" lay-verify="required" autocomplete="off" placeholder="请输入流转接收人ID"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div style="text-align: center;">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="doSubmit" id="doSubmit"><span
+                        class="layui-icon layui-icon-add-1"></span>提交
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    layui.use(["layer", "table", "laydate", "form"], function () {
+        var url;
+        var $ = layui.$,
+            form = layui.form,
+            layer = layui.layer,
+            table = layui.table,
+            laydate = layui.laydate;
+
+        table.render({
+            elem: '#checkMovementForm',
+            url: '/movement/list',
+            page: true,
+            cols: [
+                [ //表头
+                    {field: 'movementId', title: '流转ID', width: 90, sort: true, align: 'center'}
+                    , {field: 'explanation', title: '流转说明', width: 120, sort: true, align: 'center'}
+                    , {field: 'moveType', title: '流转类型', width: 150, templet: "#forType", align: 'center'}
+                    , {field: 'moveDate', title: '流转发生时间', width: 250, align: 'center'}
+                    , {field: 'relicId', title: '文物ID', width: 100, align: 'center'}
+                    , {field: 'fromId', title: '发起人ID', width: 125, sort: true, align: 'center'}
+                    , {field: 'toId', title: '接受人ID', width: 125, sort: true, align: 'center'}
+                    , {field: 'checkStatus', title: '是否已审核', width: 125, sort: true, templet: "#forCheck", align: 'center'}
+                    , {field: 'movementResponse', title: '审核意见', width: 125, sort: true, align: 'center'}
+                ]
+            ]
+        })
+
+        $(document).on('click', '#uploadMovement', function () {
+            movementForm = layer.open({
+                type: 1,
+                content: $("#movementFormLayer"),
+                area: ['800px', '600px'],
+                title: '提交流转申请',
+                success: function () {
+                    url = "/movement/insertMovement";
+                }
+            })
+        })
+
+        laydate.render({
+            elem: "#timeInput"
+        });
+
+        form.on("submit(doSubmit)", function (data) {
+            $.post(url, data.field, function (res) {
+                layer.closeAll();
+                if(res.code == 200) {
+                    layer.msg("插入成功");
+                } else {
+                    layer.msg("插入失败");
+                }
+            })
+        })
+
+    });
+</script>
+
+
+<script type="text/html" id="forCheck">
+    {{# if(d.checkStatus == '0'){d.checkStatus='未审核'}}
+    <span style="color: #1890ff">{{d.checkStatus}}</span>
+    {{#} else if(d.checkStatus == '1') {d.checkStatus = '已审核'}}
+    {{d.checkStatus}}
+    {{#}}}
+</script>
+</body>
+</html>

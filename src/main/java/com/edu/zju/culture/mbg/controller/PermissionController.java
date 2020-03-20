@@ -79,7 +79,6 @@ public class PermissionController {
     @RequestMapping("/loadPermissionMaxOrderNum")
     public Map<String, Object> loadPermissionMaxOrderNum() {
         Map<String, Object> map = new HashMap<String, Object>();
-
         QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("ordernum");
         IPage<Permission> page = new Page<>(1, 1);

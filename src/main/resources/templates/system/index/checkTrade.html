@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+    <style>
+        body {
+            margin: 10px;
+            background: whitesmoke;
+        }
+    </style>
+</head>
+
+<body>
+<script src="/res/component/layui/layui.js"></script>
+<div class="layui-card">
+    <div class="layui-card-header">提交交易申请</div>
+    <div style="margin: 15px">
+        <button class="layui-btn" id="uploadTrade">提交交易申请</button>
+    </div>
+    <div class="layui-card-body">
+        <table id="checkTradeForm" lay-filter="test"></table>
+    </div>
+</div>
+
+<div style="display: none;padding: 5px" id="tradeFormLayer">
+    <form action="" method="post" class="layui-form layui-form-pane" id="tradeForm" lay-fiter="tradeForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">交易金额</label>
+            <div class="layui-input-block">
+                <input type="text" name="orderValue" lay-verify="required" autocomplete="off" placeholder="请输入交易金额"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">交易类型</label>
+            <div class="layui-input-block">
+                <select name="orderStatus" lay-verify="required" placeholder="请选择">
+                    <option value="">请选择交易方式</option>
+                    <option value="0">正在交易</option>
+                    <option value="1">已完成</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">发生时间</label>
+            <div class="layui-input-block">
+                <input type="text" name="orderDateChange" lay-verify="required" autocomplete="off"
+                       placeholder="请输入交易发生时间"
+                       id="timeInput"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文物ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="relicId" lay-verify="required" autocomplete="off" placeholder="请输入文物ID"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">买方ID</label>
+                <div class="layui-inline">
+                    <input type="text" name="buyerId" lay-verify="required" autocomplete="off" placeholder="请输入流转发起人ID"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">卖方ID</label>
+                <div class="layui-inline">
+                    <input type="text" name="sellerId" lay-verify="required" autocomplete="off" placeholder="请输入流转接收人ID"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div style="text-align: center;">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="doSubmit" id="doSubmit"><span
+                        class="layui-icon layui-icon-add-1"></span>提交
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    layui.use(["layer", "table", "laydate", "form"], function () {
+        var url;
+        var $ = layui.$,
+            form = layui.form,
+            layer = layui.layer,
+            table = layui.table,
+            laydate = layui.laydate;
+
+        table.render({
+            elem: '#checkTradeForm',
+            url: '/trade/list',
+            page: true,
+            cols: [
+                [ //表头
+                    {field: 'orderId', title: '交易ID', width: 90, sort: true, align: 'center'}
+                    , {field: 'orderValue', title: '交易金额', width: 120, sort: true, align: 'center'}
+                    , {field: 'orderDate', title: '交易日期', width: 250, align: 'center'}
+                    , {field: 'orderStatus', title: '交易状态', width: 150, templet: "#forStatus", align: 'center'}
+                    , {field: 'relicId', title: '文物ID', width: 100, align: 'center'}
+                    , {field: 'buyerId', title: '买方ID', width: 125, sort: true, align: 'center'}
+                    , {field: 'sellerId', title: '卖方ID', width: 125, sort: true, align: 'center'}
+                    , {field: 'checkStatus', title: '是否已审核', width: 125, sort: true, templet: "#forCheck", align: 'center'}
+                    , {field: 'orderResponse', title: '审核意见', width: 125, sort: true, align: 'center'}
+                    , {field: 'orderBlockChainStatus', title: '交易是否已上链', width: 250, sort: true, templet: "#forBlockChain", align: 'center'}
+                ]
+            ]
+        })
+
+        $(document).on('click', '#uploadTrade', function () {
+            tradeForm = layer.open({
+                type: 1,
+                content: $("#tradeFormLayer"),
+                area: ['800px', '600px'],
+                title: '提交流转申请',
+                success: function () {
+                    url = "/trade/insertTrade";
+                }
+            })
+        })
+
+        laydate.render({
+            elem: "#timeInput"
+        });
+
+        form.on("submit(doSubmit)", function (data) {
+            $.post(url, data.field, function (res) {
+                layer.closeAll();
+                if (res.code == 200) {
+                    layer.msg("插入成功");
+                } else {
+                    layer.msg("插入失败");
+                }
+            })
+        });
+
+    });
+</script>
+
+
+<script type="text/html" id="forCheck">
+    {{# if(d.checkStatus == '0'){d.checkStatus='未审核'}}
+    <span style="color: #1890ff">{{d.checkStatus}}</span>
+    {{#} else if(d.checkStatus == '1') {d.checkStatus = '已审核'}}
+    {{d.checkStatus}}
+    {{#}}}
+</script>
+<script type="text/html" id="forStatus">
+    {{# if(d.orderStatus == '0'){d.orderStatus='正在交易'}}
+    <span style="color: #1890ff">{{d.orderStatus}}</span>
+    {{#} else if(d.orderStatus == '1') {d.orderStatus = '已完成'}}
+    {{d.orderStatus}}
+    {{#}}}
+</script>
+<script type="text/html" id="forBlockChain">
+    {{# if(d.orderBlockChainStatus == '0'){d.orderBlockChainStatus='未上链'}}
+    <span style="color: #1890ff">{{d.orderBlockChainStatus}}</span>
+    {{#} else if(d.orderBlockChainStatus == '1') {d.orderBlockChainStatus = '已上链'}}
+    {{d.orderBlockChainStatus}}
+    {{#}}}
+</script>
+</body>
+</html>

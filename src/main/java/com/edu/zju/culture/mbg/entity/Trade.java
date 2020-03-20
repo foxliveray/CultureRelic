@@ -2,33 +2,31 @@ package com.edu.zju.culture.mbg.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-
 import java.time.LocalDateTime;
 import java.io.Serializable;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * <p>
- *
+ * 
  * </p>
  *
  * @author y4oung
- * @since 2020-03-16
+ * @since 2020-03-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class Order implements Serializable {
+public class Trade implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID=1L;
 
     /**
      * 交易ID
      */
-    @TableId(value = "order_id", type = IdType.AUTO)
+      @TableId(value = "order_id", type = IdType.AUTO)
     private Long orderId;
 
     /**
@@ -70,6 +68,11 @@ public class Order implements Serializable {
      * 审核意见
      */
     private String orderResponse;
+
+    /**
+     * 交易是否已上链
+     */
+    private Integer orderBlockChainStatus;
 
 
 }

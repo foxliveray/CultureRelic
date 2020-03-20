@@ -65,3 +65,9 @@ password: root
 
 参考地址：https://gitee.com/Jmysy/Pear-One-Layui
 
+#### 关于部署
+部署至Linux系统时 yml中resources-static-locations以及ChecKRelic.java中路径需要修改
+
+
+    
+

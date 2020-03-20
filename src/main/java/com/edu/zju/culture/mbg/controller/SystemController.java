@@ -94,13 +94,77 @@ public class SystemController {
     }
 
     /**
-     * 跳转到角色管理
-     *
+     * 跳转到鉴定页面
      */
+    @RequestMapping("/toCheckRelic")
+    public String toCheckRelic() {
+        return "system/index/checkRelic";
+    }
+
+    /**
+     *跳转到政府文物上链审核页面
+     */
+    @RequestMapping("/toGovCheckRelic")
+    public String toGovCheckRelic() {
+        return "system/index/gov_checkRelic";
+    }
+
     @RequestMapping("/toRoleManager")
     public String toRoleManager() {
         return "system/role/roleManager";
     }
+    /**
+     * 跳转到博物馆查看流转页面
+     */
+    @RequestMapping("/toCheckMovement")
+    public String toCheckApply() {
+        return "/system/index/checkMovement";
+    }
+
+    /**
+     *跳转到政府文物流转审核页面
+     *
+     */
+    @RequestMapping("/toGovCheckMovement")
+    public String toGovCheckMovement() {
+        return "system/index/gov_checkMovement";
+    }
+
+    /**
+     *  跳转到交易所查看交易信息
+     *
+     */
+    @RequestMapping("/toCheckTrade")
+    public String toCheckOrder() {
+        return "/system/index/checkTrade";
+    }
+
+    /**
+     * 跳转到海关查看出入境信息
+     */
+    @RequestMapping("/toCheckExitEntry")
+    public String toCheckExitEntry() {
+        return "/system/index/checkExitEntry";
+    }
+
+    /**
+     *  跳转到政府审核交易信息页面
+     *
+     */
+    @RequestMapping("/toGovCheckTrade")
+    public String toGovCheckOrder() {
+        return "system/index/gov_checkTrade";
+    }
+
+    /**
+     *  跳转到政府审核出入境申请信息页面
+     *
+     */
+    @RequestMapping("/toGovCheckExitEntry")
+    public String toGovCheckExitEntry() {
+        return "system/index/gov_checkExitEntry";
+    }
+
 
     /**
      * 跳转到用户管理

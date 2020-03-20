@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+</head>
+<body>
+<table id="demo" lay-filter="test"></table>
+<style type="text/css">
+    .layui-table-cell {
+        text-align: center;
+        height: auto;
+        white-space: normal;
+    }
+
+    .layui-table img {
+        max-width: 300px
+    }
+</style>
+
+<script src="/res/component/layui/layui.js"></script>
+<script type="text/html" id="upLoadBar">
+    <button class="layui-btn layui-btn-normal" lay-event="check">上链</button>
+</script>
+
+<script type="text/javascript">
+    layui.use(["layer", "table", "laydate", "form"], function () {
+        var url;
+        var $ = layui.$,
+            form = layui.form,
+            layer = layui.layer,
+            table = layui.table,
+            laydate = layui.laydate;
+
+        table.render({
+            elem: '#demo',
+            url: '/trade/list',
+            page: true,
+            cols: [
+                [ //表头
+                    {field: 'orderId', title: '交易ID', width: 90, sort: true, align: 'center'}
+                    , {field: 'orderValue', title: '交易金额', width: 120, sort: true, align: 'center'}
+                    , {field: 'orderDate', title: '交易日期', width: 250, align: 'center'}
+                    , {field: 'orderStatus', title: '交易状态', width: 150, templet: "#forStatus", align: 'center'}
+                    , {field: 'relicId', title: '文物ID', width: 100, align: 'center'}
+                    , {field: 'buyerId', title: '买方ID', width: 125, sort: true, align: 'center'}
+                    , {field: 'sellerId', title: '卖方ID', width: 125, sort: true, align: 'center'}
+                    , {field: 'checkStatus', title: '是否已审核', width: 125, sort: true, templet: "#forGovCheck", align: 'center'}
+                    , {field: 'orderResponse', title: '审核意见', width: 125, sort: true, align: 'center'}
+                    , {field: 'orderBlockChainStatus', title: '交易是否已上链', width: 250, sort: true, templet: "#forAddTrade", align: 'center'}
+                    , {field: '', title: '审核', width: 135, toolbar: "#upLoadBar"}
+                ]
+            ]
+        })
+
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            var tr = obj.tr;
+            if (layEvent == 'check') {
+                layer.open({
+                    type: 1
+                    ,title: '交易上链申请详细信息'
+                    ,area: '500px;'
+                    ,shade: 0.8
+                    ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,btn: ['同意上链', '拒绝上链']
+                    ,btnAlign: 'c'
+                    ,moveType: 1 //拖拽模式，0或者1k
+                    ,content: '<div style="padding: 50px; line-height: 22px; color:; font-weight: 300;">文物交易ID：'+data.orderId+'<br><br>交易金额：'+data.orderValue+'<br><br>交易日期：'+data.orderDate+'<br><br>交易状态：'+data.orderStatus+'<br><br>文物ID：'+data.relicId+'<br><br>买方ID：'+data.buyerId+'<br><br>卖方ID：'+data.sellerId+'<br><br>审核状态：'+data.checkStatus+'<br><br>审核意见 \n \n<br>' +
+                        '<textarea id="orderResponse" placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>\n'
+                    ,btn1:function () {
+                        alert("请稍等片刻，正在上链！上链成功后将为您自动跳转");
+                        $.ajax({
+                            url:"/trade/addTrade",
+                            scriptCharset: "utf-8",
+                            data: {orderId:data.orderId,orderValue:data.orderValue,orderDate:data.orderDate,orderStatus:data.orderStatus,relicId:data.relicId,buyerId:data.buyerId,sellerId:data.sellerId,checkStatus:1,orderBlockChainStatus:1,orderResponse:document.getElementById("orderResponse").value},
+                            type: "GET",
+                            success: function (msg) {
+                                setTimeout(window.location.href="/sys/toGovCheckTrade",5000);
+                            }
+                        });
+                    }
+                    ,btn2:function () {
+                        $.ajax({
+                            url:"/trade/addTrade",
+                            scriptCharset: "utf-8",
+                            data: {orderValue:data.orderValue,orderDate:data.orderDate,orderStatus:data.orderStatus,relicId:data.relicId,buyerId:data.buyerId,sellerId:data.sellerId,orderId:data.orderId,checkStatus:1,orderBlockChainStatus:0,orderResponse:document.getElementById("orderResponse").value},
+                            type: "GET",
+                            success: function (msg) {
+                                window.location.href="/sys/toGovCheckTrade";
+                            }
+                        });
+                    }
+
+
+                });
+            }
+        });
+        element.init();
+    });
+</script>
+
+<script type="text/html" id="forGovCheck">
+    {{# if(d.checkStatus == '1'){d.checkStatus='已审核'}}
+    <span style="color: #1890ff">{{d.checkStatus}}</span>
+    {{#} else {d.checkStatus = '未审核'}}
+    {{d.checkStatus}}
+    {{#}}}
+</script>
+<script type="text/html" id="forStatus">
+    {{# if(d.orderStatus == '0'){d.orderStatus='正在交易'}}
+    <span style="color: #1890ff">{{d.orderStatus}}</span>
+    {{#} else if(d.orderStatus == '1') {d.orderStatus = '已完成'}}
+    {{d.orderStatus}}
+    {{#}}}
+</script>
+<script type="text/html" id="forAddTrade">
+    {{# if(d.orderBlockChainStatus == '1'){d.orderBlockChainStatus='已上链'}}
+    <span style="color: #1890ff">{{d.orderBlockChainStatus}}</span>
+    {{#} else {d.orderBlockChainStatus = '未上链'}}
+    {{d.orderBlockChainStatus}}
+    {{#}}}
+</script>
+
+</body>
+</html>

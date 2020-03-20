@@ -68,5 +68,20 @@ public class Relic implements Serializable {
      */
     private Long ownerId;
 
+    /**
+    *  表示文物是否已上链
+    */
+    private Long relicBlockChainStatus;
+    /**
+     * 是否已审核
+     */
+    private Integer checkStatus;
+
+    /**
+     * 审核意见
+     */
+    private String movementResponse;
+
+
 
 }

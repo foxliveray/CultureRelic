@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+</head>
+<body>
+<script src="/res/component/layui/layui.js"></script>
+<table id="checkApplyForm" lay-filter="test"></table>
+
+<script type="text/javascript">
+    layui.use(["layer", "table"], function () {
+        var $ = layui.$,
+            layer = layui.layer,
+            table = layui.table;
+
+        table.render({
+            elem: '#checkApplyForm',
+            url: '/apply/list',
+            page: true,
+            cols: [
+                [ //表头
+                    {field: 'applyId', title: '申请ID', width: 90, sort: true,}
+                    , {field: 'relicId', title: '文物ID', width: 100, sort: true}
+                    , {field: 'applyDate', title: '申请日期', width: 200}
+                    , {field: 'fromId', title: '发起者ID', width: 100}
+                    , {field: 'checkStatus', title: '是否已审核', width: 100, templet:"#forCheck"}
+                    , {field: 'applyResponse', title: '审核意见', width: 125, sort: true}
+                ]
+            ]
+        })
+    });
+</script>
+<script type="text/html" id="forCheck">
+    {{# if(d.checkStatus == '0'){d.checkStatus='未审核'}}
+    <span style="color: #1890ff">{{d.checkStatus}}</span>
+    {{#} else if(d.checkStatus == '1') {d.checkStatus = '已审核'}}
+    {{d.checkStatus}}
+    {{#}}}
+</script>
+</body>
+</html>

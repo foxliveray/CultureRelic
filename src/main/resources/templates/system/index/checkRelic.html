@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+    <style>
+        body {
+            margin: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<table id="demo" lay-filter="test"></table>
+<style type="text/css">
+    .layui-table-cell {
+        text-align: center;
+        height: auto;
+        white-space: normal;
+    }
+
+    .layui-table img {
+        max-width: 300px
+    }
+</style>
+
+<script src="/res/component/layui/layui.js"></script>
+<script type="text/html" id="upLoadBar">
+    <button class="layui-btn layui-btn-normal" lay-event="check">鉴定</button>
+</script>
+
+<div style="display: none;margin:5%" id="checkWindow">
+    <input type="hidden" name="pid" id="pid">
+    <button class="layui-upload-button layui-btn" lay-event="uploadCheckPicture">上传鉴定图片</button>
+</div>
+<script type="text/javascript">
+    layui.use('upload', function () {
+        var $ = layui.$;
+        var upload = layui.upload;
+        var uploadPic = upload.render({
+            elem: '.layui-upload-button',
+            url: '/relic/upload/checkRelic',
+            data: {
+                id: function () {
+                    return $("#pid").val();
+                }
+            },
+            done: function (res) {
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+                layer.closeAll();
+                layer.alert(res.data.similarity);
+            },
+            error: function () {
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+            }
+        })
+    })
+</script>
+
+<script type="text/javascript">
+    layui.use(["jquery", "upload", "form", "layer", "element", "table"], function () {
+        var $ = layui.$,
+            table = layui.table,
+            element = layui.element,
+            layer = layui.layer,
+            upload = layui.upload,
+            form = layui.form;
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , height: 830
+            , url: '/relic/list' //数据接口
+            , page: true //开启分页
+            , cols: [
+                [ //表头
+                    {field: 'relicId', title: '文物ID', width: 90, sort: true, align: 'center'}
+                    , {field: 'govNum', title: '国家认证编号', width: 200, sort: true, align: 'center'}
+                    , {field: 'relicName', title: '文物名称', width: 150, align: 'center'}
+                    , {field: 'relicDescribe', title: '文物描述', width: 280, align: 'center'}
+                    , {field: 'picture', title: '文物图片', width: 350, templet: '<div><img src="{{d.picture}}"></div>'}
+                    , {field: 'identityStatus', title: '是否已鉴定', width: 125, sort: true, templet: '#forCheck', align: 'center'}
+                    , {field: 'relicStatus', title: '鉴定结果', width: 110, sort: true, templet: '#forCheckResponse', align: 'center'}
+                    , {field: 'identityId', title: '鉴定人ID', width: 100, align: 'center'}
+                    , {field: 'ownerId', title: '文物所有人ID', width: 135, sort: true, align: 'center'}
+                    , {field: '', title: '鉴定', width: 110, toolbar: "#upLoadBar", align: 'center'}
+                    , {field: 'relicBlockChainStatus', title: '是否已上链', width: 130, align: 'center'}
+                ]
+            ]
+        });
+
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            var tr = obj.tr;
+            if (layEvent == 'check') {
+                layer.open({
+                    type: 1,
+                    title: '鉴定图片上传',
+                    area: ['200px', '100px'],
+                    content: $("#checkWindow"),
+                    success: function () {
+                        $("#pid").val(data.relicId);
+                    }
+                });
+            }
+        });
+        element.init();
+    });
+</script>
+<script type="text/html" id="forCheck">
+    {{# if(d.identityStatus == '0'){d.identityStatus='未鉴定'}}
+    <span style="color: #1890ff">{{d.identityStatus}}</span>
+    {{#} else {d.identityStatus = '已鉴定'}}
+    {{d.identityStatus}}
+    {{#}}}
+</script>
+<script type="text/html" id="forCheckResponse">
+    {{# if(d.relicStatus == '0'){d.relicStatus='鉴定为假'}}
+    <span style="color: red">{{d.relicStatus}}</span>
+    {{#} else {d.relicStatus = '鉴定为真'}}
+    {{d.relicStatus}}
+    {{#}}}
+</script>
+</body>
+</html>
