@@ -1,11 +1,13 @@
 package com.edu.zju.culture.mbg.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -58,12 +60,12 @@ public class User implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    private Date createTime;
 
     /**
      * 最后登录时间
      */
-    private LocalDateTime loginTime;
+    private Date loginTime;
 
     /**
      * 帐号启用状态：0->禁用；1->启用
@@ -76,7 +78,7 @@ public class User implements Serializable {
     private String salt;
 
     /**
-     * 角色
+     * 是否系统用户/普通用户
      */
     private Integer type;
 
@@ -110,4 +112,9 @@ public class User implements Serializable {
      */
     private String addr;
 
+    /**
+     * 角色
+     */
+    @TableField(exist = false)
+    private String role;
 }

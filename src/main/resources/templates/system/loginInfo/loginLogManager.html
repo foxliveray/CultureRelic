@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="utf-8">
     <title>登录日志</title>
@@ -13,7 +14,6 @@
             margin: 10px;
             background: whitesmoke;
         }
-
     </style>
 </head>
 <body>
@@ -53,7 +53,7 @@
 
             <div class="layui-form-item">
                 <div class="layui-input-block" style="text-align: center;">
-                    <button type="button" class="layui-btn" lay-submit="" lay-filter="doSearch"><span
+                    <button type="button" shiro:hasPermission="info:view" class="layui-btn" lay-submit="" lay-filter="doSearch"><span
                             class="layui-icon layui-icon-search"></span>查询
                     </button>
                     <button type="reset" class="layui-btn layui-btn-warm"><span
@@ -70,7 +70,7 @@
         <script type="text/html" id="barDemo">
             <!--<a class="pear-btn  pear-btn-sm" lay-event="detail">查看</a>-->
             <!--<a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>-->
-            <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="del">删除</a>
+            <a class="pear-btn pear-btn-danger pear-btn-sm" shiro:hasPermission="info:delete" plain lay-event="del">删除</a>
         </script>
 
     </div>
@@ -103,7 +103,6 @@
             elem: '#endTime',
             type: 'datetime'
         });
-
 
         //执行一个 table 实例
         var tableIns = table.render({

@@ -13,4 +13,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface UserMapper extends BaseMapper<User> {
 
+    /**
+     * 通过uid查询角色名
+     * @param uid
+     * @return
+     */
+    String getRoleByUid(Long uid);
 }

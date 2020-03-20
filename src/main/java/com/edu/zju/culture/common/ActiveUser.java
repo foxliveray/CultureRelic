@@ -20,5 +20,5 @@ public class ActiveUser {
 
     private List<String> roles;
 
-    private List<String> permission;
+    private List<String> permissions;
 }

@@ -2,4 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.edu.zju.culture.mbg.mapper.UserMapper">
 
+    <!-- 通过uid查询角色名 -->
+    <select id="getRoleByUid" resultType="java.lang.String">
+        select name from role where id = (select rid from role_user where uid = #{value});
+    </select>
 </mapper>

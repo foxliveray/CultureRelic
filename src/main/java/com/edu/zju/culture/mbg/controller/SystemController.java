@@ -102,4 +102,11 @@ public class SystemController {
         return "system/role/roleManager";
     }
 
+    /**
+     * 跳转到用户管理
+     */
+    @RequestMapping("/toUserManager")
+    public String toUserManager(){
+        return "system/user/UserManager";
+    }
 }

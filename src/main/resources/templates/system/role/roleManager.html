@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org">
+<html  xmlns:th="http://www.thymeleaf.org"
+       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="utf-8">
     <title>角色管理</title>
@@ -8,6 +9,8 @@
     <link href="/res/component/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="/res/admin/css/pearButton.css" rel="stylesheet"/>
     <link href="/res/admin/css/pearTable.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/res/component/layui_ext/dtree/dtree.css" media="all"/>
+    <link rel="stylesheet" href="/res/component/layui_ext/dtree/font/dtreefont.css" media="all"/>
     <style>
         body{
             margin:10px;
@@ -37,6 +40,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">是否可用</label>
                     <div class="layui-input-inline">
+                        <input type="hidden" name="available" value="" checked>
                         <input type="radio" name="available" value="1"  title="可用" >
                         <input type="radio" name="available" value="0" title="不可用" >
                     </div>
@@ -44,7 +48,7 @@
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block" style="text-align: center;">
-                    <button type="button" class="layui-btn" lay-submit="" lay-filter="doSearch"><span class="layui-icon layui-icon-search"></span>查询</button>
+                    <button type="button" shiro:hasPermission="role:view" class="layui-btn" lay-submit="" lay-filter="doSearch"><span class="layui-icon layui-icon-search"></span>查询</button>
                     <button type="reset" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-refresh-1"></span>重置</button>
                 </div>
             </div>
@@ -55,15 +59,15 @@
         <table class="layui-hide" id="demo" lay-filter="test"></table>
 
         <div id="roleToolBar" style="display: none;">
-            <button type="button" lay-event="add" class="pear-btn pear-btn-primary pear-btn-sm" plain><span
+            <button type="button" lay-event="add" shiro:hasPermission="role:create" class="pear-btn pear-btn-primary pear-btn-sm" plain><span
                     class="layui-icon layui-icon-add-1"></span>添加角色
             </button>
         </div>
 
         <script type="text/html" id="barDemo">
-            <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
-            <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="del">删除</a>
-            <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="selectPermission">分配权限</a>
+            <a class="pear-btn pear-btn-primary pear-btn-sm" shiro:hasPermission="role:update" plain lay-event="edit">编辑</a>
+            <a class="pear-btn pear-btn-danger pear-btn-sm" shiro:hasPermission="role:delete" plain lay-event="del">删除</a>
+            <a class="pear-btn pear-btn-primary pear-btn-sm" shiro:hasPermission="role:selectPermission" plain lay-event="selectPermission">分配权限</a>
         </script>
 
     </div>
@@ -102,15 +106,25 @@
         </form>
     </div>
     <!-- 添加和修改的弹出层结束 -->
+
+    <!-- 分配权限的弹出层 开始 -->
+    <div style="display:none;" id="selectRolePermissionDiv">
+        <ul id="permissionTree" class="dtree" data-id="0"></ul>
+    </div>
+    <!-- 分配权限的弹出层 结束-->
 </div>
 
 <script src="/res/component/layui/layui.js"></script>
+<script type="text/javascript" src="/res/component/layui_ext/dtree/dtree.js"></script>
 <script>
     layui.config({
         version: '1575404972583' //为了更新 js 缓存，可忽略
     });
 
-    layui.use(['laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider','jquery'], function() {
+    layui.extend({
+        dtree: '/res/component/layui_ext/dtree/dtree'   // {/}的意思即代表采用自有路径，即不跟随 base 路径
+    })
+        .use(['laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider','jquery','dtree'], function() {
         var laypage = layui.laypage //分页
             ,layer = layui.layer //弹层
             ,table = layui.table //表格
@@ -120,6 +134,7 @@
             ,slider = layui.slider //滑块
             ,$ = layui.jquery //jquery
             ,form=layui.form
+            ,dtree = layui.dtree
 
 
         //执行一个 table 实例
@@ -210,6 +225,8 @@
                 // });
             } else if (layEvent === 'edit') {
                 openUpdateRoleLayer(data);
+            }else if(layEvent === 'selectPermission'){
+                selectPermission(data);
             }
         });
         var mainIndex;
@@ -270,6 +287,44 @@
         }
 
 
+        //打开分配角色的页面
+        function selectPermission(data) {
+            mainIndex = layer.open({
+                type:1,
+                content:$("#selectRolePermissionDiv"),
+                area:['400px','600px'],
+                title:'分配【'+data.name+'】的权限',
+                btn: ['<span class=layui-icon>&#xe605;确认分配</span>', '<span class=layui-icon>&#x1006;关闭窗口</span>'],
+                yes: function(index, layero){
+                    //得到树选中的所有节点
+                    var permissionData = dtree.getCheckbarNodesParam("permissionTree");
+                    console.log(params);
+                    var params="rid="+data.id;
+                    $.each(permissionData,function(index,item){
+                        params+="&ids="+item.nodeId;
+                    });
+                    $.post("/role/saveRolePermission",params,function(res){
+                        layer.msg(res.msg);
+                    })
+                },
+                btn2: function(index, layero){
+                    //return false 开启该代码可禁止点击该按钮关闭
+                },
+                btnAlign: 'c', //按钮居中对齐
+                success:function(){
+                    //根据角色ID请求权限和菜单tree的json数据
+                    dtree.render({
+                        elem: "#permissionTree",
+                        url: "/role/initPermissionByRoleId?roleId="+data.id,
+                        dataStyle: "layuiStyle",  //使用layui风格的数据格式
+                        dataFormat: "list",  //配置data的风格为list
+                        response:{message:"msg",statusCode:0},  //修改response中返回数据的定义
+                        checkbar: true, // 开启复选框
+                        checkbarType: "all" // 默认就是all，其他的值为： no-all  p-casc   self  only
+                    });
+                }
+            })
+        }
 
 
     });

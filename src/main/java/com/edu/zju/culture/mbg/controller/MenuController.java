@@ -7,16 +7,14 @@ import com.edu.zju.culture.common.*;
 import com.edu.zju.culture.mbg.entity.Permission;
 import com.edu.zju.culture.mbg.entity.User;
 import com.edu.zju.culture.mbg.service.IPermissionService;
+import com.edu.zju.culture.mbg.service.IRoleService;
 import com.edu.zju.culture.vo.PermissionVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author y4oung
@@ -28,6 +26,9 @@ import java.util.Map;
 public class MenuController {
     @Autowired
     private IPermissionService permissionService;
+
+    @Autowired
+    private IRoleService roleService;
 
     /**
      * 加载菜单json数据
@@ -47,8 +48,24 @@ public class MenuController {
         if (user.getType() == Constant.USER_TYPE_SUPER) {
             list = permissionService.list(queryWrapper);
         } else {
-            //根据用户ID+角色+权限去查询 (待完成）
-            list = permissionService.list(queryWrapper);
+            //根据用户ID+角色+权限去查询
+            Long userId = user.getId();
+            //根据用户ID查询其包含的角色
+            List<Integer> currentUserRoleIds = roleService.queryUserRoleIdsByUid(Math.toIntExact(userId));
+            //根据角色ID获取菜单和权限ID(有重复所以用set）
+            Set<Integer> pids = new HashSet<>();
+            for(Integer rid:currentUserRoleIds){
+                List<Integer> permissionIds = roleService.queryRolePermissionIdsByRid(rid);
+                pids.addAll(permissionIds);
+            }
+
+            //根据角色ID查询权限
+            if(pids.size()>0){
+                queryWrapper.in("id",pids);
+                list = permissionService.list(queryWrapper);
+            }else{
+                list = new ArrayList<>();
+            }
         }
 
         List<TreeNode> treeNodes = new ArrayList<>();

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="utf-8">
     <title>权限管理</title>
@@ -37,7 +38,7 @@
                         <input type="text" name="percode" autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-input-inline">
-                        <button type="button" class="layui-btn" lay-submit="" lay-filter="doSearch"><span
+                        <button type="button" shiro:hasPermission="permission:view" class="layui-btn" lay-submit="" lay-filter="doSearch"><span
                                 class="layui-icon layui-icon-search"></span>查询
                         </button>
                         <button type="reset" class="layui-btn layui-btn-warm"><span
@@ -56,15 +57,15 @@
         <table class="layui-hide" id="demo" lay-filter="test"></table>
 
         <div id="permissionToolBar" style="display: none;">
-            <button type="button" lay-event="add" class="pear-btn pear-btn-primary pear-btn-sm" plain><span
+            <button type="button" lay-event="add" shiro:hasPermission="permission:create" class="pear-btn pear-btn-primary pear-btn-sm" plain><span
                     class="layui-icon layui-icon-add-1"></span>添加权限
             </button>
         </div>
 
         <script type="text/html" id="barDemo">
             <!--<a class="pear-btn  pear-btn-sm" lay-event="detail">查看</a>-->
-            <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
-            <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="del">删除</a>
+            <a class="pear-btn pear-btn-primary pear-btn-sm" shiro:hasPermission="permission:update" plain lay-event="edit">编辑</a>
+            <a class="pear-btn pear-btn-danger pear-btn-sm" plain shiro:hasPermission="permission:delete" lay-event="del">删除</a>
         </script>
 
     </div>

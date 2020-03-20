@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <title>用户管理</title>
+    <link href="/res/assets/css/pearone.css" rel="stylesheet" />
+    <link href="/res/component/layui/css/layui.css" rel="stylesheet" />
+    <link href="/res/component/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="/res/admin/css/pearButton.css" rel="stylesheet"/>
+    <link href="/res/admin/css/pearTable.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/res/component/layui_ext/dtree/dtree.css" media="all"/>
+    <link rel="stylesheet" href="/res/component/layui_ext/dtree/font/dtreefont.css" media="all"/>
+    <style>
+        body{
+            margin:10px;
+            background: whitesmoke;
+        }
+
+    </style>
+</head>
+<body>
+<div class="layui-card">
+    <div class="layui-card-header">查询条件</div>
+    <blockquote class="layui-elem-quote">
+        <form action="" method="post" id="searchFrm" lay-filter="searchFrm" class="layui-form layui-form-pane">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="username"  autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户角色</label>
+                    <div class="layui-input-inline">
+                        <input type="hidden" name="role" id="search_role">
+                        <ul id="search_roleTree" class="dtree" data-id="0"></ul>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否启用</label>
+                    <div class="layui-input-inline">
+                        <input type="hidden" name="status" value="" checked>
+                        <input id="rd1" type="radio" name="status" value="1"  title="启用" >
+                        <input id="rd2" type="radio" name="status" value="0" title="禁用" >
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="text-align: center;">
+                    <button type="button" shiro:hasPermission="user:view" class="layui-btn" lay-submit="" lay-filter="doSearch"><span class="layui-icon layui-icon-search"></span>查询</button>
+                    <button type="reset" onclick="javascript:document.getElementById('search_role').value='';" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-refresh-1"></span>重置</button>
+                </div>
+            </div>
+        </form>
+    </blockquote>
+    <div class="layui-card-body">
+
+        <table class="layui-hide" id="demo" lay-filter="test"></table>
+
+        <div id="userToolBar" style="display: none;">
+            <button type="button" lay-event="add" shiro:hasPermission="user:create" class="pear-btn pear-btn-primary pear-btn-sm" plain><span
+                    class="layui-icon layui-icon-add-1"></span>添加用户
+            </button>
+        </div>
+
+        <script type="text/html" id="barDemo">
+            <a class="pear-btn pear-btn-primary pear-btn-sm" shiro:hasPermission="user:update" plain lay-event="edit">编辑</a>
+            <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="del" shiro:hasPermission="user:delete">删除</a>
+            <a class="pear-btn pear-btn-danger pear-btn-sm" plain shiro:hasPermission="user:resetPwd" lay-event="modifyPwd">重置密码</a>
+            <a class="pear-btn pear-btn-primary pear-btn-sm" plain shiro:hasPermission="user:selectRole" lay-event="selectRole">分配角色</a>
+        </script>
+
+    </div>
+
+    <!-- 添加和修改的弹出层开始 -->
+    <div style="display: none;padding: 5px" id="addOrUpdateDiv">
+        <form action="" method="post" class="layui-form layui-form-pane" id="dataFrm" lay-filter="dataFrm">
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-block">
+                        <input type="hidden" name="id">
+                        <input type="text" name="username" lay-verify="required" autocomplete="off" placeholder="请输入用户名" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="email" lay-verify="required" autocomplete="off" placeholder="请输入邮箱" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">昵称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="nickName" autocomplete="off" placeholder="请输入用户昵称" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">身份证号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="number" lay-verify="required" autocomplete="off" placeholder="请输入用户身份证" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">启用状态</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" name="status" value="1" title="可用" checked="">
+                            <input type="radio" name="status" value="0" title="禁用" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">性别</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" name="gender" value="1" title="男" checked="">
+                            <input type="radio" name="gender" value="0" title="女" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">真实姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="realName" lay-verify="required" autocomplete="off" placeholder="请输入用户真实姓名" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">年龄</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="age" lay-verify="required" autocomplete="off" placeholder="请输入用户年龄" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">手机号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="phone" lay-verify="required" autocomplete="off" placeholder="请输入用户手机号" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="addr" lay-verify="required" autocomplete="off" placeholder="请输入用户地址" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="text-align: center;">
+                    <button type="button" class="layui-btn" lay-submit="" lay-filter="doSubmit" id="doSubmit" ><span class="layui-icon layui-icon-add-1"></span>提交</button>
+                    <button type="reset" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-refresh-1"></span>重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- 添加和修改的弹出层结束 -->
+
+    <!-- 分配角色的弹出层 开始 -->
+    <div style="display:none;padding: 5px;" id="selectRoleDiv">
+        <table class="layui-hide" id="roleTable" lay-filter="roleTable"></table>
+    </div>
+    <!-- 分配角色的弹出层 结束-->
+</div>
+
+<script src="/res/component/layui/layui.js"></script>
+<script type="text/javascript" src="/res/component/layui_ext/dtree/dtree.js"></script>
+<script>
+    layui.config({
+        version: '1575404972583' //为了更新 js 缓存，可忽略
+    });
+
+    layui.extend({
+        dtree: '/res/component/layui_ext/dtree/dtree'   // {/}的意思即代表采用自有路径，即不跟随 base 路径
+    })
+        .use(['laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider','jquery','dtree'], function() {
+            var laypage = layui.laypage //分页
+                ,layer = layui.layer //弹层
+                ,table = layui.table //表格
+                ,carousel = layui.carousel //轮播
+                ,upload = layui.upload //上传
+                ,element = layui.element //元素操作
+                ,slider = layui.slider //滑块
+                ,$ = layui.jquery //jquery
+                ,form=layui.form
+                ,dtree = layui.dtree
+
+
+            //执行一个 table 实例
+            var tableIns = table.render({
+                elem: '#demo',
+                url: '/user/loadAllUser' //数据接口
+                ,title: '用户数据表'
+                ,page: true //开启分页
+                ,toolbar: "#userToolBar" //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+                ,totalRow: false //开启合计行
+                ,height: 'full-250'
+                ,cols: [
+                    [ //表头
+                        {
+                            type: 'checkbox',
+                            fixed: 'left'
+                        }, {
+                        field: 'id',
+                        title: 'ID',
+                        width: 80,
+                        sort: true,
+                        fixed: 'left',
+                        totalRowText: '合计：'
+                    }, {
+                        field: 'username',
+                        title: '用户名',
+                        align:'center',
+                        width: 100,
+                    }, {
+                        field: 'icon',
+                        title: '用户头像',
+                        align:'center',
+                        width: 150,
+                    },{
+                        field: 'email',
+                        title: 'email',
+                        align:'center',
+                        width: 200,
+                    }, {
+                        field: 'status',
+                        title: '用户状态',
+                        align:'center',
+                        templet:function (d) {
+                            return d.status==1?'<font color=blue>可用</font>':'<font color=red>禁用</font>';
+                        },
+                        width: 150,
+                    },{
+                        field: 'role',
+                        title: '用户角色',
+                        align:'center',
+                        width: 120,
+                    },{
+                        field: 'createTime',
+                        title: '创建时间',
+                        align:'center',
+                        width: 150,
+                    },{
+                        field: 'loginTime',
+                        title: '登录时间',
+                        align:'center',
+                        width: 150,
+                    },{
+                        field: 'number',
+                        title: '身份证号',
+                        align:'center',
+                        width: 200,
+                    },{
+                        field: 'realName',
+                        title: '真实姓名',
+                        align:'center',
+                        width: 150,
+                    },{
+                        field: 'gender',
+                        title: '性别',
+                        align:'center',
+                        width: 100,
+                    },{
+                        field: 'age',
+                        title: '年龄',
+                        align:'center',
+                        width: 100,
+                    },{
+                        field: 'phone',
+                        title: '手机号',
+                        align:'center',
+                        width: 150,
+                    },{
+                        field: 'addr',
+                        title: '地址',
+                        align:'center',
+                        width: 200,
+                    },
+                        {
+                            fixed: 'right',
+                            width: 300,
+                            align: 'center',
+                            toolbar: '#barDemo'
+                        }
+                    ]
+                ]
+            });
+
+            //模糊查询
+            form.on("submit(doSearch)",function(data){
+                tableIns.reload({
+                    where:data.field,
+                    page:{
+                        curr:1
+                    }
+                });
+                return false;
+            });
+
+            //监听头工具栏事件
+            table.on('toolbar(test)', function(obj) {
+                switch (obj.event){
+                    case 'add':
+                        openAddLayer();
+                        break;
+                }
+            });
+
+            //监听行工具事件
+            table.on('tool(test)', function(obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    ,
+                    layEvent = obj.event; //获得 lay-event 对应的值
+                if (layEvent === 'detail') {
+                    layer.msg('查看操作');
+                } else if (layEvent === 'del') {
+                    deleteInfo(data);
+                    // layer.confirm('真的删除行么', function(index) {
+                    //     obj.del(); //删除对应行（tr）的DOM结构
+                    //     layer.close(index);
+                    //     //向服务端发送删除指令
+                    //     deleteInfo(data);
+                    // });
+                } else if (layEvent === 'edit') {
+                    openUpdateRoleLayer(data);
+                }else if(layEvent === 'selectRole'){
+                    selectRole(data);
+                }else if(layEvent === 'modifyPwd'){
+                    resetPwd(data);
+                }
+            });
+            var mainIndex;
+            var url;
+            //打开添加的弹出层
+            function openAddLayer() {
+                mainIndex = layer.open({
+                    type:1,
+                    content:$("#addOrUpdateDiv"),
+                    area:['800px','600px'],
+                    title:'添加角色',
+                    success:function(){
+                        $("#dataFrm")[0].reset();
+                        url="/user/addUser";
+                    },
+                })
+            }
+
+            //打开修改的弹出层
+            function openUpdateRoleLayer(data){
+                mainIndex=layer.open({
+                    type:1,
+                    content:$("#addOrUpdateDiv"),
+                    area:['800px','600px'],
+                    title:'修改角色',
+                    success:function(){
+                        $("#dataFrm")[0].reset();
+                        //装载新的数据
+                        form.val("dataFrm",data);
+                        url="/user/updateUser";
+                    }
+                });
+            }
+
+            form.on('submit(doSubmit)',function (data) {
+                $.post(url,data.field,function(res){
+                    if(res.code==200){
+                        tableIns.reload();
+                    }
+                    layer.msg(res.msg);
+                    //根据弹出层index关闭他
+                    layer.close(mainIndex);
+                });
+                return false;
+            })
+
+            //删除
+            function deleteInfo(data){
+                layer.confirm('你确定要删除这条数据吗?', {icon: 3, title:'提示'}, function(index){
+                    $.post("/user/deleteUser",{id:data.id},function(res){
+                        if(res.code==200){
+                            tableIns.reload();
+                        }
+                        layer.msg(res.msg);
+                    })
+                    layer.close(index);
+                });
+            }
+
+            //重置密码
+            function resetPwd(data) {
+                layer.confirm('你确定要重置【'+data.username+'】这个用户的密码吗？',{icon: 3, title:'提示'},function(index){
+                    $.post("/user/resetPwd",{id:data.id},function (res) {
+                        layer.msg(res.msg);
+                    })
+                    layer.close(index);
+                });
+            }
+
+            //初始化查询条件下拉树
+            var search_roleTree=dtree.renderSelect({
+                elem: "#search_roleTree",
+                width: "100%", // 可以在这里指定树的宽度来填满div
+                dataStyle: "layuiStyle",  //使用layui风格的数据格式
+                dataFormat: "list",  //配置data的风格为list
+                method:'get',
+                response:{message:"msg",statusCode:0},  //修改response中返回数据的定义
+                url: "/role/loadAllRoleTree" // 使用url加载（可与data加载同时存在）
+            });
+            //监听点击的方法
+            dtree.on("node(search_roleTree)" ,function(obj){
+                $("#search_role").val(obj.param.context);
+                // alert(JSON.stringify(obj.param));
+                console.log(obj.param.context); // 点击当前节点传递的参数
+            });
+
+
+            //打开分配角色的页面
+            function selectRole(data) {
+                mainIndex = layer.open({
+                    type:1,
+                    content:$("#selectRoleDiv"),
+                    area:['800px','600px'],
+                    title:'分配【'+data.username+'】的角色',
+                    btn: ['<span class=layui-icon>&#xe605;确认分配</span>', '<span class=layui-icon>&#x1006;关闭窗口</span>'],
+                    yes: function(index, layero){
+                        var checkStatus = table.checkStatus('roleTable');
+                        var params="uid="+data.id;
+                        $.each(checkStatus.data,function(index,item){
+                            params+="&ids="+item.id;
+                        });
+                        //alert(params);
+                        $.post("/user/saveUserRole",params,function(res){
+                            layer.msg(res.msg);
+                        })
+                    },
+                    btn2: function(index, layero){
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    },
+                    btnAlign: 'c', //按钮居中对齐
+                    success:function(){
+                        initRoleTable(data);
+                    }
+                })
+            }
+
+            var roleTableIns;
+            //初始化角色列表
+            function initRoleTable(data){
+                roleTableIns=table.render({
+                    elem: '#roleTable'
+                    ,url:'/user/initRoleByUserId'
+                    ,where:{
+                        id:data.id
+                    }
+                    ,cols: [ [
+                        {type:'checkbox',align:'center'}
+                        ,{field:'id', title:'ID',align:'center'}
+                        ,{field:'name', title:'角色名称',align:'center'}
+                        ,{field:'remark', title:'角色备注',align:'center'}
+                    ] ]
+                });
+            }
+
+
+        });
+</script>
+</body>
+</html>

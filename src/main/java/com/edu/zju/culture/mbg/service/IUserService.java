@@ -13,4 +13,17 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserService extends IService<User> {
 
+    /**
+     * 通过uid查询角色名
+     * @param uid
+     * @return
+     */
+    String getRoleByUid(Long uid);
+
+    /**
+     * 保存用户和角色之间的关系
+     * @param uid
+     * @param ids
+     */
+    void saveUserRole(Integer uid, Integer[] ids);
 }
