@@ -55,12 +55,12 @@ public class MovementController {
     }
     //流转上链
     @RequestMapping(value = "/addMovement")
-    public void addMovementToblock(@RequestParam(value = "movementId")Long movementId,@RequestParam(value = "relicBlockChainStatus")Long relicBlockChainStatus,@RequestParam(value = "checkStatus")Integer checkStatus,@RequestParam(value = "movementResponse")String movementResponse,
+    public void addMovementToblock(@RequestParam(value = "movementId")Long movementId,@RequestParam(value = "movementBlockChainStatus")Long movementBlockChainStatus,@RequestParam(value = "checkStatus")Integer checkStatus,@RequestParam(value = "movementResponse")String movementResponse,
                                 @RequestParam("explanation")String explanation,@RequestParam("moveType")String moveType,@RequestParam("moveDate")String moveDate,@RequestParam("relicId")Long relicId,@RequestParam("fromId")Long fromId,@RequestParam("toId")Long toId) throws IOException {
 
         Movement movement=new Movement();
         movement.setMovementId(movementId);
-        movement.setMovementBlockChainStatus(relicBlockChainStatus);
+        movement.setMovementBlockChainStatus(movementBlockChainStatus);
         movement.setCheckStatus(checkStatus);
         movement.setMovementResponse(movementResponse);
         iMovementService.updateById(movement);

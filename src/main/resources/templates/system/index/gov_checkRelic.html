@@ -89,7 +89,7 @@
                         $.ajax({
                             url:"/relic/addRelic",
                             scriptCharset: "utf-8",
-                            data: {relicId:data.relicId,checkStatus:1,relicBlockChainStatus:0,movementResponse:document.getElementById("movementResponse").value},
+                            data: {govNum:data.govNum,relicName:data.relicName,relicDescribe:data.relicDescribe,picture:data.picture,identityStatus:data.identityStatus,relicStatus:data.relicStatus,identityId:data.identityId,ownerId:data.ownerId,relicId:data.relicId,checkStatus:1,relicBlockChainStatus:0,movementResponse:document.getElementById("movementResponse").value},
                             type: "GET",
                             success: function (msg) {
                                 window.location.href="/sys/toGovCheckRelic";

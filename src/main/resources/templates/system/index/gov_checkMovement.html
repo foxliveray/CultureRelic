@@ -74,7 +74,7 @@
                         $.ajax({
                             url:"/movement/addMovement",
                             scriptCharset: "utf-8",
-                            data: {movementId:data.movementId,explanation:data.explanation,moveType:data.moveType,moveDate:data.moveDate,relicId:data.relicId,fromId:data.fromId,toId:data.toId,checkStatus:1,relicBlockChainStatus:1,movementResponse:document.getElementById("movementResponse").value},
+                            data: {movementId:data.movementId,explanation:data.explanation,moveType:data.moveType,moveDate:data.moveDate,relicId:data.relicId,fromId:data.fromId,toId:data.toId,checkStatus:1,movementBlockChainStatus:1,movementResponse:document.getElementById("movementResponse").value},
                             type: "GET",
                             success: function (msg) {
                                 alert("请稍等片刻，正在上链！上链成功后将为您自动跳转");
@@ -84,9 +84,9 @@
                     }
                     ,btn2:function () {
                         $.ajax({
-                            url:"/relic/addRelic",
+                            url:"/movement/addMovement",
                             scriptCharset: "utf-8",
-                            data: {movementId:data.movementId,checkStatus:1,relicBlockChainStatus:0,movementResponse:document.getElementById("movementResponse").value},
+                            data: {explanation:data.explanation,moveType:data.moveType,moveDate:data.moveDate,relicId:data.relicId,fromId:data.fromId,toId:data.toId,movementId:data.movementId,checkStatus:1,movementBlockChainStatus:0,movementResponse:document.getElementById("movementResponse").value},
                             type: "GET",
                             success: function (msg) {
                                 window.location.href="/sys/toGovCheckMovement";
