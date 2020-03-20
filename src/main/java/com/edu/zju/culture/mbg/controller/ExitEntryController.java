@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.edu.zju.culture.common.DataGridView;
 import com.edu.zju.culture.common.ResultObj;
+import com.edu.zju.culture.fabric.FabricHelper;
 import com.edu.zju.culture.mbg.entity.ExitEntry;
+import com.edu.zju.culture.mbg.entity.Relic;
 import com.edu.zju.culture.mbg.service.IExitEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -47,6 +50,15 @@ public class ExitEntryController {
         exitEntry.setExitEntryBlockChainStatus(0L);
         iExitEntryService.save(exitEntry);
         return ResultObj.ADD_SUCCESS;
+    }
+
+    @RequestMapping(value = "/govCheckExitEntry")
+    public void govCheckExitEntry(@RequestParam(value = "exitEntryId")Long exitEntryId,@RequestParam(value = "exitEntryCheckStatus")Integer exitEntryCheckStatus,@RequestParam(value = "exitEntryResponse")String exitEntryResponse) throws IOException {
+        ExitEntry exitEntry=new ExitEntry();
+        exitEntry.setExitEntryId(exitEntryId);
+        exitEntry.setExitEntryCheckStatus(exitEntryCheckStatus);
+        exitEntry.setExitEntryResponse(exitEntryResponse);
+        iExitEntryService.updateById(exitEntry);
     }
 
 

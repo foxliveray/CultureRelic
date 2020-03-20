@@ -156,5 +156,14 @@ public class SystemController {
         return "system/index/gov_checkTrade";
     }
 
+    /**
+     *  跳转到政府审核出入境申请信息页面
+     *
+     */
+    @RequestMapping("/toGovCheckExitEntry")
+    public String toGovCheckExitEntry() {
+        return "system/index/gov_checkExitEntry";
+    }
+
 
 }

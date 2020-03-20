@@ -74,13 +74,13 @@
                     ,content: '<div style="padding: 50px; line-height: 22px; color:; font-weight: 300;">文物上链申请ID：'+data.relicId+'<br><br>国家编号：'+data.govNum+'<br><br>文物名称：'+data.relicName+'<br><br>文物描述：'+data.relicDescribe+'<br><br>文物图片：'+data.picture+'<br><br>是否已鉴定：'+data.identityStatus+'<br><br>鉴定结果：'+data.relicStatus+'<br><br>鉴定人ID：'+data.identityId+'<br><br>文物所有人ID：'+data.ownerId+'<br><br>审核意见 \n \n<br>' +
                         '<textarea id="movementResponse" placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>\n'
                     ,btn1:function () {
+                        alert("请稍等片刻，正在上链！上链成功后将为您自动跳转");
                         $.ajax({
                             url:"/relic/addRelic",
                             scriptCharset: "utf-8",
                             data: {relicId:data.relicId,govNum:data.govNum,relicName:data.relicName,relicDescribe:data.relicDescribe,picture:data.picture,identityStatus:data.identityStatus,relicStatus:data.relicStatus,identityId:data.identityId,ownerId:data.ownerId,checkStatus:1,relicBlockChainStatus:1,movementResponse:document.getElementById("movementResponse").value},
                             type: "GET",
                             success: function (msg) {
-                                 alert("请稍等片刻，正在上链！上链成功后将为您自动跳转");
                                  setTimeout(window.location.href="/sys/toGovCheckRelic",5000);
                             }
                         });

@@ -71,13 +71,13 @@
                     ,content: '<div style="padding: 50px; line-height: 22px; color:; font-weight: 300;">文物交易ID：'+data.orderId+'<br><br>交易金额：'+data.orderValue+'<br><br>交易日期：'+data.orderDate+'<br><br>交易状态：'+data.orderStatus+'<br><br>文物ID：'+data.relicId+'<br><br>买方ID：'+data.buyerId+'<br><br>卖方ID：'+data.sellerId+'<br><br>审核状态：'+data.checkStatus+'<br><br>审核意见 \n \n<br>' +
                         '<textarea id="orderResponse" placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>\n'
                     ,btn1:function () {
+                        alert("请稍等片刻，正在上链！上链成功后将为您自动跳转");
                         $.ajax({
                             url:"/trade/addTrade",
                             scriptCharset: "utf-8",
                             data: {orderId:data.orderId,orderValue:data.orderValue,orderDate:data.orderDate,orderStatus:data.orderStatus,relicId:data.relicId,buyerId:data.buyerId,sellerId:data.sellerId,checkStatus:1,orderBlockChainStatus:1,orderResponse:document.getElementById("orderResponse").value},
                             type: "GET",
                             success: function (msg) {
-                                alert("请稍等片刻，正在上链！上链成功后将为您自动跳转");
                                 setTimeout(window.location.href="/sys/toGovCheckTrade",5000);
                             }
                         });
