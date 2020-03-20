@@ -9,6 +9,15 @@
             margin: 10px;
             background: whitesmoke;
         }
+        .layui-table-cell {
+            text-align: center;
+            height: auto;
+            white-space: normal;
+        }
+
+        .layui-table img {
+            max-width: 300px
+        }
     </style>
 </head>
 
@@ -100,16 +109,16 @@
             page: true,
             cols: [
                 [ //表头
-                    {field: 'orderId', title: '交易ID', width: 90, sort: true, align: 'center'}
-                    , {field: 'orderValue', title: '交易金额', width: 120, sort: true, align: 'center'}
+                    {field: 'orderId', title: '交易ID', width: 90, sort: true}
+                    , {field: 'orderValue', title: '交易金额', width: 120, sort: true}
                     , {field: 'orderDate', title: '交易日期', width: 250, align: 'center'}
-                    , {field: 'orderStatus', title: '交易状态', width: 150, templet: "#forStatus", align: 'center'}
-                    , {field: 'relicId', title: '文物ID', width: 100, align: 'center'}
-                    , {field: 'buyerId', title: '买方ID', width: 125, sort: true, align: 'center'}
-                    , {field: 'sellerId', title: '卖方ID', width: 125, sort: true, align: 'center'}
-                    , {field: 'checkStatus', title: '是否已审核', width: 125, sort: true, templet: "#forCheck", align: 'center'}
-                    , {field: 'orderResponse', title: '审核意见', width: 125, sort: true, align: 'center'}
-                    , {field: 'orderBlockChainStatus', title: '交易是否已上链', width: 250, sort: true, templet: "#forBlockChain", align: 'center'}
+                    , {field: 'orderStatus', title: '交易状态', width: 150, templet: "#forStatus"}
+                    , {field: 'relicId', title: '文物ID', width: 100}
+                    , {field: 'buyerId', title: '买方ID', width: 125, sort: true}
+                    , {field: 'sellerId', title: '卖方ID', width: 125, sort: true}
+                    , {field: 'checkStatus', title: '是否已审核', width: 125, sort: true, templet: "#forCheck"}
+                    , {field: 'orderResponse', title: '审核意见', width: 250, sort: true}
+                    , {field: 'orderBlockChainStatus', title: '交易是否已上链', width: 250, sort: true, templet: "#forBlockChain"}
                 ]
             ]
         })

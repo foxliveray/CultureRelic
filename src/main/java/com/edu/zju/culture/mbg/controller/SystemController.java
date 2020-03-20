@@ -165,5 +165,13 @@ public class SystemController {
         return "system/index/gov_checkExitEntry";
     }
 
+    /**
+     * 普通用户跳转到查看文物
+     */
+    @RequestMapping("/toSeeRelic")
+    public String toSeeRelic() {
+        return "system/index/seeRelic";
+    }
+
 
 }

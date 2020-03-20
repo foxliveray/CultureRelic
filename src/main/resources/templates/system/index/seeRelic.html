@@ -23,43 +23,48 @@
 <body>
 <script src="/res/component/layui/layui.js"></script>
 <table id="demo" lay-filter="test"></table>
-<script type="text/html" id="upLoadBar">
-    <button class="layui-btn layui-btn-normal" lay-event="check">鉴定</button>
-</script>
-
-<div style="display: none;margin:5%" id="checkWindow">
-    <input type="hidden" name="pid" id="pid">
-    <button class="layui-upload-button layui-btn" lay-event="uploadCheckPicture">上传鉴定图片</button>
+<div style="display: none;padding: 5px" id="ExitEntryFormLayer">
+    <input type="hidden" name="Rid" id="Rid">
+    <form action="" method="post" class="layui-form layui-form-pane" id="exitEntryForm" lay-fiter="exitEntryForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">接收人ID</label>
+                <div class="layui-input-block">
+                    <input type="text" name="toId" lay-verify="required" autocomplete="off" placeholder="请输入接收人ID" class="layui-input">
+                </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">出关地点</label>
+            <div class="layui-input-block">
+                <input type="text" name="origin" lay-verify="required" autocomplete="off" placeholder="请输入出关地点"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">目的地</label>
+            <div class="layui-input-block">
+                <input type="text" name="destination" lay-verify="required" autocomplete="off" placeholder="请输入目的地"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div style="text-align: center;">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="doSubmit" id="doSubmit"><span
+                        class="layui-icon layui-icon-add-1"></span>提交
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
-<script type="text/javascript">
-    layui.use('upload', function () {
-        var $ = layui.$;
-        var upload = layui.upload;
-        var uploadPic = upload.render({
-            elem: '.layui-upload-button',
-            url: '/relic/upload/checkRelic',
-            data: {
-                id: function () {
-                    return $("#pid").val();
-                }
-            },
-            done: function (res) {
-                if (res.code > 0) {
-                    return layer.msg('上传失败');
-                }
-                layer.closeAll();
-                layer.alert(res.data.similarity);
-            },
-            error: function () {
-                var demoText = $('#demoText');
-                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
-            }
-        })
-    })
+<script type="text/html" id="reviewApply">
+    <button class="layui-btn layui-btn-normal" lay-event="reviewApply">溯源</button>
+</script>
+<script type="text/html" id="exitEntryApply">
+    <button class="layui-btn layui-btn-normal" lay-event="exitEntryApply">文物出入境申请</button>
 </script>
 
 <script type="text/javascript">
     layui.use(["jquery", "upload", "form", "layer", "element", "table"], function () {
+        var url;
         var $ = layui.$,
             table = layui.table,
             element = layui.element,
@@ -82,32 +87,44 @@
                     , {field: 'identityStatus', title: '是否已鉴定', width: 125, sort: true, templet: '#forCheck'}
                     , {field: 'relicStatus', title: '鉴定结果', width: 110, sort: true, templet: '#forCheckResponse'}
                     , {field: 'identityId', title: '鉴定人ID', width: 100}
-                    , {field: 'ownerId', title: '文物所有人ID', width: 135, sort: true}
-                    , {field: '', title: '鉴定', width: 110, toolbar: "#upLoadBar"}
-                    , {field: 'relicBlockChainStatus', title: '是否已上链', width: 130, templet: "#forBlockChain"}
+                    , {field: 'relicBlockChainStatus', title: '是否已上链', width: 130, templet: '#forBlockChain'}
+                    , {field: '', title: '溯源', width: 100, toolbar: "#reviewApply"}
+                    , {field: '', title: '文物出入境申请', width: 170, toolbar: "#exitEntryApply"}
                 ]
             ]
         });
-
         table.on('tool(test)', function (obj) {
             var data = obj.data;
             var layEvent = obj.event;
             var tr = obj.tr;
-            if (layEvent == 'check') {
+            if(layEvent == 'exitEntryApply') {
                 layer.open({
                     type: 1,
-                    title: '鉴定图片上传',
-                    area: ['200px', '100px'],
-                    content: $("#checkWindow"),
+                    title: '提交出入关申请',
+                    content: $("#ExitEntryFormLayer"),
                     success: function () {
-                        $("#pid").val(data.relicId);
+                        url = "/exit-entry/insertExitEntry";
+                        $("#Rid").val(data.relicId);
                     }
-                });
+                })
             }
+        });
+        form.on("submit(doSubmit)", function (data) {
+            data.field.relicId = $("#Rid").val();
+            $.post(url, data.field, function (res) {
+                layer.closeAll();
+                if (res.code == 200) {
+                    layer.msg("插入成功");
+                } else {
+                    layer.msg("插入失败");
+                }
+            })
         });
         element.init();
     });
 </script>
+
+
 <script type="text/html" id="forCheck">
     {{# if(d.identityStatus == '0'){d.identityStatus='未鉴定'}}
     <span style="color: #1890ff">{{d.identityStatus}}</span>

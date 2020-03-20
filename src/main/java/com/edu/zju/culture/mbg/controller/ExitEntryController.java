@@ -40,7 +40,7 @@ public class ExitEntryController {
         IPage<ExitEntry> exitEntryIPage = new Page<>(page, limit);
         QueryWrapper<ExitEntry> queryWrapper = new QueryWrapper<>();
         this.iExitEntryService.page(exitEntryIPage, queryWrapper);
-        return new DataGridView(exitEntryIPage.getPages(), exitEntryIPage.getRecords());
+        return new DataGridView(exitEntryIPage.getTotal(), exitEntryIPage.getRecords());
     }
 
     @RequestMapping(value = "/insertExitEntry")
@@ -52,9 +52,24 @@ public class ExitEntryController {
         return ResultObj.ADD_SUCCESS;
     }
 
+    /**
+     * 海关授权
+     */
+    @RequestMapping(value = "/checkExitEntry")
+    public void checkExitEntry(@RequestParam(value = "exitEntryId") Long exitEntryId, @RequestParam(value = "exitEntryCustomsStatus") Integer exitEntryCustomsStatus, @RequestParam(value = "exitEntryCustomsResponse") String exitEntryCustomsResponse) throws IOException {
+        ExitEntry exitEntry = new ExitEntry();
+        exitEntry.setExitEntryId(exitEntryId);
+        exitEntry.setExitEntryCustomsStatus(exitEntryCustomsStatus);
+        exitEntry.setExitEntryCustomsResponse(exitEntryCustomsResponse);
+        iExitEntryService.updateById(exitEntry);
+    }
+
+    /**
+     * 政府授权
+     */
     @RequestMapping(value = "/govCheckExitEntry")
-    public void govCheckExitEntry(@RequestParam(value = "exitEntryId")Long exitEntryId,@RequestParam(value = "exitEntryCheckStatus")Integer exitEntryCheckStatus,@RequestParam(value = "exitEntryResponse")String exitEntryResponse) throws IOException {
-        ExitEntry exitEntry=new ExitEntry();
+    public void govCheckExitEntry(@RequestParam(value = "exitEntryId") Long exitEntryId, @RequestParam(value = "exitEntryCheckStatus") Integer exitEntryCheckStatus, @RequestParam(value = "exitEntryResponse") String exitEntryResponse) throws IOException {
+        ExitEntry exitEntry = new ExitEntry();
         exitEntry.setExitEntryId(exitEntryId);
         exitEntry.setExitEntryCheckStatus(exitEntryCheckStatus);
         exitEntry.setExitEntryResponse(exitEntryResponse);

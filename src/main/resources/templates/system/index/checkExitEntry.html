@@ -9,6 +9,16 @@
             margin: 10px;
             background: whitesmoke;
         }
+
+        .layui-table-cell {
+            text-align: center;
+            height: auto;
+            white-space: normal;
+        }
+
+        .layui-table img {
+            max-width: 300px
+        }
     </style>
 </head>
 <body>
@@ -72,6 +82,11 @@
 
     </form>
 </div>
+
+<script type="text/html" id="checkBar">
+    <button class="layui-btn layui-btn-normal" lay-event="check">审核</button>
+</script>
+
 <script type="text/javascript">
     layui.use(["layer", "table", "laydate", "form"], function () {
         var url;
@@ -87,21 +102,64 @@
             page: true,
             cols: [
                 [ //表头
-                    {field: 'exitEntryId', title: '出入境记录ID', width: 150, sort: true, align: 'center'}
-                    , {field: 'fromId', title: '发起人ID', width: 120, sort: true, align: 'center'}
-                    , {field: 'toId', title: '接受人ID', width: 120, sort: true, align: 'center'}
-                    , {field: 'relicId', title: '文物ID', width: 120, templet: "#forStatus", align: 'center'}
-                    , {field: 'origin', title: '出关地点', width: 125, sort: true, align: 'center'}
+                    {field: 'exitEntryId', title: '出入境记录ID', width: 150, sort: true}
+                    , {field: 'fromId', title: '发起人ID', width: 120, sort: true}
+                    , {field: 'toId', title: '接受人ID', width: 120, sort: true}
+                    , {field: 'relicId', title: '文物ID', width: 100, templet: "#forStatus"}
+                    , {field: 'origin', title: '出关地点', width: 125, sort: true}
                     , {field: 'destination', title: '目的地', width: 125, sort: true, align: 'center'}
-                    , {field: 'exitEntryCheckStatus', title: '政府是否已审核', width: 150, sort: true, templet: "#forGovernment", align: 'center'}
-                    , {field: 'exitEntryResponse', title: '政府审核意见', width: 150, sort: true, align: 'center'}
-                    , {field: 'exitEntryCustomsStatus', title: '海关是否已审核', width: 150, sort: true, templet: "#forExitEntry", align: 'center'}
-                    , {field: 'exitEntryCustomsResponse', title: '海关审核意见', width: 150, sort: true, align: 'center'}
-                    , {field: 'exitEntryBlockChainStatus', title: '信息是否已上链', width: 150, sort: true, templet: "#forBlockChain", align: 'center'}
-                    , {field: '', title: '审核', width: '120', sort: true}
+                    , {field: 'exitEntryCheckStatus', title: '政府是否已审核', width: 150, sort: true, templet: "#forGovernment"}
+                    , {field: 'exitEntryResponse', title: '政府审核意见', width: 200, sort: true, align: 'center'}
+                    , {field: 'exitEntryCustomsStatus', title: '海关是否已审核', width: 150, sort: true, templet: "#forExitEntry"}
+                    , {field: 'exitEntryCustomsResponse', title: '海关审核意见', width: 200, sort: true}
+                    , {field: 'exitEntryBlockChainStatus', title: '信息是否已上链', width: 150, sort: true, templet: "#forBlockChain"}
+                    , {field: '', title: '审核', width: '120', sort: true, toolbar: "#checkBar"}
                 ]
             ]
         });
+
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            var tr = obj.tr;
+            if (layEvent == 'check') {
+                layer.open({
+                    type: 1
+                    , title: '文物出入境申请详细信息'
+                    , area: '500px;'
+                    , shade: 0.8
+                    , btn: ['同意申请', '拒绝申请']
+                    , btnAlign: 'c'
+                    , moveType: 1
+                    ,content: '<div style="padding: 50px; line-height: 22px; color:; font-weight: 300;">出入境记录ID：'+data.exitEntryId+'<br><br>发起人ID：'+data.fromId+'<br><br>接受人ID：'+data.toId+'<br><br>文物ID：'+data.relicId+'<br><br>出关地点：'+data.origin+'<br><br>目的地：'+data.destination+'<br><br>政府是否已审核：'+data.exitEntryCheckStatus+'<br><br>政府审核意见：'+data.exitEntryResponse+'<br><br>海关是否已审核：'+data.exitEntryCustomsStatus+'<br><br>海关审核意见：'+data.exitEntryCustomsResponse+'<br><br>信息是否已上链：'+data.exitEntryBlockChainStatus+'<br><br>审核意见 \n \n<br>' +
+                        '<textarea id="exitEntryCustomsResponse" placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>\n'
+                    ,btn1:function () {
+                        $.ajax({
+                            url:"/exit-entry/checkExitEntry",
+                            scriptCharset: "utf-8",
+                            data: {exitEntryId:data.exitEntryId,exitEntryCustomsStatus:1,exitEntryCustomsResponse:document.getElementById("exitEntryCustomsResponse").value},
+                            type: "GET",
+                            success: function (msg) {
+                                window.location.href="/sys/toCheckExitEntry";
+                            }
+                        });
+                    }
+                    ,btn2:function () {
+                        $.ajax({
+                            url:"/exit-entry/checkExitEntry",
+                            scriptCharset: "utf-8",
+                            data: {exitEntryId:data.exitEntryId,exitEntryCustomsStatus:0,exitEntryCustomsResponse:document.getElementById("exitEntryCustomsResponse").value},
+                            type: "GET",
+                            success: function (msg) {
+                                window.location.href="/sys/toCheckExitEntry";
+                            }
+                        });
+                    }
+
+                })
+            }
+        });
+
 
         $(document).on('click', '#uploadExitEntry', function () {
             exitEntryForm = layer.open({
@@ -145,9 +203,9 @@
 </script>
 
 <script type="text/html" id="forBlockChain">
-    {{# if(d.exitEntryBlockChainStatus == '0'){d.exitEntryBlockChainStatus='未审核'}}
+    {{# if(d.exitEntryBlockChainStatus == '0'){d.exitEntryBlockChainStatus='未上链'}}
     <span style="color: #1890ff">{{d.exitEntryBlockChainStatus}}</span>
-    {{#} else if(d.exitEntryBlockChainStatus == '1') {d.exitEntryBlockChainStatus = '已审核'}}
+    {{#} else if(d.exitEntryBlockChainStatus == '1') {d.exitEntryBlockChainStatus = '已上链'}}
     {{d.exitEntryBlockChainStatus}}
     {{#}}}
 </script>
