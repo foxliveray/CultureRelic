@@ -153,5 +153,6 @@
 			.layer-anim-right {
 				-webkit-animation: am-horizontal-roll_show .6s ease-out;
 				animation: am-horizontal-roll_show .6s ease-out;
+			}
 			
 			
