@@ -4,9 +4,32 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+    <style>
+        body {
+            margin: 10px;
+            background: whitesmoke;
+        }
+
+        .layui-table-cell {
+            text-align: center;
+            height: auto;
+            white-space: normal;
+        }
+
+        .layui-table img {
+            max-width: 300px
+        }
+    </style>
 </head>
 <body>
-<table id="demo" lay-filter="test"></table>
+<div class="layui-card">
+    <div class="layui-card-header">处理文物上链申请</div>
+
+    <div class="layui-card-body">
+        <table id="demo" lay-filter="test"></table>
+    </div>
+</div>
+
 <style type="text/css">
     .layui-table-cell {
         text-align: center;
@@ -81,7 +104,7 @@
                             data: {relicId:data.relicId,govNum:data.govNum,relicName:data.relicName,relicDescribe:data.relicDescribe,picture:data.picture,identityStatus:data.identityStatus,relicStatus:data.relicStatus,identityId:data.identityId,ownerId:data.ownerId,checkStatus:1,relicBlockChainStatus:1,movementResponse:document.getElementById("movementResponse").value},
                             type: "GET",
                             success: function (msg) {
-                                 setTimeout(window.location.href="/sys/toGovCheckRelic",5000);
+                                 setTimeout(window.location.href="/sys/toGovCheckRelic",3000);
                             }
                         });
                     }

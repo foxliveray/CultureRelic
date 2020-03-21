@@ -27,7 +27,7 @@ public class FabricHelper {
      * 私钥小工具中可以看到的账户地址与私钥,请注意：每天都可能有变化！！！如果出现操作失败联系ysy拿私钥和地址～
      *
      */
-    public static String json = "{\"address\":\"0x072c8bb9cda10c45aac0bace02a31f10ee760c9a\",\"algo\":\"0x03\",\"encrypted\":\"162b02057c1bdae855880c53445c4a51ce176c2f7dcc091001f894474eff74a8\",\"version\":\"2.0\",\"privateKeyEncrypted\":false}";
+    public static String json = "{\"address\":\"0x77957f5f47115bfb478548b82e2905771cfd0f55\",\"algo\":\"0x03\",\"encrypted\":\"448178c0b9d5087dea5b8b319a943f5c86d4f0d63ebca3adf6e3cf632b35a105\",\"version\":\"2.0\",\"privateKeyEncrypted\":false}";
     public static SDKClient sdkClient;
     public static AccountService accountService;
     public static Account account;

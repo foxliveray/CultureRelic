@@ -24,64 +24,14 @@
 <body>
 <script src="/res/component/layui/layui.js"></script>
 <div class="layui-card">
-    <div class="layui-card-header">提交出入境申请</div>
-    <div style="margin: 15px">
-        <button class="layui-btn" id="uploadExitEntry">提交出入境申请</button>
-    </div>
+    <div class="layui-card-header">处理出入境申请</div>
+
     <div class="layui-card-body">
         <table id="checkExitEntryForm" lay-filter="test"></table>
     </div>
 </div>
 
-<div style="display: none;padding: 5px" id="ExitEntryFormLayer">
-    <form action="" method="post" class="layui-form layui-form-pane" id="exitEntryForm" lay-fiter="exitEntryForm">
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">发起人ID</label>
-                <div class="layui-inline">
-                    <input type="text" name="fromId" lay-verify="required" autocomplete="off" placeholder="请输入发起人ID"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">接收人ID</label>
-                <div class="layui-inline">
-                    <input type="text" name="toId" lay-verify="required" autocomplete="off" placeholder="请输入接收人ID"
-                           class="layui-input">
-                </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">文物ID</label>
-            <div class="layui-input-block">
-                <input type="text" name="relicId" lay-verify="required" autocomplete="off" placeholder="请输入文物ID"
-                       class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">出关地点</label>
-            <div class="layui-input-block">
-                <input type="text" name="origin" lay-verify="required" autocomplete="off" placeholder="请输入出关地点"
-                       class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">目的地</label>
-            <div class="layui-input-block">
-                <input type="text" name="destination" lay-verify="required" autocomplete="off" placeholder="请输入目的地"
-                       class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div style="text-align: center;">
-                <button type="button" class="layui-btn" lay-submit="" lay-filter="doSubmit" id="doSubmit"><span
-                        class="layui-icon layui-icon-add-1"></span>提交
-                </button>
-            </div>
-        </div>
 
-    </form>
-</div>
 
 <script type="text/html" id="checkBar">
     <button class="layui-btn layui-btn-normal" lay-event="check">审核</button>
@@ -134,13 +84,14 @@
                     ,content: '<div style="padding: 50px; line-height: 22px; color:; font-weight: 300;">出入境记录ID：'+data.exitEntryId+'<br><br>发起人ID：'+data.fromId+'<br><br>接受人ID：'+data.toId+'<br><br>文物ID：'+data.relicId+'<br><br>出关地点：'+data.origin+'<br><br>目的地：'+data.destination+'<br><br>政府是否已审核：'+data.exitEntryCheckStatus+'<br><br>政府审核意见：'+data.exitEntryResponse+'<br><br>海关是否已审核：'+data.exitEntryCustomsStatus+'<br><br>海关审核意见：'+data.exitEntryCustomsResponse+'<br><br>信息是否已上链：'+data.exitEntryBlockChainStatus+'<br><br>审核意见 \n \n<br>' +
                         '<textarea id="exitEntryCustomsResponse" placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>\n'
                     ,btn1:function () {
+                        alert("请稍等片刻，正在上链！上链成功后将为您自动跳转");
                         $.ajax({
                             url:"/exit-entry/checkExitEntry",
                             scriptCharset: "utf-8",
-                            data: {exitEntryId:data.exitEntryId,exitEntryCustomsStatus:1,exitEntryCustomsResponse:document.getElementById("exitEntryCustomsResponse").value},
+                            data: {fromId:data.fromId,toId:data.toId,relicId:data.relicId,origin:data.origin,destination:data.destination,exitEntryCheckStatus:data.exitEntryCheckStatus,exitEntryResponse:data.exitEntryResponse,exitEntryId:data.exitEntryId,exitEntryCustomsStatus:1,exitEntryBlockChainStatus:1,exitEntryCustomsResponse:document.getElementById("exitEntryCustomsResponse").value},
                             type: "GET",
                             success: function (msg) {
-                                window.location.href="/sys/toCheckExitEntry";
+                                setTimeout(window.location.href="/sys/toCheckExitEntry",3000);
                             }
                         });
                     }
@@ -148,7 +99,7 @@
                         $.ajax({
                             url:"/exit-entry/checkExitEntry",
                             scriptCharset: "utf-8",
-                            data: {exitEntryId:data.exitEntryId,exitEntryCustomsStatus:0,exitEntryCustomsResponse:document.getElementById("exitEntryCustomsResponse").value},
+                            data: {fromId:data.fromId,toId:data.toId,relicId:data.relicId,origin:data.origin,destination:data.destination,exitEntryCheckStatus:data.exitEntryCheckStatus,exitEntryResponse:data.exitEntryResponse,exitEntryId:data.exitEntryId,exitEntryCustomsStatus:1,exitEntryBlockChainStatus:0,exitEntryCustomsResponse:document.getElementById("exitEntryCustomsResponse").value},
                             type: "GET",
                             success: function (msg) {
                                 window.location.href="/sys/toCheckExitEntry";

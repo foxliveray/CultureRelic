@@ -166,6 +166,24 @@ public class SystemController {
     }
 
     /**
+     *  跳转到政府审核异常流转申诉处理页面
+     *
+     */
+    @RequestMapping("/toGovCheckApply")
+    public String toGovCheckApply() {
+        return "system/index/gov_checkApply";
+    }
+    /**
+     *  跳转到政府审核异常流转申诉处理详情页面
+     *  （注：该页面暂时还没创建）
+     *
+     */
+    @RequestMapping("/toGovCheckApplyDetail")
+    public String toGovCheckApplyDetail() {
+        return "system/index/gov_checkApplyDetail";
+    }
+
+    /**
      * 普通用户跳转到查看文物
      */
     @RequestMapping("/toSeeRelic")

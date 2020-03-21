@@ -4,9 +4,32 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+    <style>
+        body {
+            margin: 10px;
+            background: whitesmoke;
+        }
+
+        .layui-table-cell {
+            text-align: center;
+            height: auto;
+            white-space: normal;
+        }
+
+        .layui-table img {
+            max-width: 300px
+        }
+    </style>
 </head>
 <body>
-<table id="demo" lay-filter="test"></table>
+<div class="layui-card">
+    <div class="layui-card-header">处理文物交易申请</div>
+
+    <div class="layui-card-body">
+        <table id="demo" lay-filter="test"></table>
+    </div>
+</div>
+
 <style type="text/css">
     .layui-table-cell {
         text-align: center;
@@ -78,7 +101,7 @@
                             data: {orderId:data.orderId,orderValue:data.orderValue,orderDate:data.orderDate,orderStatus:data.orderStatus,relicId:data.relicId,buyerId:data.buyerId,sellerId:data.sellerId,checkStatus:1,orderBlockChainStatus:1,orderResponse:document.getElementById("orderResponse").value},
                             type: "GET",
                             success: function (msg) {
-                                setTimeout(window.location.href="/sys/toGovCheckTrade",5000);
+                                setTimeout(window.location.href="/sys/toGovCheckTrade",3000);
                             }
                         });
                     }

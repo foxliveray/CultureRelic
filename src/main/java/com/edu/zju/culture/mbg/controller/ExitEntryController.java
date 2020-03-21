@@ -56,12 +56,26 @@ public class ExitEntryController {
      * 海关授权
      */
     @RequestMapping(value = "/checkExitEntry")
-    public void checkExitEntry(@RequestParam(value = "exitEntryId") Long exitEntryId, @RequestParam(value = "exitEntryCustomsStatus") Integer exitEntryCustomsStatus, @RequestParam(value = "exitEntryCustomsResponse") String exitEntryCustomsResponse) throws IOException {
+    public void checkExitEntry(@RequestParam(value = "exitEntryId") Long exitEntryId, @RequestParam("fromId")Long fromId,@RequestParam("toId")Long toId,@RequestParam("relicId")Long relicId,@RequestParam("origin")String origin,@RequestParam("destination")String destination,@RequestParam("exitEntryCheckStatus")Integer exitEntryCheckStatus,@RequestParam("exitEntryResponse")String exitEntryResponse,@RequestParam(value = "exitEntryCustomsStatus") Integer exitEntryCustomsStatus, @RequestParam(value = "exitEntryCustomsResponse") String exitEntryCustomsResponse,@RequestParam("exitEntryBlockChainStatus")Long exitEntryBlockChainStatus) throws IOException {
         ExitEntry exitEntry = new ExitEntry();
         exitEntry.setExitEntryId(exitEntryId);
         exitEntry.setExitEntryCustomsStatus(exitEntryCustomsStatus);
         exitEntry.setExitEntryCustomsResponse(exitEntryCustomsResponse);
+        exitEntry.setExitEntryBlockChainStatus(exitEntryBlockChainStatus);
         iExitEntryService.updateById(exitEntry);
+        exitEntry.setFromId(fromId);
+        exitEntry.setToId(toId);
+        exitEntry.setRelicId(relicId);
+        exitEntry.setOrigin(origin);
+        exitEntry.setDestination(destination);
+        exitEntry.setExitEntryCheckStatus(exitEntryCheckStatus);
+        exitEntry.setExitEntryResponse(exitEntryResponse);
+        if(exitEntry.getExitEntryBlockChainStatus()==1){
+            FabricHelper fabricHelper=new FabricHelper();
+            fabricHelper.init();
+            fabricHelper.addExitEntry(exitEntry);
+        }
+
     }
 
     /**

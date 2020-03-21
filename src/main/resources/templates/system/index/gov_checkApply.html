@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+    <style>
+        body {
+            margin: 10px;
+            background: whitesmoke;
+        }
+
+        .layui-table-cell {
+            text-align: center;
+            height: auto;
+            white-space: normal;
+        }
+
+        .layui-table img {
+            max-width: 300px
+        }
+    </style>
+</head>
+
+<body>
+<div class="layui-card">
+    <div class="layui-card-header">处理流转异常申诉</div>
+
+    <div class="layui-card-body">
+        <table id="demo" lay-filter="test"></table>
+    </div>
+</div>
+<style type="text/css">
+    .layui-table-cell {
+        text-align: center;
+        height: auto;
+        white-space: normal;
+    }
+
+    .layui-table img {
+        max-width: 300px
+    }
+</style>
+
+<script src="/res/component/layui/layui.js"></script>
+<script type="text/html" id="upLoadBar">
+    <button class="layui-btn layui-btn-normal" lay-event="check">详情</button>
+</script>
+
+<script type="text/javascript">
+    layui.use(["layer", "table", "laydate", "form"], function () {
+        var url;
+        var $ = layui.$,
+            form = layui.form,
+            layer = layui.layer,
+            table = layui.table,
+            laydate = layui.laydate;
+
+        table.render({
+            elem: '#demo',
+            url: '/apply/list',
+            page: true,
+            cols: [
+                [ //表头
+                    {field: 'applyId', title: '异常流转申诉ID', width: 220, sort: true, align: 'center'}
+                    , {field: 'relicId', title: '关联文物ID', width: 220, sort: true, align: 'center'}
+                    , {field: 'applyDate', title: '申请日期', width: 220, sort: true, align: 'center'}
+                    , {field: 'fromId', title: '申请人', width: 220 , align: 'center'}
+                    , {field: 'checkStatus', title: '是否已审核', width: 220, sort: true, align: 'center',templet: "forGovernment"}
+                    , {field: 'applyResponse', title: '反馈意见', width: 250, sort: true, align: 'center'}
+                    , {field: '', title: '审核', width: '200', toolbar: "#upLoadBar"}
+                ]
+            ]
+        })
+
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            var tr = obj.tr;
+            if (layEvent == 'check') {
+                window.location.href="/sys/toGovCheckApplyDetail";
+            }
+        });
+        element.init();
+    });
+</script>
+
+<script type="text/html" id="forGovernment">
+    {{# if(d.exitEntryCheckStatus == '0'){d.exitEntryCheckStatus='未审核'}}
+    <span style="color: #1890ff">{{d.exitEntryCheckStatus}}</span>
+    {{#} else if(d.exitEntryCheckStatus == '1') {d.exitEntryCheckStatus = '已审核'}}
+    {{d.exitEntryCheckStatus}}
+    {{#}}}
+</script>
+
+
+
+</body>
+</html>

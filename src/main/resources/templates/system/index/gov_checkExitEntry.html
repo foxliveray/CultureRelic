@@ -4,9 +4,32 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+    <style>
+        body {
+            margin: 10px;
+            background: whitesmoke;
+        }
+
+        .layui-table-cell {
+            text-align: center;
+            height: auto;
+            white-space: normal;
+        }
+
+        .layui-table img {
+            max-width: 300px
+        }
+    </style>
 </head>
 <body>
-<table id="demo" lay-filter="test"></table>
+<div class="layui-card">
+    <div class="layui-card-header">处理出入境申请</div>
+
+    <div class="layui-card-body">
+        <table id="demo" lay-filter="test"></table>
+    </div>
+</div>
+
 <style type="text/css">
     .layui-table-cell {
         text-align: center;
