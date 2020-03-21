@@ -84,5 +84,47 @@ public class MovementController {
 
 
     }
+
+
+    //与链上的流转信息比较
+    @RequestMapping(value = "/compareMovement")
+    public String compareMovementwithBlock(@RequestParam(value = "movementId")Long movementId,@RequestParam(value = "movementBlockChainStatus")Long movementBlockChainStatus,@RequestParam(value = "checkStatus")Integer checkStatus,@RequestParam(value = "movementResponse")String movementResponse,
+                                   @RequestParam("explanation")String explanation,@RequestParam("moveType")String moveType,@RequestParam("moveDate")String moveDate,@RequestParam("relicId")Long relicId,@RequestParam("fromId")Long fromId,@RequestParam("toId")Long toId) throws IOException {
+
+        Movement movement=new Movement();
+        FabricHelper fabricHelper=new FabricHelper();
+        fabricHelper.init();
+        movement=fabricHelper.getMovement(movementId);
+        if(!movement.getExplanation().equals(explanation)){
+            String back="警告！流转说明信息出现异常，链上信息为：\""+movement.getExplanation()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+        if(!movement.getMoveType().equals(moveType)){
+            String back="警告！流转类型信息出现异常，链上信息为：\""+movement.getMoveType()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+
+        if(!moveDate.equals(movement.getMoveDate().toString())){
+            String back="警告！流转发生时间信息出现异常，链上信息为：\""+movement.getMoveDate()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+
+
+        if(movement.getFromId()!=fromId){
+            String back="警告！流转发起人信息出现异常，链上信息为：\""+movement.getFromId()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+        if(movement.getToId()!=toId){
+            String back="警告！流转接受人信息出现异常，链上信息为：\""+movement.getToId()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+        if(!movement.getMovementResponse().equals(movementResponse)){
+            String back="警告！流转审核信息出现异常，链上信息为：\""+movement.getMovementResponse()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+
+        return "与链上信息完全一致，不存在数据异常！";
+
+    }
 }
 

@@ -85,5 +85,45 @@ public class TradeController {
 
 
     }
+    //与链上的交易信息比较
+    @RequestMapping(value = "/compareTrade")
+    public String compareTradewithBlock(@RequestParam(value = "orderId")Long orderId,@RequestParam(value = "orderBlockChainStatus")Integer orderBlockChainStatus,@RequestParam(value = "checkStatus")String checkStatus,@RequestParam(value = "orderResponse")String orderResponse,
+                                        @RequestParam("orderValue")Integer orderValue,@RequestParam("orderDate")String orderDate,@RequestParam("orderStatus")Integer orderStatus,@RequestParam("relicId")Long relicId,@RequestParam("buyerId")Long buyerId,@RequestParam("sellerId")Long sellerId) throws IOException {
+
+        Trade trade=new Trade();
+        FabricHelper fabricHelper=new FabricHelper();
+        fabricHelper.init();
+        trade=fabricHelper.getTrade(orderId);
+        if(!trade.getOrderValue().toString().equals(orderValue.toString())){
+            String back="警告！交易金额信息出现异常，链上信息为：\""+trade.getOrderValue()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+        if(trade.getOrderStatus()!=orderStatus){
+            String back="警告！交易状态信息出现异常，链上信息为：\""+trade.getOrderStatus()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+        /*
+        if(!orderDate.equals(trade.getOrderDate().toString())){
+            String back="警告！交易发生时间信息出现异常，链上信息为：\""+trade.getOrderDate()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+
+         */
+        if(trade.getBuyerId()!=buyerId){
+            String back="警告！买方信息出现异常，链上信息为：\""+trade.getBuyerId()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+        if(trade.getSellerId()!=sellerId){
+            String back="警告！卖方信息出现异常，链上信息为：\""+trade.getSellerId()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+        if(!trade.getOrderResponse().equals(orderResponse)){
+            String back="警告！流转审核信息出现异常，链上信息为：\""+trade.getOrderResponse()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+
+        return "与链上信息完全一致，不存在数据异常！";
+
+    }
 }
 

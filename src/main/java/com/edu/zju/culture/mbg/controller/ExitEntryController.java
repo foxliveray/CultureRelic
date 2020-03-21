@@ -9,6 +9,7 @@ import com.edu.zju.culture.common.ResultObj;
 import com.edu.zju.culture.fabric.FabricHelper;
 import com.edu.zju.culture.mbg.entity.ExitEntry;
 import com.edu.zju.culture.mbg.entity.Relic;
+import com.edu.zju.culture.mbg.entity.Trade;
 import com.edu.zju.culture.mbg.service.IExitEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -88,6 +89,51 @@ public class ExitEntryController {
         exitEntry.setExitEntryCheckStatus(exitEntryCheckStatus);
         exitEntry.setExitEntryResponse(exitEntryResponse);
         iExitEntryService.updateById(exitEntry);
+    }
+
+    //与链上的出入境信息比较
+    @RequestMapping(value = "/compareExitEntry")
+    public String compareExitEntrywithBlock(@RequestParam(value = "exitEntryId") Long exitEntryId, @RequestParam("fromId")Long fromId,@RequestParam("toId")Long toId,@RequestParam("relicId")Long relicId,@RequestParam("origin")String origin,@RequestParam("destination")String destination,@RequestParam("exitEntryCheckStatus")Integer exitEntryCheckStatus,@RequestParam("exitEntryResponse")String exitEntryResponse,@RequestParam(value = "exitEntryCustomsStatus") Integer exitEntryCustomsStatus, @RequestParam(value = "exitEntryCustomsResponse") String exitEntryCustomsResponse,@RequestParam("exitEntryBlockChainStatus")Long exitEntryBlockChainStatus) throws IOException {
+        ExitEntry exitEntry=new ExitEntry();
+        FabricHelper fabricHelper=new FabricHelper();
+        fabricHelper.init();
+        exitEntry=fabricHelper.getExitEntry(exitEntryId);
+        if(exitEntry.getFromId()!=fromId){
+            String back="警告！出入境流转发起人信息出现异常，链上信息为：\""+exitEntry.getFromId()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+        if(exitEntry.getToId()!=toId){
+            String back="警告！出入境流转接受人信息出现异常，链上信息为：\""+exitEntry.getToId()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+
+        if(!exitEntry.getOrigin().equals(origin)){
+            String back="警告！出关地点信息出现异常，链上信息为：\""+exitEntry.getOrigin()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+        if(!exitEntry.getDestination().equals(destination)){
+            String back="警告！出入境流转目的地出现异常，链上信息为：\""+exitEntry.getDestination()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+        if(exitEntry.getExitEntryCheckStatus()!=exitEntryCheckStatus){
+            String back="警告！政府审核状态出现异常，链上信息为：\""+exitEntry.getExitEntryCheckStatus()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+        if(!exitEntry.getExitEntryResponse().equals(exitEntryResponse)){
+            String back="警告！政府审核意见出现异常，链上信息为：\""+exitEntry.getExitEntryResponse()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+        if(exitEntry.getExitEntryCustomsStatus()!=exitEntryCustomsStatus){
+            String back="警告！海关审核状态出现异常，链上信息为：\""+exitEntry.getExitEntryCheckStatus()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+        if(!exitEntry.getExitEntryCustomsResponse().equals(exitEntryCustomsResponse)){
+            String back="警告！海关审核意见出现异常，链上信息为：\""+exitEntry.getExitEntryCustomsResponse()+"\"。您可以提交异常处理申请向政府进行报告！";
+            return back;
+        }
+
+        return "与链上信息完全一致，不存在数据异常！";
+
     }
 
 
