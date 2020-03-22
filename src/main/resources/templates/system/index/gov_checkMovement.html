@@ -24,8 +24,25 @@
 <body>
 
 <div class="layui-card">
-    <div class="layui-card-header">处理文物流转申请</div>
-
+    <div class="layui-card-header" >处理文物流转申请</div>
+   <!-- <blockquote class="layui-elem-quote" style="margin-left: 15px;margin-right: 15px">-->
+        <form action="" method="post" id="searchFrm" lay-filter="searchFrm" class="layui-form layui-form-pane" style="margin-top: 15px;margin-left: 15px;margin-bottom: -15px">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">流转ID</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="movementId" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-inline">
+                        <button type="button"  class="layui-btn" lay-submit="" lay-filter="doSearch"><span
+                                class="layui-icon layui-icon-search"></span>查询
+                        </button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+  <!--  </blockquote>-->
     <div class="layui-card-body">
         <table id="demo" lay-filter="test"></table>
     </div>
@@ -50,6 +67,7 @@
 
 <script type="text/javascript">
     layui.use(["layer", "table", "laydate", "form"], function () {
+        var tableIns;
         var url;
         var $ = layui.$,
             form = layui.form,
@@ -57,21 +75,21 @@
             table = layui.table,
             laydate = layui.laydate;
 
-        table.render({
+        tableIns = table.render({
             elem: '#demo',
             url: '/movement/list',
             page: true,
             cols: [
                 [ //表头
                     {field: 'movementId', title: '流转ID', width: 90, sort: true,}
-                    , {field: 'explanation', title: '流转说明', width: 120, sort: true}
+                    , {field: 'explanation', title: '流转说明', width: 150, sort: true}
                     , {field: 'moveType', title: '流转类型', width: 150, templet: "#forType"}
                     , {field: 'moveDate', title: '流转发生时间', width: 250}
                     , {field: 'relicId', title: '文物ID', width: 100}
                     , {field: 'fromId', title: '发起人ID', width: 125, sort: true}
                     , {field: 'toId', title: '接受人ID', width: 125, sort: true}
                     , {field: 'checkStatus', title: '是否已审核', width: 125, sort: true, templet: "#forGovCheck"}
-                    , {field: 'movementResponse', title: '审核意见', width: 125, sort: true}
+                    , {field: 'movementResponse', title: '审核意见', width: 140, sort: true}
                     , {field: 'movementBlockChainStatus', title: '是否已上链', width: 125, sort: true,templet:"#forAddMovement"}
                     , {field: '', title: '审核', width: 135, toolbar: "#upLoadBar"}
                 ]
@@ -121,6 +139,15 @@
 
                 });
             }
+        });
+        form.on("submit(doSearch)", function (data) {
+            tableIns.reload({
+                where: data.field,
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
         });
         element.init();
     });

@@ -24,6 +24,24 @@
 <body>
 <div class="layui-card">
     <div class="layui-card-header">处理出入境申请</div>
+    <!-- <blockquote class="layui-elem-quote" style="margin-left: 15px;margin-right: 15px">-->
+    <form action="" method="post" id="searchFrm" lay-filter="searchFrm" class="layui-form layui-form-pane" style="margin-top: 15px;margin-left: 15px;margin-bottom: -15px">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">记录ID</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="exitEntryId" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline">
+                    <button type="button"  class="layui-btn" lay-submit="" lay-filter="doSearch"><span
+                            class="layui-icon layui-icon-search"></span>查询
+                    </button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--  </blockquote>-->
 
     <div class="layui-card-body">
         <table id="demo" lay-filter="test"></table>
@@ -49,6 +67,7 @@
 
 <script type="text/javascript">
     layui.use(["layer", "table", "laydate", "form"], function () {
+        var tableIns;
         var url;
         var $ = layui.$,
             form = layui.form,
@@ -56,7 +75,7 @@
             table = layui.table,
             laydate = layui.laydate;
 
-        table.render({
+        tableIns=table.render({
             elem: '#demo',
             url: '/exit-entry/list',
             page: true,
@@ -121,7 +140,16 @@
                 });
             }
         });
-        element.init();
+        form.on("submit(doSearch)", function (data) {
+            tableIns.reload({
+                where: data.field,
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
     });
 </script>
 
