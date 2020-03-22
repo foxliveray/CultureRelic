@@ -35,9 +35,11 @@ public class TradeController {
     ITradeService iTradeService;
 
     @RequestMapping("/list")
-    public DataGridView selectAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) {
+    public DataGridView selectAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit, Trade trade) {
         IPage<Trade> order = new Page<>(page, limit);
         QueryWrapper<Trade> queryWrapper = new QueryWrapper<>();
+        if(trade.getOrderId() != null)
+            queryWrapper.eq("order_id", trade.getOrderId());
         this.iTradeService.page(order, queryWrapper);
         return new DataGridView(order.getTotal(), order.getRecords());
     }
