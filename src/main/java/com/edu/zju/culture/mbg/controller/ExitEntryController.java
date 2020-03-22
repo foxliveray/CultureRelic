@@ -37,9 +37,11 @@ public class ExitEntryController {
     IExitEntryService iExitEntryService;
 
     @RequestMapping("/list")
-    public DataGridView selectAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) {
+    public DataGridView selectAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit, ExitEntry exitEntry) {
         IPage<ExitEntry> exitEntryIPage = new Page<>(page, limit);
         QueryWrapper<ExitEntry> queryWrapper = new QueryWrapper<>();
+        if(exitEntry.getExitEntryId() != null)
+            queryWrapper.eq("exit_entry_id", exitEntry.getExitEntryId());
         this.iExitEntryService.page(exitEntryIPage, queryWrapper);
         return new DataGridView(exitEntryIPage.getTotal(), exitEntryIPage.getRecords());
     }

@@ -101,10 +101,11 @@ public class RelicController {
     }
 
     @RequestMapping(value = "/list")
-    public DataGridView selectAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) {
-
+    public DataGridView selectAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit, Relic relic) {
         IPage<Relic> relicIPage = new Page<>(page, limit);
         QueryWrapper<Relic> queryWrapper = new QueryWrapper<>();
+        if(relic.getRelicId() != null)
+            queryWrapper.eq("relic_id", relic.getRelicId());
         this.iRelicService.page(relicIPage, queryWrapper);
         return new DataGridView(relicIPage.getTotal(), relicIPage.getRecords());
     }

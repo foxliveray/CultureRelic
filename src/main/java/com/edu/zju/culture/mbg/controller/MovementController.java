@@ -35,9 +35,11 @@ public class MovementController {
     IMovementService iMovementService;
 
     @RequestMapping(value = "/list")
-    public DataGridView selectAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) {
+    public DataGridView selectAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit, Movement movementx) {
         IPage<Movement> movement = new Page<>(page, limit);
         QueryWrapper<Movement> queryWrapper = new QueryWrapper<>();
+        if(movementx.getMovementId() != null)
+            queryWrapper.eq("movement_id", movementx.getMovementId());
         this.iMovementService.page(movement, queryWrapper);
         return new DataGridView(movement.getTotal(), movement.getRecords());
     }

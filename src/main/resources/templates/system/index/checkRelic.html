@@ -22,7 +22,25 @@
 </head>
 <body>
 <script src="/res/component/layui/layui.js"></script>
+<blockquote class="layui-elem-quote">
+    <form action="" method="post" id="searchFrm" lay-filter="searchFrm" class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">菜单名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="relicId" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline">
+                    <button type="button"  class="layui-btn" lay-submit="" lay-filter="doSearch"><span
+                            class="layui-icon layui-icon-search"></span>查询
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</blockquote>
 <table id="demo" lay-filter="test"></table>
+
 <script type="text/html" id="upLoadBar">
     <button class="layui-btn layui-btn-normal" lay-event="check">鉴定</button>
 </script>
@@ -60,6 +78,7 @@
 
 <script type="text/javascript">
     layui.use(["jquery", "upload", "form", "layer", "element", "table"], function () {
+        var tableIns;
         var $ = layui.$,
             table = layui.table,
             element = layui.element,
@@ -67,9 +86,9 @@
             upload = layui.upload,
             form = layui.form;
         //第一个实例
-        table.render({
+        tableIns = table.render({
             elem: '#demo'
-            , height: 830
+            , height: 735
             , url: '/relic/list' //数据接口
             , page: true //开启分页
             , cols: [
@@ -104,6 +123,16 @@
                     }
                 });
             }
+        });
+
+        form.on("submit(doSearch)", function (data) {
+            tableIns.reload({
+                where: data.field,
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
         });
         element.init();
     });

@@ -24,7 +24,25 @@
 <body>
 <script src="/res/component/layui/layui.js"></script>
 <div class="layui-card">
-    <div class="layui-card-header">处理出入境申请</div>
+    <div class="layui-card-header"></div>
+    <blockquote class="layui-elem-quote">
+        <form action="" method="post" id="searchFrm" lay-filter="searchFrm" class="layui-form layui-form-pane">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">菜单名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="exitEntryId" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-inline">
+                        <button type="button"  class="layui-btn" lay-submit="" lay-filter="doSearch"><span
+                                class="layui-icon layui-icon-search"></span>查询
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </blockquote>
+
 
     <div class="layui-card-body">
         <table id="checkExitEntryForm" lay-filter="test"></table>
@@ -39,6 +57,7 @@
 
 <script type="text/javascript">
     layui.use(["layer", "table", "laydate", "form"], function () {
+        var tableIns;
         var url;
         var $ = layui.$,
             form = layui.form,
@@ -46,7 +65,7 @@
             table = layui.table,
             laydate = layui.laydate;
 
-        table.render({
+        var tableIns = table.render({
             elem: '#checkExitEntryForm',
             url: '/exit-entry/list',
             page: true,
@@ -133,6 +152,16 @@
                     layer.msg("插入失败");
                 }
             })
+        });
+
+        form.on("submit(doSearch)", function (data) {
+            tableIns.reload({
+                where: data.field,
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
         });
     });
 </script>
