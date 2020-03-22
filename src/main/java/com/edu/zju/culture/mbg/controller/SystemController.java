@@ -173,6 +173,7 @@ public class SystemController {
     public String toGovCheckApply() {
         return "system/index/gov_checkApply";
     }
+
     /**
      *  跳转到政府审核异常流转申诉处理详情页面
      *  （注：该页面暂时还没创建）
@@ -207,4 +208,5 @@ public class SystemController {
     public String toUserManager(){
         return "system/user/UserManager";
     }
+
 }

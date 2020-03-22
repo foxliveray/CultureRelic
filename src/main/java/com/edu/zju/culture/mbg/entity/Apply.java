@@ -26,7 +26,7 @@ public class Apply implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 文物上链申请ID
+     * 文物异常申诉ID
      */
     @TableId(value = "apply_id", type = IdType.AUTO)
     private Long applyId;
@@ -37,7 +37,7 @@ public class Apply implements Serializable {
     private Long relicId;
 
     /**
-     * 文物上链申请时间
+     * 申诉时间
      */
     private LocalDateTime applyDate;
 
@@ -57,5 +57,9 @@ public class Apply implements Serializable {
      */
     private String applyResponse;
 
+    /**
+     * 申诉内容
+     */
+    private String applyContent;
 
 }

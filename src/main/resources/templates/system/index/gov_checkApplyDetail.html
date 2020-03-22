@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+    <style>
+        body {
+            margin: 10px;
+            background: whitesmoke;
+        }
+        .layui-table-cell {
+            text-align: center;
+            height: auto;
+            white-space: normal;
+        }
+    </style>
+</head>
+<body>
+<script src="/res/component/layui/layui.js"></script>
+<div class="layui-card">
+    <div class="layui-card-header">文物信息</div>
+    <div class="layui-card-body">
+        <div class="layui-row layui-col-space5">
+            <div class="layui-col-md4">
+                文物名：<b id="relicName"></b>
+            </div>
+            <div class="layui-col-md4">
+                文物编号：<b id="govNum"></b>
+            </div>
+            <div class="layui-col-md4">
+                文物ID：<b id="relicId"></b>
+            </div>
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-row layui-col-space5">
+                文物描述：<b id="relicDescription"></b>
+        </div>
+    </div>
+</div>
+<div class="layui-card">
+    <div class="layui-card-header">申请信息</div>
+    <div class="layui-card-body">
+        <div class="layui-row layui-col-space5">
+            <div class="layui-col-md4">
+                申请人：<b id="userId"></b>
+            </div>
+            <div class="layui-col-md4">
+                申请内容：<b id="reason"></b>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-card">
+    <div class="layui-card-header">流通信息</div>
+    <div class="layui-card-body">
+        <table id="checkMovementForm" lay-filter="test"></table>
+    </div>
+</div>
+<div class="layui-card">
+    <div class="layui-card-header">异常处理</div>
+    <div style="margin: 15px">
+        <button class="layui-btn" id="handleException">异常处理</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    layui.use(["layer", "table", "laydate", "form"], function () {
+        var url = window.location.search;
+        var $ = layui.$;
+        var table = layui.table;
+        var layer = layui.layer;
+        $.ajax({
+            url: "/apply/detail" + url,
+            type:"GET",
+            success: function (msg) {
+                document.getElementById("relicName").innerHTML = msg.data.relicName;
+                document.getElementById("govNum").innerHTML = msg.data.govNum;
+                document.getElementById("relicId").innerHTML = msg.data.relicId;
+                document.getElementById("relicDescription").innerHTML = msg.data.description;
+                document.getElementById("userId").innerHTML = msg.data.fromId;
+                document.getElementById("reason").innerHTML = msg.data.applyContent;
+                table.render({
+                    elem: '#checkMovementForm',
+                    url: '/relic/userMovement?relicId=' + msg.data.relicId,
+                    page: true,
+                    cols: [
+                        [ //表头
+                            {field: 'movementId', title: '流转ID', width: 90, sort: true}
+                            , {field: 'explanation', title: '流转说明', width: 400, sort: true}
+                            , {field: 'moveType', title: '流转类型', width: 150, templet: "#forType"}
+                            , {field: 'moveDate', title: '流转发生时间', width: 250}
+                            , {field: 'fromId', title: '发起人ID', width: 125, sort: true}
+                            , {field: 'toId', title: '接受人ID', width: 125, sort: true}
+                            , {field: 'checkStatus', title: '是否已审核', width: 125, sort: true, templet: "#forCheck"}
+                            , {field: 'movementResponse', title: '审核意见', width: 250, sort: true}
+                            , {field: 'movementBlockChainStatus', title: '是否已上链', width: 125, sort: true,templet:"#forAddMovement"}
+                        ]
+                    ]
+                });
+            }
+        });
+        $(document).on('click', '#handleException', function () {
+            tradeForm = layer.open({
+                type: 1,
+                btn: '提交',
+                content: '<div style="padding: 50px; line-height: 22px; color:; font-weight: 300;"><textarea id="applyResponse" placeholder="请输入异常审核意见" class="layui-textarea" name="desc"></textarea>\n',
+                area: ['800px', '600px'],
+                title: '提交异常审核意见',
+                yes: function(index, layero){
+                    $.ajax({
+                        url: "/apply/handleException" + url,
+                        data: {applyResponse: document.getElementById("applyResponse").value},
+                        success: function (msg) {
+                            layer.closeAll();
+                            layer.msg("插入成功");
+                        }
+                    });
+                }
+            })
+        });
+    });
+</script>
+<script type="text/html" id="forCheck">
+    {{# if(d.checkStatus == '0'){d.checkStatus='未审核'}}
+    <span style="color: #1890ff">{{d.checkStatus}}</span>
+    {{#} else {d.checkStatus = '已审核'}}
+    {{d.checkStatus}}
+    {{#}}}
+</script>
+<script type="text/html" id="forAddMovement">
+    {{# if(d.movementBlockChainStatus == '0'){d.movementBlockChainStatus='未上链'}}
+    <span style="color: #1890ff">{{d.movementBlockChainStatus}}</span>
+    {{#} else {d.movementBlockChainStatus = '已上链'}}
+    {{d.movementBlockChainStatus}}
+    {{#}}}
+</script>
+</body>
+</html>

@@ -78,7 +78,7 @@
             var layEvent = obj.event;
             var tr = obj.tr;
             if (layEvent == 'check') {
-                window.location.href="/sys/toGovCheckApplyDetail";
+                window.location.href="/sys/toGovCheckApplyDetail?applyId=" + data.applyId;
             }
         });
         element.init();
