@@ -65,7 +65,7 @@
                     {field: 'exitEntryId', title: '出入境记录ID', width: 150, sort: true, align: 'center'}
                     , {field: 'fromId', title: '发起人ID', width: 120, sort: true, align: 'center'}
                     , {field: 'toId', title: '接受人ID', width: 120, sort: true, align: 'center'}
-                    , {field: 'relicId', title: '文物ID', width: 120, templet: "#forStatus", align: 'center'}
+                    , {field: 'relicId', title: '文物ID', width: 120, align: 'center'}
                     , {field: 'origin', title: '出关地点', width: 125, sort: true, align: 'center'}
                     , {field: 'destination', title: '目的地', width: 125, sort: true, align: 'center'}
                     , {field: 'exitEntryCheckStatus', title: '政府是否已审核', width: 150, sort: true, templet: "#forGovernment", align: 'center'}
@@ -142,9 +142,9 @@
 </script>
 
 <script type="text/html" id="forBlockChain">
-    {{# if(d.exitEntryBlockChainStatus == '0'){d.exitEntryBlockChainStatus='未审核'}}
+    {{# if(d.exitEntryBlockChainStatus == '0'){d.exitEntryBlockChainStatus='未上链'}}
     <span style="color: #1890ff">{{d.exitEntryBlockChainStatus}}</span>
-    {{#} else if(d.exitEntryBlockChainStatus == '1') {d.exitEntryBlockChainStatus = '已审核'}}
+    {{#} else if(d.exitEntryBlockChainStatus == '1') {d.exitEntryBlockChainStatus = '已上链'}}
     {{d.exitEntryBlockChainStatus}}
     {{#}}}
 </script>

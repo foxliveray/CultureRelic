@@ -18,6 +18,8 @@ import com.edu.zju.culture.mbg.entity.Relic;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -35,7 +37,7 @@ public class FabricHelper {
     public static void main(String[] args) throws Exception{
         FabricHelper fabricHelper=new FabricHelper();
         fabricHelper.init();
-        fabricHelper.getRelic(1);
+        //fabricHelper.getRelic(1);
 
     }
     //SDK初始化
@@ -84,7 +86,7 @@ public class FabricHelper {
 
     }
     //根据ID查询链上的文物信息
-    public Relic getRelic(int relicId) throws IOException {
+    public Relic getRelic(Long relicId) throws IOException {
 
         //加载本地合约bin、abi，当本地存在bin、abi时，可按下面方式直接加载bin、abi
         InputStream inputStream2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("solidity/CultureRelic.abi");
@@ -154,7 +156,7 @@ public class FabricHelper {
 
     }
     //根据ID查询链上的文物交易信息
-    public Trade getTrade(int orderId) throws IOException {
+    public Trade getTrade(Long orderId) throws IOException{
 
         //加载本地合约bin、abi，当本地存在bin、abi时，可按下面方式直接加载bin、abi
         InputStream inputStream2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("solidity/CultureRelic.abi");
@@ -191,7 +193,7 @@ public class FabricHelper {
         order.setCheckStatus((String)objects.get(7));
         order.setOrderResponse((String)objects.get(8));
 
-        //System.out.println(order.getOrderValue());
+        System.out.println(order.getOrderDate());
         return order;
 
     }
@@ -229,7 +231,7 @@ public class FabricHelper {
 
     }
     //根据ID查询链上的文物流转信息
-    public Movement getMovement(int movementId) throws IOException {
+    public Movement getMovement(Long movementId) throws IOException {
 
         //加载本地合约bin、abi，当本地存在bin、abi时，可按下面方式直接加载bin、abi
         InputStream inputStream2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("solidity/CultureRelic.abi");
@@ -304,7 +306,7 @@ public class FabricHelper {
 
     }
     //根据ID查询链上的文物出入境信息
-    public ExitEntry getExitEntry(int exitEntryId) throws IOException {
+    public ExitEntry getExitEntry(Long exitEntryId) throws IOException {
 
         //加载本地合约bin、abi，当本地存在bin、abi时，可按下面方式直接加载bin、abi
         InputStream inputStream2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("solidity/CultureRelic.abi");

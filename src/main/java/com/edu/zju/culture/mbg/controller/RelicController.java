@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.edu.zju.culture.common.DataGridView;
+import com.edu.zju.culture.common.WebUtils;
 import com.edu.zju.culture.fabric.FabricHelper;
-import com.edu.zju.culture.mbg.entity.Relic;
-import com.edu.zju.culture.mbg.service.CheckRelicService;
-import com.edu.zju.culture.mbg.service.IRelicService;
+import com.edu.zju.culture.mbg.entity.*;
+import com.edu.zju.culture.mbg.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -44,6 +44,15 @@ public class RelicController {
 
     @Autowired
     IRelicService iRelicService;
+
+    @Autowired
+    IMovementService iMovementService;
+
+    @Autowired
+    ITradeService iTradeService;
+
+    @Autowired
+    IExitEntryService iExitEntryService;
 
     @RequestMapping(value = "/upload/checkRelic", method = {RequestMethod.POST})
     public DataGridView headImg(@RequestParam(value = "file", required = false) MultipartFile file, @RequestParam(value = "id") String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -99,6 +108,56 @@ public class RelicController {
         this.iRelicService.page(relicIPage, queryWrapper);
         return new DataGridView(relicIPage.getTotal(), relicIPage.getRecords());
     }
+
+    @RequestMapping(value = "/userRelic")
+    public DataGridView selectUserRelic(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) {
+        User user=(User)WebUtils.getSession().getAttribute("user");
+        IPage<Relic> relicIPage = new Page<>(page, limit);
+        QueryWrapper<Relic> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("owner_id",user.getId());
+        this.iRelicService.page(relicIPage, queryWrapper);
+        return new DataGridView(relicIPage.getTotal(), relicIPage.getRecords());
+    }
+
+    @RequestMapping(value = "/userMovement")
+    public DataGridView selectUserMovement(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit,@RequestParam("relicId")Long relicId) {
+        IPage<Movement> movementIPage = new Page<>(page, limit);
+        QueryWrapper<Movement> queryWrapper = new QueryWrapper<>();
+        /**
+         * 为了显示方便暂时设为1，数据库数据还不完善
+         */
+        relicId=1L;
+        queryWrapper.eq("relic_id",relicId);
+        this.iMovementService.page(movementIPage, queryWrapper);
+        return new DataGridView(movementIPage.getTotal(), movementIPage.getRecords());
+    }
+    @RequestMapping(value = "/userTrade")
+    public DataGridView selectUserTrade(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit,@RequestParam("relicId")Long relicId) {
+        IPage<Trade> tradeIPage = new Page<>(page, limit);
+        QueryWrapper<Trade>queryWrapper = new QueryWrapper<>();
+        /**
+         * 为了显示方便暂时设为1，数据库数据还不完善
+         */
+        relicId=1L;
+        queryWrapper.eq("relic_id",relicId);
+        this.iTradeService.page(tradeIPage, queryWrapper);
+        return new DataGridView(tradeIPage.getTotal(), tradeIPage.getRecords());
+    }
+
+    @RequestMapping(value = "/userExitEntry")
+    public DataGridView selectUserExitEntry(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit,@RequestParam("relicId")Long relicId) {
+        IPage<ExitEntry> exitEntryIPage = new Page<>(page, limit);
+        QueryWrapper<ExitEntry>queryWrapper = new QueryWrapper<>();
+        /**
+         * 为了显示方便暂时设为1，数据库数据还不完善
+         */
+        relicId=1L;
+        queryWrapper.eq("relic_id",relicId);
+        this.iExitEntryService.page(exitEntryIPage, queryWrapper);
+        return new DataGridView(exitEntryIPage.getTotal(), exitEntryIPage.getRecords());
+    }
+
+
     @RequestMapping(value = "/addRelic")
     public void addRelicToblock(@RequestParam(value = "relicId")Long relicId,@RequestParam(value = "relicBlockChainStatus")Long relicBlockChainStatus,@RequestParam(value = "checkStatus")Integer checkStatus,@RequestParam(value = "movementResponse")String movementResponse,
                                 @RequestParam("govNum")String govNum,@RequestParam("relicName")String relicName,@RequestParam("relicDescribe")String relicDescribe,@RequestParam("picture")String picture,@RequestParam("identityStatus")Integer identityStatus,@RequestParam("relicStatus")Integer relicStatus,@RequestParam("identityId")Long identityId,@RequestParam("ownerId")Long ownerId) throws IOException {

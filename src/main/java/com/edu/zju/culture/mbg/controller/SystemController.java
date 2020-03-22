@@ -188,7 +188,15 @@ public class SystemController {
      */
     @RequestMapping("/toSeeRelic")
     public String toSeeRelic() {
-        return "system/index/seeRelic";
+        return "system/index/user_seeRelic";
+    }
+
+    /**
+     * 普通用户跳转到文物溯源界面
+     */
+    @RequestMapping("/toSeeMovement")
+    public String toSeeMovement() {
+        return "system/index/user_seeMovement";
     }
 
 

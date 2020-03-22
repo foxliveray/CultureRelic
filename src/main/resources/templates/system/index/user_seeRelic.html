@@ -56,7 +56,7 @@
     </form>
 </div>
 <script type="text/html" id="reviewApply">
-    <button class="layui-btn layui-btn-normal" lay-event="reviewApply">溯源</button>
+    <button class="layui-btn layui-btn-normal" lay-event="reviewApply">查看流转信息</button>
 </script>
 <script type="text/html" id="exitEntryApply">
     <button class="layui-btn layui-btn-normal" lay-event="exitEntryApply">文物出入境申请</button>
@@ -75,7 +75,7 @@
         table.render({
             elem: '#demo'
             , height: 830
-            , url: '/relic/list' //数据接口
+            , url: '/relic/userRelic' //数据接口
             , page: true //开启分页
             , cols: [
                 [ //表头
@@ -88,7 +88,7 @@
                     , {field: 'relicStatus', title: '鉴定结果', width: 110, sort: true, templet: '#forCheckResponse'}
                     , {field: 'identityId', title: '鉴定人ID', width: 100}
                     , {field: 'relicBlockChainStatus', title: '是否已上链', width: 130, templet: '#forBlockChain'}
-                    , {field: '', title: '溯源', width: 100, toolbar: "#reviewApply"}
+                    , {field: '', title: '操作', width: 170, toolbar: "#reviewApply"}
                     , {field: '', title: '文物出入境申请', width: 170, toolbar: "#exitEntryApply"}
                 ]
             ]
@@ -107,6 +107,9 @@
                         $("#Rid").val(data.relicId);
                     }
                 })
+            }
+            if(layEvent == 'reviewApply') {
+                window.location.href="/sys/toSeeMovement?relicId="+data.relicId;
             }
         });
         form.on("submit(doSubmit)", function (data) {
