@@ -118,7 +118,7 @@ public class SystemController {
      */
     @RequestMapping("/toCheckMovement")
     public String toCheckApply() {
-        return "/system/index/checkMovement";
+        return "system/index/checkMovement";
     }
 
     /**
@@ -136,7 +136,7 @@ public class SystemController {
      */
     @RequestMapping("/toCheckTrade")
     public String toCheckOrder() {
-        return "/system/index/checkTrade";
+        return "system/index/checkTrade";
     }
 
     /**
@@ -144,7 +144,7 @@ public class SystemController {
      */
     @RequestMapping("/toCheckExitEntry")
     public String toCheckExitEntry() {
-        return "/system/index/checkExitEntry";
+        return "system/index/checkExitEntry";
     }
 
     /**
