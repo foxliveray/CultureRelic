@@ -105,7 +105,6 @@
             <artifactId>beetl</artifactId>
             <version>3.0.19.RELEASE</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-core -->
         <dependency>
             <groupId>org.apache.shiro</groupId>

@@ -209,4 +209,11 @@ public class SystemController {
         return "system/user/UserManager";
     }
 
+    /**
+        * 跳转到用户个人设置
+     */
+    @RequestMapping("/toSeeInfo")
+    public String toSeeUserInfo(){
+        return "system/index/user_seeInfo";
+    }
 }

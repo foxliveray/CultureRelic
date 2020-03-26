@@ -22,6 +22,103 @@
 </head>
 <body>
 <script src="/res/component/layui/layui.js"></script>
+<div class="layui-card">
+    <div class="layui-card-header">新增文物上链申请</div>
+    <div style="margin: 15px">
+        <button class="layui-btn" id="uploadMovement">提交申请</button>
+    </div>
+    <div class="layui-card-body">
+        <table id="checkMovementForm" lay-filter="test"></table>
+    </div>
+</div>
+<div style="display: none;padding: 5px" id="movementFormLayer">
+    <form action="" method="post" class="layui-form layui-form-pane" id="movementForm" lay-fiter="movementForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">文物ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="relicId" lay-verify="required" autocomplete="off" placeholder="请输入文物ID"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">国家认证编号</label>
+            <div class="layui-input-block">
+                <input type="text" name="govNum" lay-verify="required" autocomplete="off" placeholder="请输入国家认证编号"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文物名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="relicName" lay-verify="required" autocomplete="off" placeholder="请输入文物名称"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文物描述</label>
+            <div class="layui-input-block">
+                <input type="text" name="relicDescribe" lay-verify="required" autocomplete="off" placeholder="请输入文物描述"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文物图片</label>
+            <div class="layui-input-block">
+                <input type="text" name="picture" lay-verify="required" autocomplete="off" placeholder="请输入文物图片"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否已鉴定</label>
+            <div class="layui-input-block">
+                <input type="text" name="identityStatus" lay-verify="required" autocomplete="off" placeholder="请回答是否已鉴定"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">鉴定结果</label>
+            <div class="layui-input-block">
+                <input type="text" name="relicStatus" lay-verify="required" autocomplete="off" placeholder="请输入鉴定结果"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">鉴定人ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="identityId" lay-verify="required" autocomplete="off" placeholder="请输入鉴定人ID"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文物所有人ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="ownerId" lay-verify="required" autocomplete="off" placeholder="请输入文物所有人ID"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否已审核</label>
+            <div class="layui-input-block">
+                <input type="text" name="checkStatus" lay-verify="required" autocomplete="off" placeholder="请输入是否已审核"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">审核意见</label>
+            <div class="layui-input-block">
+                <input type="text" name="movementResponse" lay-verify="required" autocomplete="off" placeholder="请输入审核意见"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div style="text-align: center;">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="doSubmit" id="doSubmit"><span
+                        class="layui-icon layui-icon-add-1"></span>提交
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
 <table id="demo" lay-filter="test"></table>
 <div style="display: none;padding: 20px" id="ExitEntryFormLayer">
     <input type="hidden" name="Rid" id="Rid">
@@ -71,6 +168,18 @@
             layer = layui.layer,
             upload = layui.upload,
             form = layui.form;
+
+        $(document).on('click', '#uploadMovement', function () {
+            movementForm = layer.open({
+                type: 1,
+                content: $("#movementFormLayer"),
+                area: ['800px', '600px'],
+                title: '提交文物上链申请',
+                success: function () {
+                    url = "/relic/list";
+                }
+            })
+        })
         //第一个实例
         table.render({
             elem: '#demo'
