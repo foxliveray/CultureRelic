@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.edu.zju.culture.common.DataGridView;
+import com.edu.zju.culture.common.ResultObj;
 import com.edu.zju.culture.mbg.entity.Apply;
 import com.edu.zju.culture.mbg.entity.Relic;
+import com.edu.zju.culture.mbg.entity.Trade;
 import com.edu.zju.culture.mbg.service.IApplyService;
 import com.edu.zju.culture.mbg.service.IRelicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +47,17 @@ public class ApplyController {
         QueryWrapper<Apply> queryWrapper = new QueryWrapper<>();
         this.iApplyService.page(apply, queryWrapper);
         return new DataGridView(apply.getTotal(), apply.getRecords());
+    }
+
+    @RequestMapping(value = "/insertApply")
+    public ResultObj insertApply(Apply apply, @RequestParam(value = "applyDateChange") String applyDateChange) {
+        applyDateChange += " 00:00:00";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime localDateTime = LocalDateTime.parse(applyDateChange, dtf);
+        apply.setApplyDate(localDateTime);
+        apply.setCheckStatus(0);
+        iApplyService.save(apply);
+        return ResultObj.ADD_SUCCESS;
     }
 
     @RequestMapping(value = "/detail")

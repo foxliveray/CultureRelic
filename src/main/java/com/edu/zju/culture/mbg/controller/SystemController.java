@@ -102,7 +102,7 @@ public class SystemController {
     }
 
     /**
-     *跳转到政府文物上链审核页面
+     * 跳转到政府文物上链审核页面
      */
     @RequestMapping("/toGovCheckRelic")
     public String toGovCheckRelic() {
@@ -113,6 +113,7 @@ public class SystemController {
     public String toRoleManager() {
         return "system/role/roleManager";
     }
+
     /**
      * 跳转到博物馆查看流转页面
      */
@@ -122,8 +123,7 @@ public class SystemController {
     }
 
     /**
-     *跳转到政府文物流转审核页面
-     *
+     * 跳转到政府文物流转审核页面
      */
     @RequestMapping("/toGovCheckMovement")
     public String toGovCheckMovement() {
@@ -131,8 +131,7 @@ public class SystemController {
     }
 
     /**
-     *  跳转到交易所查看交易信息
-     *
+     * 跳转到交易所查看交易信息
      */
     @RequestMapping("/toCheckTrade")
     public String toCheckOrder() {
@@ -148,8 +147,7 @@ public class SystemController {
     }
 
     /**
-     *  跳转到政府审核交易信息页面
-     *
+     * 跳转到政府审核交易信息页面
      */
     @RequestMapping("/toGovCheckTrade")
     public String toGovCheckOrder() {
@@ -157,8 +155,7 @@ public class SystemController {
     }
 
     /**
-     *  跳转到政府审核出入境申请信息页面
-     *
+     * 跳转到政府审核出入境申请信息页面
      */
     @RequestMapping("/toGovCheckExitEntry")
     public String toGovCheckExitEntry() {
@@ -166,8 +163,7 @@ public class SystemController {
     }
 
     /**
-     *  跳转到政府审核异常流转申诉处理页面
-     *
+     * 跳转到政府审核异常流转申诉处理页面
      */
     @RequestMapping("/toGovCheckApply")
     public String toGovCheckApply() {
@@ -175,9 +171,8 @@ public class SystemController {
     }
 
     /**
-     *  跳转到政府审核异常流转申诉处理详情页面
-     *  （注：该页面暂时还没创建）
-     *
+     * 跳转到政府审核异常流转申诉处理详情页面
+     * （注：该页面暂时还没创建）
      */
     @RequestMapping("/toGovCheckApplyDetail")
     public String toGovCheckApplyDetail() {
@@ -205,15 +200,15 @@ public class SystemController {
      * 跳转到用户管理
      */
     @RequestMapping("/toUserManager")
-    public String toUserManager(){
+    public String toUserManager() {
         return "system/user/UserManager";
     }
 
     /**
-        * 跳转到用户个人设置
+     * 跳转到用户个人设置
      */
     @RequestMapping("/toSeeInfo")
-    public String toSeeUserInfo(){
+    public String toSeeUserInfo() {
         return "system/index/user_seeInfo";
     }
 }
