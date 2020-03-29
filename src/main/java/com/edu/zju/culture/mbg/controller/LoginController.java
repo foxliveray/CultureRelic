@@ -4,6 +4,7 @@ import com.edu.zju.culture.common.ActiveUser;
 import com.edu.zju.culture.common.ResultObj;
 import com.edu.zju.culture.common.WebUtils;
 import com.edu.zju.culture.mbg.entity.LogLogin;
+import com.edu.zju.culture.mbg.entity.User;
 import com.edu.zju.culture.mbg.service.ILogLoginService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Enumeration;
 
@@ -66,4 +68,11 @@ public class LoginController {
         }
         return "system/index/login";
     }
+
+    @RequestMapping("/getUserId")
+    public String getUserId(HttpServletRequest servletRequest) {
+        User user = (User) servletRequest.getSession().getAttribute("user");
+        return String.valueOf(user.getId());
+    }
+
 }
