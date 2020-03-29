@@ -42,18 +42,18 @@ public class ApplyController {
     IRelicService iRelicService;
 
     @RequestMapping(value = "/list")
-    public DataGridView selectAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) {
+    public DataGridView selectAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit, Apply applyx) {
         IPage<Apply> apply = new Page<>(page, limit);
         QueryWrapper<Apply> queryWrapper = new QueryWrapper<>();
+        if(applyx.getApplyId() != null)
+            queryWrapper.eq("apply_id", applyx.getApplyId());
         this.iApplyService.page(apply, queryWrapper);
         return new DataGridView(apply.getTotal(), apply.getRecords());
     }
 
     @RequestMapping(value = "/insertApply")
-    public ResultObj insertApply(Apply apply, @RequestParam(value = "applyDateChange") String applyDateChange) {
-        applyDateChange += " 00:00:00";
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime localDateTime = LocalDateTime.parse(applyDateChange, dtf);
+    public ResultObj insertApply(Apply apply) {
+        LocalDateTime localDateTime = LocalDateTime.now();
         apply.setApplyDate(localDateTime);
         apply.setCheckStatus(0);
         iApplyService.save(apply);
