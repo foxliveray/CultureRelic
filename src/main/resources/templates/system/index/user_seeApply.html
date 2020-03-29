@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
+    <style>
+        body {
+            margin: 10px;
+            background: whitesmoke;
+        }
+        .layui-table img {
+            max-width: 300px
+        }
+    </style>
+</head>
+
+<body>
+<script src="/res/component/layui/layui.js"></script>
+<div class="layui-card">
+    <div class="layui-card-header">文物异常流通信息申诉</div>
+    <div style="margin: 15px">
+        <button class="layui-btn" id="uploadApplyDetail">提交申诉请求</button>
+    </div>
+    <blockquote class="layui-elem-quote">
+        <form action="" method="post" id="searchFrm" lay-filter="searchFrm" class="layui-form layui-form-pane">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">菜单名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="orderId" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-inline">
+                        <button type="button"  class="layui-btn" lay-submit="" lay-filter="doSearch"><span
+                                class="layui-icon layui-icon-search"></span>查询
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </blockquote>
+    <div class="layui-card-body">
+        <table id="checkMovementForm" lay-filter="test"></table>
+    </div>
+</div>
+<div style="display: none;padding: 20px" id="applydetailFormLayer">
+    <form action="" method="post" class="layui-form layui-form-pane" id="applydetailForm" lay-fiter="applydetailForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">文物名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="relicName" lay-verify="required" autocomplete="off" placeholder="请输入文物名称"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文物编号</label>
+            <div class="layui-input-block">
+                <input type="text" name="govNum" lay-verify="required" autocomplete="off" placeholder="请输入文物编号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文物ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="relicId" lay-verify="required" autocomplete="off" placeholder="请输入文物ID" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文物描述</label>
+            <div class="layui-input-block">
+                <input type="text" name="relicDescription" lay-verify="required" autocomplete="off" placeholder="请输入文物描述"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">申请人</label>
+            <div class="layui-input-block">
+                <input type="text" name="userId" lay-verify="required" autocomplete="off" placeholder="请输入申请人Id"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">申请内容</label>
+            <div class="layui-input-block">
+                <input type="text" name="reason" lay-verify="required" autocomplete="off" placeholder="请输入申请内容"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div style="text-align: center;">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="doSubmit" id="doSubmit"><span
+                        class="layui-icon layui-icon-add-1"></span>提交
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    layui.use(["jquery", "upload", "form", "layer", "element", "table"], function () {
+        var url;
+        var $ = layui.$,
+            table = layui.table,
+            layer = layui.layer,
+            form = layui.form;
+
+        //第一个实例
+        table.render({
+            elem: '#checkMovementForm'
+            , height: 830
+            , url: '/apply/list' //数据接口
+            , page: true //开启分页
+            , cols: [
+                [ //表头
+                    {field: 'applyId', title: '异常流转申诉ID', width: 90, sort: true}
+                    , {field: 'relicId', title: '关联文物ID', width: 200, sort: true}
+                    , {field: 'applyDate', title: '申请日期', width: 150}
+                    , {field: 'fromId', title: '申请人', width: 280}
+                    , {field: 'checkStatus', title: '是否已审核', width: 125, sort: true}
+                    , {field: 'applyResponse', title: '反馈意见', width: 110, sort: true}
+                ]
+            ]
+        })
+
+        $(document).on('click', '#uploadApplyDetail', function () {
+            applydetailForm = layer.open({
+                type: 1,
+                content: $("#applydetailFormLayer"),
+                area: ['800px', '600px'],
+                title: '提交文物异常流转信息',
+                success: function () {
+                    url = "/apply/insertApply";
+                }
+            })
+        })
+
+        form.on("submit(doSubmit)", function (data) {
+            $.post(url, data.field, function (res)  {
+                layer.closeAll();
+                if (res.code == 200) {
+                    layer.msg("插入成功");
+                } else {
+                    layer.msg("插入失败");
+                }
+            })
+        });
+
+        form.on("submit(doSearch)", function (data) {
+            tableIns.reload({
+                where: data.field,
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

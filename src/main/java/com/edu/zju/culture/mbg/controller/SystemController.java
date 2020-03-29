@@ -211,4 +211,11 @@ public class SystemController {
     public String toSeeUserInfo() {
         return "system/index/user_seeInfo";
     }
+
+    /**
+     * 普通用户跳转到文物溯源界面
+     */
+    @RequestMapping("/toSeeApply")
+    public String toSeeApply() { return "system/index/user_seeApply";
+    }
 }
