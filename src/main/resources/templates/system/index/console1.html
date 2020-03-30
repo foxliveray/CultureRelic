@@ -290,7 +290,7 @@
 
         .card {
             width: 100%;
-            height: 160px;
+            height: 200px;
             background-color: whitesmoke;
             border-radius: 5px;
 
@@ -372,8 +372,7 @@
             </div>
             <div class="layui-col-md8 layui-col-xs12">
                 <div id="info">
-                    <h3 class="info-title">晚上好，<span th:text="${session.user.username}"/>，休息一会儿吧 !</h3>
-                    <div class="info-content"> 前端工程师 | 蚂蚁金服 | 软件二部 | Lay平台</div>
+                    <h3 class="info-title">你好，<span th:text="${session.user.username}"/>，休息一会儿吧 !</h3>
                 </div>
             </div>
 
@@ -387,142 +386,109 @@
     <div class="layui-col-md9 layui-row">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">我的项目</div>
+                <div class="layui-card-header">文物展示</div>
                 <div class="layui-card-body">
                     <div class="layui-row layui-col-space10">
                         <div class="layui-col-md4">
                             <div class="card">
                                 <div class="header">
-                                    <img class="avatar" src="/res/admin/images/avatar.jpg"></img><span class="title">PearOne</span>
+                                    <img class="avatar" src="/res/museumPicture/21.jpg"></img><span class="title">青瓷盂</span>
                                 </div>
                                 <div class="body">
-                                    城镇中有那么多的酒馆，她却偏偏走进了我的酒馆
+                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/11.jpg"></img></div>
+                                    <div class="layui-col-md8">青瓷盂是安徽屯溪西周－春秋墓葬出土较多的一种原始青瓷。此盂出土于屯溪3号墓中，通体饰弦纹，腹上部有双圆钉实鼻凸起，作三角式平衡分布，整体造型规整。</div>
                                 </div>
-                                <div class="footer">9小时前</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
                             <div class="card">
                                 <div class="header">
-                                    <img class="avatar" src="/res/admin/images/avatar.jpg"></img><span class="title">Angular</span>
+                                    <img class="avatar" src="/res/museumPicture/22.jpeg"></img><span class="title">三彩人物俑</span>
                                 </div>
                                 <div class="body">
-                                    希望是一个好东西，也许是最好的，好东西是不会消亡
+                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/12.jpg"></img></div>
+                                    <div class="layui-col-md8">将三种颜色的釉料同时施于一件 陶瓷素胎上，经过高温烧制，三种颜色的釉料相互交融，形成独特的流串工艺，本来只有三种颜色烧造后变成多种颜色，这也是唐三彩的一大特征。</div>
                                 </div>
-                                <div class="footer">9小时前</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
                             <div class="card">
                                 <div class="header">
-                                    <img class="avatar" src="/res/admin/images/avatar.jpg"></img><span
-                                        class="title">Vue</span>
+                                    <img class="avatar" src="/res/museumPicture/23.jpg"></img><span class="title">人面鱼纹彩陶盆</span>
                                 </div>
                                 <div class="body">
-                                    生命就像一盒巧克力，结果往往出人意料
+                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/13.jpeg"></img></div>
+                                    <div class="layui-col-md8">人面鱼纹彩陶盆是新石器时代仰韶文化的陶器，距今超过五千年历史。彩陶是在陶器表面以红黑赭白等色作画后烧成，彩画永不掉落，非常的稀世。</div>
                                 </div>
-                                <div class="footer">9小时前</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
                             <div class="card">
                                 <div class="header">
-                                    <img class="avatar" src="/res/admin/images/avatar.jpg"></img><span class="title">BootStrap</span>
+                                    <img class="avatar" src="/res/museumPicture/22.jpeg"></img><span class="title">唐三彩骆驼载乐俑</span>
                                 </div>
                                 <div class="body">
-                                    一切都在不可避免的走向庸俗
+                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/14.jpeg"></img></div>
+                                    <div class="layui-col-md8">于1959年出土自陕西省西安市西郊中堡村唐墓，现藏于陕西历史博物馆；三彩骆驼顶部的俑人形态各异，栩栩如生；是胡汉文化融合后的新舞乐。</div>
                                 </div>
-                                <div class="footer">9小时前</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
                             <div class="card">
                                 <div class="header">
-                                    <img class="avatar" src="/res/admin/images/avatar.jpg"></img><span class="title">Ant Design</span>
+                                    <img class="avatar" src="/res/museumPicture/24.jpg"></img><span class="title">战国铜壶</span>
                                 </div>
                                 <div class="body">
-                                    你要是愿意，我就永远爱你，你要是不愿意，我就永远相思
+                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/15.jpg"></img></div>
+                                    <div class="layui-col-md8">此展品为战国时期文物。通高37.4厘米，腹径22.6厘米。带盖，敛口，溜肩，圆鼓腹，平底，高圈足。盖顶隆起，上置四钮。现收藏于宜城市博物馆。</div>
                                 </div>
-                                <div class="footer">9小时前</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
                             <div class="card">
                                 <div class="header">
-                                    <img class="avatar" src="/res/admin/images/avatar.jpg"></img><span class="title">Jmys</span>
+                                    <img class="avatar" src="/res/museumPicture/25.jpg"></img><span class="title">成周铃</span>
                                 </div>
                                 <div class="body">
-                                    在所谓'人世间'摸爬滚打至今，我唯一愿意是为真理的，一切都会过去
+                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/16.jpg"></img></div>
+                                    <div class="layui-col-md8">成周铃，通高8.5cm，宽6.5cm，重0.164kg。 此铃平口，顶上有半环形钮，铃身一侧倾斜，形成不平衡状态。体内有舌，舌碰击铃内壁时可以发声。</div>
                                 </div>
-                                <div class="footer">9小时前</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
                             <div class="card">
                                 <div class="header">
-                                    <img class="avatar" src="/res/admin/images/avatar.jpg"></img><span class="title">BootStrap</span>
+                                    <img class="avatar" src="/res/museumPicture/26.jpg"></img><span class="title">云纹瓦当</span>
                                 </div>
                                 <div class="body">
-                                    一切都在不可避免的走向庸俗
+                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/17.jpg"></img></div>
+                                    <div class="layui-col-md8">其花纹特征是：当面中心多为圆钮，或饰以三角、菱形、分格形网纹、乳钉纹、叶纹、花瓣纹等。云纹占据当面中央大面积的主要部位，花纹变化十分复杂多样。</div>
                                 </div>
-                                <div class="footer">9小时前</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
                             <div class="card">
                                 <div class="header">
-                                    <img class="avatar" src="/res/admin/images/avatar.jpg"></img><span class="title">Ant Design</span>
+                                    <img class="avatar" src="/res/museumPicture/27.jpg"></img><span class="title">牵马俑</span>
                                 </div>
                                 <div class="body">
-                                    你要是愿意，我就永远爱你，你要是不愿意，我就永远相思
+                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/18.jpg"></img></div>
+                                    <div class="layui-col-md8">该马膘肥体壮，双目圆睁，口大张，颈部及身体肌理清晰，尾短小，背上有鞍。而牵马俑则为胡人商人形象，头戴尖顶帽，大眼，高鼻，胡须卷曲浓密，五官特征十分明显。</div>
                                 </div>
-                                <div class="footer">9小时前</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
                             <div class="card">
                                 <div class="header">
-                                    <img class="avatar" src="/res/admin/images/avatar.jpg"></img><span class="title">Jmys</span>
+                                    <img class="avatar" src="/res/museumPicture/28.jpg"></img><span class="title">越王勾践剑</span>
                                 </div>
                                 <div class="body">
-                                    在所谓'人世间'摸爬滚打至今，我唯一愿意是为真理的，一切都会过去
+                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/19.jpeg"></img></div>
+                                    <div class="layui-col-md8">这是我国最著名的文物之一，也是历史名剑之一1965年出土自湖北望山楚墓群。宝剑自出土就被深藏，尽管他国希望借出展览，但都被拒绝。</div>
                                 </div>
-                                <div class="footer">9小时前</div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="layui-card">
-                <div class="layui-card-header">开源动态</div>
-                <div class="layui-card-body">
-                    <script src='https://gitee.com/Jmysy/Pear-One-Layui/widget_preview' async defer></script>
-                    <div id="osc-gitee-widget-tag"></div>
-                    <style>
-                        .osc_pro_color {
-                            color: #4183c4 !important;
-                        }
-
-                        .osc_panel_color {
-                            background-color: #ffffff !important;
-                        }
-
-                        .osc_background_color {
-                            background-color: #ffffff !important;
-                        }
-
-                        .osc_border_color {
-                            border-color: #e3e9ed !important;
-                        }
-
-                        .osc_desc_color {
-                            color: #666666 !important;
-                        }
-
-                        .osc_link_color * {
-                            color: #9b9b9b !important;
-                        }
-                    </style>
                 </div>
             </div>
         </div>
@@ -543,23 +509,23 @@
         </div>
 
         <div class="layui-card">
-            <div class="layui-card-header">版本信息</div>
+            <div class="layui-card-header">平台信息</div>
             <div class="layui-card-body">
                 <table class="layui-table">
                     <thead>
                     <tr>
-                        <th>脚手框架</th>
-                        <th>Pear One</th>
+                        <th>项目名称</th>
+                        <th>基于区块链的文物流转管理系统</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>开源作者</td>
-                        <td>就 眠 仪 式</td>
+                        <td>浙 江 大 学</td>
                     </tr>
                     <tr>
                         <td>当前版本</td>
-                        <td>1.0.1 Version</td>
+                        <td>1.0.0 Version</td>
                     </tr>
                     <tr>
                         <td>基于框架</td>
@@ -571,15 +537,12 @@
                     </tr>
                     <tr>
                         <td>开发周期</td>
-                        <td>2019 年 11 月 15 日</td>
+                        <td>2019 年 10 月 至 2020 年 3 月</td>
                     </tr>
 
                     <tr>
                         <td>下载渠道</td>
                         <td>
-                            <button class="layui-btn layui-btn-normal layui-btn-sm">
-                                <i class="fa fa-gitlab"></i><span>&nbsp;码 云</span>
-                            </button>
                             <button class="layui-btn layui-btn-primary layui-btn-sm">
                                 <i class="fa fa-github"></i><span>&nbsp;Git Hub</span>
                             </button>
