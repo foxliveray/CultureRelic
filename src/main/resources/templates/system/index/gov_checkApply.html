@@ -82,7 +82,7 @@
                     , {field: 'relicId', title: '关联文物ID', width: 220, sort: true, align: 'center'}
                     , {field: 'applyDate', title: '申请日期', width: 220, sort: true, align: 'center'}
                     , {field: 'fromId', title: '申请人', width: 220 , align: 'center'}
-                    , {field: 'checkStatus', title: '是否已审核', width: 220, sort: true, align: 'center',templet: "forGovernment"}
+                    , {field: 'checkStatus', title: '是否已审核', width: 220, sort: true, align: 'center',templet: "#forGovernment"}
                     , {field: 'applyResponse', title: '反馈意见', width: 250, sort: true, align: 'center'}
                     , {field: '', title: '审核', width: '200', toolbar: "#upLoadBar"}
                 ]
@@ -112,10 +112,10 @@
 </script>
 
 <script type="text/html" id="forGovernment">
-    {{# if(d.exitEntryCheckStatus == '0'){d.exitEntryCheckStatus='未审核'}}
-    <span style="color: #1890ff">{{d.exitEntryCheckStatus}}</span>
-    {{#} else if(d.exitEntryCheckStatus == '1') {d.exitEntryCheckStatus = '已审核'}}
-    {{d.exitEntryCheckStatus}}
+    {{# if(d.checkStatus == '0'){d.checkStatus='未审核'}}
+    <span style="color: #1890ff">{{d.checkStatus}}</span>
+    {{#} else if(d.checkStatus == '1') {d.checkStatus = '已审核'}}
+    {{d.checkStatus}}
     {{#}}}
 </script>
 
