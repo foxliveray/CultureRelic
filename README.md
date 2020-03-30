@@ -69,5 +69,6 @@ password: root
 部署至Linux系统时 yml中resources-static-locations以及ChecKRelic.java中路径需要修改
 
 
-    
+### SOA架构
+此分支用于拆解项目代码，构建基于Dubbo的SOA架构
 
