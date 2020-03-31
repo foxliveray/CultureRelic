@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>密码修改</title>
+    <link href="/res/assets/css/pearone.css" rel="stylesheet"/>
+    <link href="/res/component/layui/css/layui.css" rel="stylesheet"/>
+    <link href="/res/component/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+    <link href="/res/admin/css/pearButton.css" rel="stylesheet"/>
+    <link href="/res/admin/css/pearTable.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="layui-card">
+    <div class="layui-card-header">修改密码</div>
+    <div class="layui-card-body">
+        <form action="" method="post" class="layui-form layui-form-pane" id="dataFrm" lay-filter="dataFrm">
+            <input type="hidden" name="id">
+            <div class="layui-form-item">
+                <label class="layui-form-label">原密码</label>
+                <div class="layui-input-block">
+                    <input type="text" id="oldpassword" name="oldpassword" lay-verify="required" autocomplete="off" placeholder="请输入原密码" class="layui-input">
+                </div>
+            </div>
+            <input type="hidden" name="id" th:value="${session.user.id}">
+            <div class="layui-form-item">
+                <label class="layui-form-label">新密码</label>
+                <div class="layui-input-block">
+                    <input type="text" id="password" name="password" lay-verify="required" autocomplete="off" placeholder="请输入新密码" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">新密码</label>
+                <div class="layui-input-block">
+                    <input type="text" id="password2" name="password2" lay-verify="required" autocomplete="off" placeholder="再次输入新密码" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="text-align: center;">
+                    <button type="button" class="layui-btn" lay-submit="" lay-filter="doSubmit" id="doSubmit" ><span class="layui-icon layui-icon-add-1"></span>提交</button>
+                    <button type="reset" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-refresh-1"></span>重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/res/component/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.config({
+        version: '1575404972583' //为了更新 js 缓存，可忽略
+    });
+
+    layui.use(['form', 'element', 'jquery','layer'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            layer = layui.layer
+
+        var url = "/user/modifyPwd";
+        form.on('submit(doSubmit)', function (data) {
+            //alert(JSON.stringify(data));
+            if (data.field.password != data.field.password2) {
+                layer.msg("新密码不一致！");
+                return;
+            }
+            $.post(url, data.field, function (res) {
+                if (res.code == 200) {
+                    layer.msg(res.msg);
+                    setTimeout(function () {
+                        window.history.back();
+                    },1000);
+                }
+            });
+            return false;
+        })
+    });
+
+</script>
+
+</body>
+</html>
