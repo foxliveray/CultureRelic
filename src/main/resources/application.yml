@@ -37,6 +37,27 @@ spring:
   resources:
     static-locations: classpath:/META-INF/resources/,classpath:/resources/, classpath:/static/, classpath:/public/, file:/C:/Users/Administrator/Desktop
 
+  #redis
+  redis:
+    host: 101.37.28.182
+    port: 6379
+    password: root
+    database: 1
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 500
+        min-idle: 0
+    timeout: 2000ms
+  cache:
+    type: REDIS
+
+  #以下是我设置的session过期时间
+  #session share  unit hours(设置成分钟方便测试)
+  session:
+    timeout: 3000s
+
 # 配置mybatis plus
 mybatis-plus:
   mapper-locations:
