@@ -272,6 +272,12 @@
             margin-left: 35px;
         }
 
+        .relic {
+            width: 110px;
+            height: 110px;
+            border-radius: 100px;
+        }
+
         #info {
             margin-top: 20px;
         }
@@ -290,7 +296,7 @@
 
         .card {
             width: 100%;
-            height: 200px;
+            height: 260px;
             background-color: whitesmoke;
             border-radius: 5px;
 
@@ -299,11 +305,15 @@
         .card .header .avatar {
             width: 25px;
             height: 25px;
-            margin: 20px;
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         .card .header {
             color: dimgray;
+            font-weight: bolder;
         }
 
         .card .body {
@@ -313,15 +323,18 @@
         .card .body {
             margin-left: 20px;
             margin-right: 20px;
+            height: 50px;
+            margin-bottom: 40px;
         }
 
         .card .footer {
             margin-left: 20px;
             margin-right: 20px;
             margin-top: 20px;
-            font-size: 13px;
+            font-size: 12px;
             color: gray;
             position: absolute;
+            height: 50px;
 
         }
 
@@ -372,7 +385,7 @@
             </div>
             <div class="layui-col-md8 layui-col-xs12">
                 <div id="info">
-                    <h3 class="info-title">你好，<span th:text="${session.user.username}"/>，休息一会儿吧 !</h3>
+                    <h3 class="info-title">你好，<span th:text="${session.user.username}"/>，品鉴一下文物吧 !</h3>
                 </div>
             </div>
 
@@ -394,10 +407,10 @@
                                 <div class="header">
                                     <img class="avatar" src="/res/museumPicture/21.jpg"></img><span class="title">青瓷盂</span>
                                 </div>
-                                <div class="body">
-                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/11.jpg"></img></div>
-                                    <div class="layui-col-md8">青瓷盂是安徽屯溪西周－春秋墓葬出土较多的一种原始青瓷。此盂出土于屯溪3号墓中，通体饰弦纹，腹上部有双圆钉实鼻凸起，作三角式平衡分布，整体造型规整。</div>
+                                <div class="body" style="text-align: center;">
+                                    <img class="relic" src="/res/relicPicture/11.jpg"></img>
                                 </div>
+                                <div class="footer">青瓷盂是安徽屯溪西周－春秋墓葬出土较多的一种原始青瓷。此盂出土于屯溪3号墓中，通体饰弦纹，腹上部有双圆钉实鼻凸起，作三角式平衡分布，整体造型规整。</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
@@ -405,9 +418,11 @@
                                 <div class="header">
                                     <img class="avatar" src="/res/museumPicture/22.jpeg"></img><span class="title">三彩人物俑</span>
                                 </div>
-                                <div class="body">
-                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/12.jpg"></img></div>
-                                    <div class="layui-col-md8">将三种颜色的釉料同时施于一件 陶瓷素胎上，经过高温烧制，三种颜色的釉料相互交融，形成独特的流串工艺，本来只有三种颜色烧造后变成多种颜色，这也是唐三彩的一大特征。</div>
+                                <div class="body" style="text-align: center;">
+                                    <img class="relic" src="/res/relicPicture/12.jpg"></img>
+                                </div>
+                                <div class="footer">
+                                    将三种颜色的釉料同时施于一件 陶瓷素胎上，经过高温烧制，三种颜色的釉料相互交融，形成独特的流串工艺，本来只有三种颜色烧造后变成多种颜色，这也是唐三彩的一大特征。
                                 </div>
                             </div>
                         </div>
@@ -416,10 +431,10 @@
                                 <div class="header">
                                     <img class="avatar" src="/res/museumPicture/23.jpg"></img><span class="title">人面鱼纹彩陶盆</span>
                                 </div>
-                                <div class="body">
-                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/13.jpeg"></img></div>
-                                    <div class="layui-col-md8">人面鱼纹彩陶盆是新石器时代仰韶文化的陶器，距今超过五千年历史。彩陶是在陶器表面以红黑赭白等色作画后烧成，彩画永不掉落，非常的稀世。</div>
+                                <div class="body" style="text-align: center;">
+                                    <img class="relic" src="/res/relicPicture/13.jpeg"></img>
                                 </div>
+                                <div class="footer">人面鱼纹彩陶盆是新石器时代仰韶文化的陶器，距今超过五千年历史。彩陶是在陶器表面以红黑赭白等色作画后烧成，彩画永不掉落，非常的稀世。</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
@@ -427,10 +442,10 @@
                                 <div class="header">
                                     <img class="avatar" src="/res/museumPicture/22.jpeg"></img><span class="title">唐三彩骆驼载乐俑</span>
                                 </div>
-                                <div class="body">
-                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/14.jpeg"></img></div>
-                                    <div class="layui-col-md8">于1959年出土自陕西省西安市西郊中堡村唐墓，现藏于陕西历史博物馆；三彩骆驼顶部的俑人形态各异，栩栩如生；是胡汉文化融合后的新舞乐。</div>
+                                <div class="body" style="text-align: center;">
+                                    <img class="relic" src="/res/relicPicture/14.jpeg"></img>
                                 </div>
+                                <div class="footer">于1959年出土自陕西省西安市西郊中堡村唐墓，现藏于陕西历史博物馆；三彩骆驼顶部的俑人形态各异，栩栩如生；是胡汉文化融合后的新舞乐。</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
@@ -438,10 +453,10 @@
                                 <div class="header">
                                     <img class="avatar" src="/res/museumPicture/24.jpg"></img><span class="title">战国铜壶</span>
                                 </div>
-                                <div class="body">
-                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/15.jpg"></img></div>
-                                    <div class="layui-col-md8">此展品为战国时期文物。通高37.4厘米，腹径22.6厘米。带盖，敛口，溜肩，圆鼓腹，平底，高圈足。盖顶隆起，上置四钮。现收藏于宜城市博物馆。</div>
+                                <div class="body" style="text-align: center;">
+                                    <img class="relic" src="/res/relicPicture/15.jpg"></img>
                                 </div>
+                                <div class="footer">此展品为战国时期文物。通高37.4厘米，腹径22.6厘米。带盖，敛口，溜肩，圆鼓腹，平底，高圈足。盖顶隆起，上置四钮。现收藏于宜城市博物馆。</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
@@ -449,10 +464,10 @@
                                 <div class="header">
                                     <img class="avatar" src="/res/museumPicture/25.jpg"></img><span class="title">成周铃</span>
                                 </div>
-                                <div class="body">
-                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/16.jpg"></img></div>
-                                    <div class="layui-col-md8">成周铃，通高8.5cm，宽6.5cm，重0.164kg。 此铃平口，顶上有半环形钮，铃身一侧倾斜，形成不平衡状态。体内有舌，舌碰击铃内壁时可以发声。</div>
+                                <div class="body" style="text-align: center;">
+                                    <img class="relic" src="/res/relicPicture/16.jpg"></img>
                                 </div>
+                                <div class="footer">成周铃，通高8.5cm，宽6.5cm，重0.164kg。 此铃平口，顶上有半环形钮，铃身一侧倾斜，形成不平衡状态。体内有舌，舌碰击铃内壁时可以发声。</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
@@ -460,10 +475,10 @@
                                 <div class="header">
                                     <img class="avatar" src="/res/museumPicture/26.jpg"></img><span class="title">云纹瓦当</span>
                                 </div>
-                                <div class="body">
-                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/17.jpg"></img></div>
-                                    <div class="layui-col-md8">其花纹特征是：当面中心多为圆钮，或饰以三角、菱形、分格形网纹、乳钉纹、叶纹、花瓣纹等。云纹占据当面中央大面积的主要部位，花纹变化十分复杂多样。</div>
+                                <div class="body" style="text-align: center;">
+                                    <img class="relic" src="/res/relicPicture/17.jpg"></img>
                                 </div>
+                                <div class="footer">其花纹特征是：当面中心多为圆钮，或饰以三角、菱形、分格形网纹、乳钉纹、叶纹、花瓣纹等。云纹占据当面中央大面积的主要部位，花纹变化十分复杂多样。</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
@@ -471,10 +486,10 @@
                                 <div class="header">
                                     <img class="avatar" src="/res/museumPicture/27.jpg"></img><span class="title">牵马俑</span>
                                 </div>
-                                <div class="body">
-                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/18.jpg"></img></div>
-                                    <div class="layui-col-md8">该马膘肥体壮，双目圆睁，口大张，颈部及身体肌理清晰，尾短小，背上有鞍。而牵马俑则为胡人商人形象，头戴尖顶帽，大眼，高鼻，胡须卷曲浓密，五官特征十分明显。</div>
+                                <div class="body" style="text-align: center;">
+                                    <img class="relic" src="/res/relicPicture/18.jpg"></img>
                                 </div>
+                                <div class="footer">该马膘肥体壮，双目圆睁，口大张，颈部及身体肌理清晰，尾短小，背上有鞍。而牵马俑则为胡人商人形象，头戴尖顶帽，大眼，高鼻，胡须卷曲浓密，五官特征十分明显。</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
@@ -482,10 +497,10 @@
                                 <div class="header">
                                     <img class="avatar" src="/res/museumPicture/28.jpg"></img><span class="title">越王勾践剑</span>
                                 </div>
-                                <div class="body">
-                                    <div class="layui-col-md4"><img width="90px" height="90px" src="/res/relicPicture/19.jpeg"></img></div>
-                                    <div class="layui-col-md8">这是我国最著名的文物之一，也是历史名剑之一1965年出土自湖北望山楚墓群。宝剑自出土就被深藏，尽管他国希望借出展览，但都被拒绝。</div>
+                                <div class="body" style="text-align: center;">
+                                    <img class="relic" src="/res/relicPicture/19.jpeg"></img>
                                 </div>
+                                <div class="footer">这是我国最著名的文物之一，也是历史名剑之一1965年出土自湖北望山楚墓群。宝剑自出土就被深藏，尽管他国希望借出展览，但都被拒绝。</div>
                             </div>
                         </div>
                     </div>
@@ -499,11 +514,11 @@
             <div class="layui-card-header">待处理事项</div>
             <div class="layui-card-body">
                 <ul class="list">
-                    <li class="list-item"><span>您有<span class="title" id="relicNum"></span>件文物上链请求待处理</span><span class="footer"><a href="/sys/toGovCheckRelic">立即处理</a></span></li>
-                    <li class="list-item"><span>您有<span class="title" id="movementNum"></span>条文物流转记录待处理</span><span class="footer"><a href="/sys/toGovCheckMovement">立即处理</a></span></li>
-                    <li class="list-item"><span>您有<span class="title" id="tradeNum"></span>条文物交易记录待处理</span><span class="footer"><a href="/sys/toGovCheckTrade">立即处理</a></span></li>
-                    <li class="list-item"><span>您有<span class="title" id="exitEntryNum"></span>条文物出入境请求待处理</span><span class="footer"><a href="/sys/toGovCheckExitEntry">立即处理</a></span></li>
-                    <li class="list-item"><span>您有<span class="title" id="applyNum"></span>条文物流转申诉待处理</span><span class="footer"><a href="/sys/toGovCheckApply">立即处理</a></span></li>
+                    <li class="list-item" style="font-size: 13px;"><span>您有<span class="title" id="relicNum"></span>件文物上链请求待处理</span><span class="footer"><a href="/sys/toGovCheckRelic">立即处理</a></span></li>
+                    <li class="list-item" style="font-size: 13px;"><span>您有<span class="title" id="movementNum"></span>条文物流转记录待处理</span><span class="footer"><a href="/sys/toGovCheckMovement">立即处理</a></span></li>
+                    <li class="list-item" style="font-size: 13px;"><span>您有<span class="title" id="tradeNum"></span>条文物交易记录待处理</span><span class="footer"><a href="/sys/toGovCheckTrade">立即处理</a></span></li>
+                    <li class="list-item" style="font-size: 13px;"><span>您有<span class="title" id="exitEntryNum"></span>条文物出入境请求待处理</span><span class="footer"><a href="/sys/toGovCheckExitEntry">立即处理</a></span></li>
+                    <li class="list-item" style="font-size: 13px;"><span>您有<span class="title" id="applyNum"></span>条文物流转申诉待处理</span><span class="footer"><a href="/sys/toGovCheckApply">立即处理</a></span></li>
                 </ul>
             </div>
         </div>
