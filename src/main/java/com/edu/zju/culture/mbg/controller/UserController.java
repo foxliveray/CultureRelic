@@ -5,9 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.edu.zju.culture.common.Constant;
-import com.edu.zju.culture.common.DataGridView;
-import com.edu.zju.culture.common.ResultObj;
+import com.edu.zju.culture.common.*;
 import com.edu.zju.culture.mbg.entity.Role;
 import com.edu.zju.culture.mbg.entity.User;
 import com.edu.zju.culture.mbg.service.IRoleService;
@@ -46,31 +44,31 @@ public class UserController {
      * 用户全查询
      */
     @RequestMapping("/loadAllUser")
-    public DataGridView loadAllUser(UserVo userVo){
-        IPage<User> page = new Page<>(userVo.getPage(),userVo.getLimit());
+    public DataGridView loadAllUser(UserVo userVo) {
+        IPage<User> page = new Page<>(userVo.getPage(), userVo.getLimit());
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq(StringUtils.isNotBlank(userVo.getUsername()),"username",userVo.getUsername());
-        queryWrapper.eq(userVo.getStatus()!=null, "status", userVo.getStatus());
-        queryWrapper.eq("type",Constant.USER_TYPE_NORMAL); //查询系统用户
-        this.userService.page(page,queryWrapper);
+        queryWrapper.eq(StringUtils.isNotBlank(userVo.getUsername()), "username", userVo.getUsername());
+        queryWrapper.eq(userVo.getStatus() != null, "status", userVo.getStatus());
+        queryWrapper.eq("type", Constant.USER_TYPE_NORMAL); //查询系统用户
+        this.userService.page(page, queryWrapper);
         System.out.println(userService.getClass().getSimpleName());
         List<User> list = page.getRecords();
-        for(User user:list){
+        for (User user : list) {
             Long uid = user.getId();
             String role = this.userService.getRoleByUid(uid);
             user.setRole(role);
         }
         List<User> res = new ArrayList<>();
-        if(StringUtils.isNotBlank(userVo.getRole())){
-            for(User user:list){
-                if(user.getRole()!=null&&user.getRole().indexOf(userVo.getRole())!=-1){
+        if (StringUtils.isNotBlank(userVo.getRole())) {
+            for (User user : list) {
+                if (user.getRole() != null && user.getRole().indexOf(userVo.getRole()) != -1) {
                     res.add(user);
                 }
             }
-        }else{
+        } else {
             res = list;
         }
-        return new DataGridView((long)res.size(),res);
+        return new DataGridView((long) res.size(), res);
     }
 
     /**
@@ -81,7 +79,7 @@ public class UserController {
         try {
             userVo.setType(Constant.USER_TYPE_NORMAL);//设置类型
             userVo.setCreateTime(new Date());
-            String salt=IdUtil.simpleUUID().toUpperCase();
+            String salt = IdUtil.simpleUUID().toUpperCase();
             userVo.setSalt(salt);//设置盐
             userVo.setPassword(new Md5Hash(Constant.USER_DEFAULT_PWD, salt, 2).toString());//设置密码
             userVo.setIcon("/res/admin/images/avatar.jpg");//设置默认头像
@@ -99,6 +97,18 @@ public class UserController {
     @RequestMapping("/updateUser")
     public ResultObj updateUser(UserVo userVo) {
         try {
+            if(!(userVo.getIcon()!=null&&userVo.getIcon().equals(Constant.IMAGES_DEFAULTAVATAR_JPG))){
+                if(userVo.getIcon().endsWith("_temp")){
+                    String newName = AppFileUtils.renameFile(userVo.getIcon());
+                    userVo.setIcon(newName);
+                    //删除原先的图片
+                    Integer id = Math.toIntExact(userVo.getId());
+                    String oldPath = this.userService.getById(id).getIcon();
+                    if(!oldPath.equals(Constant.IMAGES_DEFAULTAVATAR_JPG)){
+                        AppFileUtils.removeFileByPath(oldPath);
+                    }
+                }
+            }
             this.userService.updateById(userVo);
             return ResultObj.UPDATE_SUCCESS;
         } catch (Exception e) {
@@ -127,9 +137,9 @@ public class UserController {
     @RequestMapping("/resetPwd")
     public ResultObj resetPwd(Long id) {
         try {
-            User user=new User();
+            User user = new User();
             user.setId(id);
-            String salt=IdUtil.simpleUUID().toUpperCase();
+            String salt = IdUtil.simpleUUID().toUpperCase();
             user.setSalt(salt);//设置盐
             user.setPassword(new Md5Hash(Constant.USER_DEFAULT_PWD, salt, 2).toString());//设置密码
             this.userService.updateById(user);
@@ -146,18 +156,18 @@ public class UserController {
     @RequestMapping("/initRoleByUserId")
     public DataGridView initRoleByUserId(Integer id) {
         //1,查询所有可用的角色
-        QueryWrapper<Role> queryWrapper=new QueryWrapper<>();
+        QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("available", Constant.AVAILABLE_TRUE);
         List<Map<String, Object>> listMaps = this.roleService.listMaps(queryWrapper);
 
         //2,查询当前用户拥有的角色ID集合
-        List<Integer> currentUserRoleIds=this.roleService.queryUserRoleIdsByUid(id);
+        List<Integer> currentUserRoleIds = this.roleService.queryUserRoleIdsByUid(id);
         for (Map<String, Object> map : listMaps) {
-            Boolean LAY_CHECKED=false;
-            Long roleId=(Long) map.get("id");
+            Boolean LAY_CHECKED = false;
+            Long roleId = (Long) map.get("id");
             for (Integer rid : currentUserRoleIds) {
-                if(Long.valueOf(rid)==roleId) {
-                    LAY_CHECKED=true;
+                if (Long.valueOf(rid) == roleId) {
+                    LAY_CHECKED = true;
                     break;
                 }
             }
@@ -170,9 +180,9 @@ public class UserController {
      * 保存用户和角色的关系
      */
     @RequestMapping("/saveUserRole")
-    public ResultObj saveUserRole(Integer uid,Integer[] ids) {
+    public ResultObj saveUserRole(Integer uid, Integer[] ids) {
         try {
-            this.userService.saveUserRole(uid,ids);
+            this.userService.saveUserRole(uid, ids);
             return ResultObj.DISPATCH_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,5 +191,13 @@ public class UserController {
 
     }
 
+    /**
+     * 获取用户信息
+     */
+    @RequestMapping("/getUserInfo")
+    public DataGridView getUserInfo(Integer id) {
+        User user = this.userService.getById(id);
+        return new DataGridView(user);
+    }
 }
 

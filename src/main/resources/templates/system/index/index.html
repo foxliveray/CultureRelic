@@ -30,7 +30,7 @@
             <li class="layui-nav-item layui-hide-xs"><a href="#" class="notice layui-icon layui-icon-notice"><span
                     class="layui-badge-dot"></span></a></li>
             <li class="layui-nav-item" lay-unselect="">
-                <a href="javascript:;"><img src="/res/admin/images/avatar.jpg" class="layui-nav-img"><cite
+                <a href="javascript:;"><img th:src="'/file/showImageByPath?path='+${session.user.icon}" class="layui-nav-img"><cite
                         class="adminName" th:text="${session.user.username}"></cite></a>
                 <dl class="layui-nav-child">
                     <dd><a href="/res/userinformation.html"target="_self">个人信息</a></dd>
@@ -85,8 +85,6 @@
         var pearSocial = layui.pearSocial;
         var $ = layui.jquery;
         var layer = layui.layer //弹层
-
-        var notice="<%=session.getAttribute('notice')%>";
 
         /** Pear Admin 框 架 初 始 化 */
         var config = {
