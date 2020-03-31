@@ -218,4 +218,12 @@ public class SystemController {
     @RequestMapping("/toSeeApply")
     public String toSeeApply() { return "system/index/user_seeApply";
     }
+
+    /**
+     * 跳转到公告管理
+     */
+    @RequestMapping("/toNoticeManager")
+    public String toNoticeManager(){
+        return "system/notice/noticeManager";
+    }
 }

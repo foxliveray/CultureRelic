@@ -1,11 +1,16 @@
 package com.edu.zju.culture.mbg.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.edu.zju.culture.common.ActiveUser;
 import com.edu.zju.culture.common.ResultObj;
 import com.edu.zju.culture.common.WebUtils;
 import com.edu.zju.culture.mbg.entity.LogLogin;
+import com.edu.zju.culture.mbg.entity.Notice;
 import com.edu.zju.culture.mbg.entity.User;
 import com.edu.zju.culture.mbg.service.ILogLoginService;
+import com.edu.zju.culture.mbg.service.INoticeService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 
 
 /**
@@ -30,6 +36,9 @@ import java.util.Enumeration;
 public class LoginController {
     @Autowired
     private ILogLoginService logLoginService;
+
+    @Autowired
+    private INoticeService noticeService;
 
     @RequestMapping("/login")
     public ResultObj login(String username, String password) {
