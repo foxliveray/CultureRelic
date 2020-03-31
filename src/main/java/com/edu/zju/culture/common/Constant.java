@@ -40,4 +40,9 @@ public class Constant {
      * 用户默认密码
      */
     public static final String USER_DEFAULT_PWD="123456";
+
+    /**
+     * 用户默认图片
+     */
+    public static final String IMAGES_DEFAULTAVATAR_JPG = "res/admin/images/avatar.jpg";
 }

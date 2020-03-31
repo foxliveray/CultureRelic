@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <title>个人信息设置</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="/res/component/layui/css/layui.css"/>
@@ -18,207 +19,182 @@
             margin-top: 25%;
             margin-left: 65%;
         }
+        .avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 100px;
+            margin: 10px;
+            text-align: center;
+         }
     </style>
 </head>
 <body class="layui-layout-body">
 <script src="/res/component/layui/layui.js"></script>
-<!--<span id="getUserId">123</span>-->
-<!--<div>-->
-<!--    <div  class="layui-col-md4">-->
-<!--        <div class="layui-row layui-col-space15">-->
-<!--            <div  class="layui-col-md6">-->
-<!--                <div class= "layui-card">-->
-<!--                    <img src="/res/admin/images/avatar.jpg" class="userimg" >-->
-<!--                    <div class="jpgAlter">-->
-<!--                        <button class="layui-upload-button layui-btn" lay-event="uploadUserIcon">更换头像</button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div  class="layui-col-md8">-->
-<!--        <div class="layui-row layui-col-space15">-->
-<!--            <div class="layui-col-md6">-->
-<!--                <div class="layui-card">-->
-<!--                    <div class="layui-card-header">个人信息修改</div>-->
-<!--                    <div class="layui-card-body">-->
-<!--                        <form action="" method="post" class="layui-form layui-form-pane" id="dataFrm" lay-filter="dataFrm">-->
-<!--                            <div class="layui-row layui-col-space10 layui-form-item">-->
-<!--                                <div class="layui-col-lg6">-->
-<!--                                    <label class="layui-form-label">登录名：</label>-->
-<!--                                    <div class="layui-input-block">-->
-<!--                                        <input type="text" name="username" lay-verify="required" placeholder="请输入新用户名" autocomplete="off" class="layui-input">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="layui-row layui-col-space10 layui-form-item">-->
-<!--                                <div class="layui-col-lg6">-->
-<!--                                    <label class="layui-form-label">密码</label>-->
-<!--                                    <div class="layui-input-block">-->
-<!--                                        <input type="password" name="password" lay-verify="required" placeholder="请输入新密码" autocomplete="off" class="layui-input">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="layui-card layui-form" lay-filter="component-form-element">-->
-<!--                                <div class="layui-col-md12">-->
-<!--                                    <label class="layui-form-label">性别</label>-->
-<!--                                    <input type="radio" name="sex" value="nan" title="男">-->
-<!--                                    <input type="radio" name="sex" value="nv" title="女" checked>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="layui-row layui-col-space10 layui-form-item">-->
-<!--                                <div class="layui-col-lg6">-->
-<!--                                    <label class="layui-form-label">我的地址：</label>-->
-<!--                                    <div class="layui-input-block">-->
-<!--                                        <input type="text" name="fullname" lay-verify="required" placeholder="系统深处的男人" autocomplete="off" class="layui-input">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="layui-form-item">-->
-<!--                                <label class="layui-form-label">个人说明：</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <textarea name="other" placeholder="超级管理员" class="layui-textarea"></textarea>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="layui-form-item">-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>-->
-<!--                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </form>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--<script type="text/javascript">-->
-<!--    layui.use('upload', function () {-->
-<!--        var $ = layui.$;-->
-<!--        var upload = layui.upload;-->
-<!--        var uploadUserIcon = upload.render({-->
-<!--            elem: '.layui-upload-button',-->
-<!--            url: '/relic/updateUser',-->
-<!--            data: {-->
-<!--                id: function () {-->
-<!--                    return $("#pid").val();-->
-<!--                }-->
-<!--            },-->
-<!--            done: function (res) {-->
-<!--                if (res.code > 0) {-->
-<!--                    return layer.msg('上传失败');-->
-<!--                }-->
-<!--                layer.closeAll();-->
-<!--                layer.alert(res.data.similarity);-->
-<!--            },-->
-<!--            error: function () {-->
-<!--                var demoText = $('#demoText');-->
-<!--                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');-->
-<!--            }-->
-<!--        })-->
-<!--    })-->
-<!--</script>-->
-<div style="padding: 5px">
-    <form action="" method="post" class="layui-form layui-form-pane" id="dataFrm" lay-filter="dataFrm">
-        <div class="layui-col-md6">
-            <div class="layui-form-item">
-                <label class="layui-form-label">邮箱</label>
-                <div class="layui-input-block">
-                    <input type="text" name="email" lay-verify="required" autocomplete="off" placeholder="请输入邮箱" class="layui-input">
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md6">
-            <div class="layui-form-item">
-                <label class="layui-form-label">身份证号</label>
-                <div class="layui-input-block">
-                    <input type="text" name="number" lay-verify="required" autocomplete="off" placeholder="请输入用户身份证" class="layui-input">
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md6">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">启用状态</label>
-                    <div class="layui-input-inline">
-                        <input type="radio" name="status" value="1" title="可用" checked="">
-                        <input type="radio" name="status" value="0" title="禁用" >
+<div class="layui-card">
+    <div class="layui-card-header">个人信息修改</div>
+    <div class="layui-card-body">
+        <div style="padding: 5px">
+            <form action="" method="post" class="layui-form layui-form-pane" id="dataFrm" lay-filter="dataFrm">
+                <input id="id" name="id" style="display: none" th:value="${session.user.id}">
+                <div class="layui-col-md12">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮箱</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="email" lay-verify="required" autocomplete="off" placeholder="请输入邮箱" class="layui-input">
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="layui-col-md6">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">性别</label>
-                    <div class="layui-input-inline">
-                        <input type="radio" name="gender" value="1" title="男" checked="">
-                        <input type="radio" name="gender" value="0" title="女" >
+                <div class="layui-col-md12">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">身份证号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="number" lay-verify="required" autocomplete="off" placeholder="请输入用户身份证" class="layui-input">
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="layui-col-md6">
-            <div class="layui-form-item">
-                <label class="layui-form-label">真实姓名</label>
-                <div class="layui-input-block">
-                    <input type="text" name="realName" lay-verify="required" autocomplete="off" placeholder="请输入用户真实姓名" class="layui-input">
+                <div class="layui-col-md6">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">昵称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="nickName" lay-verify="required" autocomplete="off" placeholder="请输入用户昵称" class="layui-input">
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="layui-col-md6">
-            <div class="layui-form-item">
-                <label class="layui-form-label">年龄</label>
-                <div class="layui-input-block">
-                    <input type="text" name="age" lay-verify="required" autocomplete="off" placeholder="请输入用户年龄" class="layui-input">
+                <div class="layui-col-md6">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">性别</label>
+                            <div class="layui-input-inline">
+                                <input type="radio" name="gender" value="1" title="男" checked="">
+                                <input type="radio" name="gender" value="0" title="女" >
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="layui-col-md6">
-            <div class="layui-form-item">
-                <label class="layui-form-label">手机号</label>
-                <div class="layui-input-block">
-                    <input type="text" name="phone" lay-verify="required" autocomplete="off" placeholder="请输入用户手机号" class="layui-input">
+                <div class="layui-col-md6">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">真实姓名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="realName" lay-verify="required" autocomplete="off" placeholder="请输入用户真实姓名" class="layui-input">
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="layui-col-md6">
-            <div class="layui-form-item">
-                <label class="layui-form-label">地址</label>
-                <div class="layui-input-block">
-                    <input type="text" name="addr" lay-verify="required" autocomplete="off" placeholder="请输入用户地址" class="layui-input">
+                <div class="layui-col-md6">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">年龄</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="age" lay-verify="required" autocomplete="off" placeholder="请输入用户年龄" class="layui-input">
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div class="layui-col-md12">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">手机号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="phone" lay-verify="required" autocomplete="off" placeholder="请输入用户手机号" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="addr" lay-verify="required" autocomplete="off" placeholder="请输入用户地址" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <!--<div class="layui-upload" style="text-align: center">-->
+                    <!--<button type="button" class="layui-btn" id="test1">上传图片</button>-->
+                    <!--<div class="layui-upload-list">-->
+                        <!--<input type="hidden" name="icon" id="icon" value="res/admin/images/avatar.jpg">-->
+                        <!--<img class="avatar" id="demo1" src="/file/showImageByPath?path=res/admin/images/avatar.jpg">-->
+                        <!--<p id="demoText"></p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="layui-col-md12 layui-col-xs5">
+                    <div class="layui-upload-list thumbBox mag0 magt3" style="text-align: center">
+                        <input type="hidden" name="icon" id="icon" th:value="${session.user.icon}">
+                        <img class="avatar layui-upload-img thumbImg" th:src="'/file/showImageByPath?path='+${session.user.icon}">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="text-align: center;">
+                        <button type="button" class="layui-btn" lay-submit="" lay-filter="doSubmit" id="doSubmit" ><span class="layui-icon layui-icon-add-1"></span>提交</button>
+                        <button type="reset" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-refresh-1"></span>重置</button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block" style="text-align: center;">
-                <button type="button" class="layui-btn" lay-submit="" lay-filter="doSubmit" id="doSubmit" ><span class="layui-icon layui-icon-add-1"></span>提交</button>
-                <button type="reset" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-refresh-1"></span>重置</button>
-            </div>
-        </div>
-    </form>
+    </div>
 </div>
 <script type="text/javascript">
-    layui.use(['form', 'element', 'jquery'], function () {
+    layui.use(['form', 'element', 'jquery','upload'], function () {
         var $ = layui.jquery,
-            form=layui.form;
-        var id;
-        $.ajax({
-            url:"/login/getUserId",
-            method:"get",
-            success:function (a) {
-                id = a;
+            form=layui.form,
+            upload = layui.upload;
+
+        setTimeout(function(){
+            $.get("/user/getUserInfo?id="+$("#id").val(),function (res) {
+                if (res.code == 0) {
+                    form.val('dataFrm',res.data);
+                }
+            })
+        },100);
+
+        //普通图片上传
+        // var uploadInst = upload.render({
+        //     elem: '#test1'
+        //     ,url: 'https://httpbin.org/post' //改成您自己的上传接口
+        //     ,before: function(obj){
+        //         //预读本地文件示例，不支持ie8
+        //         obj.preview(function(index, file, result){
+        //             $('#demo1').attr('src', result); //图片链接（base64）
+        //         });
+        //     }
+        //     ,done: function(res){
+        //         //如果上传失败
+        //         if(res.code > 0){
+        //             return layer.msg('上传失败');
+        //         }
+        //         //上传成功
+        //     }
+        //     ,error: function(){
+        //         //演示失败状态，并实现重传
+        //         var demoText = $('#demoText');
+        //         demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+        //         demoText.find('.demo-reload').on('click', function(){
+        //             uploadInst.upload();
+        //         });
+        //     }
+        // });
+
+        //文件上传
+        upload.render({
+            elem: '.thumbBox',
+            url: '/file/uploadFile',
+            acceptMime:'image/*',
+            field:'mf',
+            method : "post",  //此处是为了演示之用，实际使用中请将此删除，默认用post方式提交
+            done: function(res, index, upload){
+                var path=res.path;
+                $('.thumbImg').attr('src','/file/showImageByPath?path='+path);
+                $('.thumbBox').css("background","#fff");
+                $("#icon").val(path);//给隐藏域赋值
             }
         });
-        var url="/user/updateUser";
-        form.on('submit(doSubmit)',function (data) {
-            data.field.id = id;
+
+        var url = '/user/updateUser';
+        form.on("submit(doSubmit)",function(data){
             $.post(url,data.field,function(res){
+                if(res.code==200){
+                    form.val('dataFrm',res.data);
+                }
                 layer.msg(res.msg);
-            });
+            })
             return false;
-        })
+        });
     });
 </script>
 

@@ -1,5 +1,6 @@
 package com.edu.zju.culture.cache;
 
+import com.edu.zju.culture.common.WebUtils;
 import com.edu.zju.culture.mbg.entity.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -96,6 +97,7 @@ public class CacheAspect {
             }
             BeanUtils.copyProperties(userVo, user);
             log.info("用户对象缓存已更新" + CACHE_USER_PROFIX + userVo.getId());
+            WebUtils.getSession().setAttribute("user",user);
             CACHE_CONTAINER.put(CACHE_USER_PROFIX + user.getId(), user);
         }
         return isSuccess;
