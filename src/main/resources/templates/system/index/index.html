@@ -14,6 +14,19 @@
     <style id="pearone-bg-color">
         /** 自 定 义 主 题 */
     </style>
+    <script>
+        function ModifyPwd(){
+            mainIndex = layer.open({
+                type:1,
+                content:$("#ModifyPwdDiv"),
+                area:['600px','300px'],
+                title:'修改密码',
+                success:function() {
+                    $("#dataFrm")[0].reset();
+                }
+            })
+        }
+    </script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin pear-admin">
@@ -33,14 +46,50 @@
                 <a href="javascript:;"><img th:src="'/file/showImageByPath?path='+${session.user.icon}" class="layui-nav-img"><cite
                         class="adminName" th:text="${session.user.username}"></cite></a>
                 <dl class="layui-nav-child">
-                    <dd><a href="/res/userinformation.html"target="_self">个人信息</a></dd>
-                    <dd><a href="javascript:;">安全配置</a></dd>
-                    <dd><a href="/login/logout">注销登陆</a></dd>
+                    <dd><a href="/sys/toSeeInfo"target="_self">个人信息</a></dd>
+                    <dd><a href="/sys/toModifyPwd">密码修改</a></dd>
+                    <dd><a href="/login/logout">注销登录</a></dd>
                 </dl>
             </li>
             <li class="setting layui-nav-item"><a href="#" class="layui-icon layui-icon-more-vertical"></a></li>
         </ul>
     </div>
+
+    <!-- 添加和修改的弹出层开始 -->
+    <div style="display: none;padding: 5px" id="ModifyPwdDiv">
+        <form action="" method="post" class="layui-form layui-form-pane" id="dataFrm" lay-filter="dataFrm">
+            <div class="layui-form-item">
+                <label class="layui-form-label">原密码</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="id">
+                    <input type="text" name="oldpassword" lay-verify="required" autocomplete="off" placeholder="请输入原密码" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">新密码</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="id">
+                    <input type="text" name="password" lay-verify="required" autocomplete="off" placeholder="请输入新密码" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">新密码</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="id">
+                    <input type="text" name="password2" lay-verify="required" autocomplete="off" placeholder="再次输入新密码" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="text-align: center;">
+                    <button type="button" class="layui-btn" lay-submit="" id="doSubmit" ><span class="layui-icon layui-icon-add-1"></span>提交</button>
+                    <button type="reset" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-refresh-1"></span>重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- 添加和修改的弹出层结束 -->
 
     <div class="layui-side layui-bg-black">
         <div class="layui-logo">
@@ -80,11 +129,11 @@
 <script src="/res/component/layui/layui.js"></script>
 
 <script>
-    layui.use(['pearAdmin', 'pearSocial','jquery','layer'], function () {
+    layui.use(['pearAdmin', 'pearSocial','jquery','layer','element'], function () {
         var pearAdmin = layui.pearAdmin;
         var pearSocial = layui.pearSocial;
+        var layer = layui.layer; //弹层
         var $ = layui.jquery;
-        var layer = layui.layer //弹层
 
         /** Pear Admin 框 架 初 始 化 */
         var config = {
@@ -99,6 +148,19 @@
 
         pearAdmin.render(config);
 
+        var mainIndex;
+        // window.ModifyPwd = function () {
+        //     mainIndex = layer.open({
+        //         type:1,
+        //         content:$("#ModifyPwdDiv"),
+        //         area:['600px','300px'],
+        //         title:'修改密码',
+        //         success:function() {
+        //             $("#dataFrm")[0].reset();
+        //         }
+        //     })
+        // };
+
         /** Pear Social 通 讯 组 件 初 始 化 */
         var adminSocial = pearSocial.render({
             elem: 'adminSocial',             // 依 赖 初 始 化 容 器
@@ -107,7 +169,7 @@
 
         });
 
-        var mainIndex;
+
         setTimeout(function(){
             $.get("/notice/getLastNotice",function (res) {
                 if (res.code == 0) {

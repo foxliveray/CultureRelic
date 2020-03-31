@@ -226,4 +226,12 @@ public class SystemController {
     public String toNoticeManager(){
         return "system/notice/noticeManager";
     }
+
+    /**
+     * 修改密码
+     */
+    @RequestMapping("/toModifyPwd")
+    public String toModifyPwd(){
+        return "system/user/modifyPwd";
+    }
 }

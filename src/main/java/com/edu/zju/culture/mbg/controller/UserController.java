@@ -151,6 +151,25 @@ public class UserController {
     }
 
     /**
+     * 修改用户密码
+     */
+    @RequestMapping("/modifyPwd")
+    public ResultObj modifyPwd(Long id,String password) {
+        try {
+            User user = new User();
+            user.setId(id);
+            String salt = IdUtil.simpleUUID().toUpperCase();
+            user.setSalt(salt);//设置盐
+            user.setPassword(new Md5Hash(password, salt, 2).toString());//设置密码
+            this.userService.updateById(user);
+            return ResultObj.RESET_SUCCESS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultObj.RESET_ERROR;
+        }
+    }
+
+    /**
      * 根据用户ID查询角色并选中已拥有的角色
      */
     @RequestMapping("/initRoleByUserId")
