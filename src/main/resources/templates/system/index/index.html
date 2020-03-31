@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -55,6 +55,17 @@
         <div id="content"></div>
     </div>
 
+    <!-- 查看弹出层 -->
+    <div style="display:none;padding: 5px;" id="showNoticeDiv">
+        <h2 id="show_title" align="center"></h2>
+        <div style="text-align:right">
+            发布人：<span id="show_opername"></span>
+            发布时间: <span id="show_createtime"></span>
+        </div>
+        <hr>
+        <div id="show_content"></div>
+    </div>
+    <!-- 查看弹出层结束 -->
 </div>
 
 <div class="preloader">
@@ -62,13 +73,20 @@
 </div>
 
 <!--<div id="adminSocial"></div>-->
+<script>
+
+</script>
 
 <script src="/res/component/layui/layui.js"></script>
 
 <script>
-    layui.use(['pearAdmin', 'pearSocial'], function () {
+    layui.use(['pearAdmin', 'pearSocial','jquery','layer'], function () {
         var pearAdmin = layui.pearAdmin;
         var pearSocial = layui.pearSocial;
+        var $ = layui.jquery;
+        var layer = layui.layer //弹层
+
+        var notice="<%=session.getAttribute('notice')%>";
 
         /** Pear Admin 框 架 初 始 化 */
         var config = {
@@ -90,6 +108,27 @@
             data: 'firendsController',
 
         });
+
+        var mainIndex;
+        setTimeout(function(){
+            $.get("/notice/getLastNotice",function (res) {
+                if (res.code == 0) {
+                    var notice = res.data;
+                    mainIndex = layer.open({
+                        type:1,
+                        content:$("#showNoticeDiv"),
+                        area:['800px','600px'],
+                        title:'查看公告',
+                        success:function () {
+                            $("#show_title").html(notice.title);
+                            $("#show_createtime").html(notice.createtime);
+                            $("#show_opername").html(notice.opername);
+                            $("#show_content").html(notice.content);
+                        }
+                    })
+                }
+            })
+        },1500);
 
     })
 
