@@ -29,9 +29,12 @@ layui.define(['jquery', 'element'], function (exports) {
 		
 		$(".layui-tab[lay-filter='"+option.elem+"'] .layui-tab-prev").click(function(){
 			rollPage("left",option);
+            window.history.back();
+            //location.reload();
 		})
 		
 		$(".layui-tab[lay-filter='"+option.elem+"'] .layui-tab-next").click(function(){
+            window.history.forward();
 			rollPage("right",option);
 		})
 		
