@@ -408,9 +408,9 @@
                                     <img class="avatar" src="/res/museumPicture/21.jpg"></img><span class="title">青瓷盂</span>
                                 </div>
                                 <div class="body" style="text-align: center;">
-                                    <img class="relic" src="/res/relicPicture/11.jpg"></img>
+                                    <img class="relic" src="/res/relicPicture/11.jpg" id="picturezhanshi"></img>
                                 </div>
-                                <div class="footer">青瓷盂是安徽屯溪西周－春秋墓葬出土较多的一种原始青瓷。此盂出土于屯溪3号墓中，通体饰弦纹，腹上部有双圆钉实鼻凸起，作三角式平衡分布，整体造型规整。</div>
+                                <div class="footer" id="zhanshi">青瓷盂是安徽屯溪西周－春秋墓葬出土较多的一种原始青瓷。此盂出土于屯溪3号墓中，通体饰弦纹，腹上部有双圆钉实鼻凸起，作三角式平衡分布，整体造型规整。</div>
                             </div>
                         </div>
                         <div class="layui-col-md4">
@@ -572,6 +572,33 @@
 
 
 </div>
+<div style="display: none;padding: 5px" id="relicFormLayer">
+    <div action="" method="post" class="layui-form layui-form-pane" id="relicForm" lay-fiter="relicForm">
+        <div class="layui-form-item">
+            <label>文物名称：</label>
+            <p>青瓷盂</p>
+        </div>
+        <div class="layui-form-item">
+            <label>年代：</label>
+            <p>西周</p>
+        </div>
+        <div class="layui-form-item">
+            <label>尺寸及重量：</label>
+            <p>高6厘米　口径8.9厘米　底径6.4厘米</p>
+        </div>
+        <div class="layui-form-item">
+            <label>文物描述：</label>
+            <p>青瓷盂是安徽屯溪西周－春秋墓葬出土较多的一种原始青瓷。此盂出土于屯溪3号墓中，通体饰弦纹，腹上部有双圆钉实鼻凸起，作三角式平衡分布，整体造型规整。</p>
+        </div>
+    </div>
+</div>
+<div style="display: none;padding: 5px" id="piclayer">
+<div  id="photosdemo" class="photosdemo">
+        <img style="height: 300px;width: 400px;"  src="/res/relicPicture/1.jpg">
+        <img  style="height: 300px;width: 400px;" src="/res/relicPicture/2.jpg">
+        <img  style="height: 300px;width: 400px;" src="/res/relicPicture/3.jpg">
+</div>
+</div>
 <script src="/res/component/layui/layui.js"></script>
 <script>
     layui.use(['carousel', 'form'], function () {
@@ -589,7 +616,28 @@
                 $("#applyNum").text(res.applyNum);
             }
         });
+
+        $(document).on('click', '#zhanshi', function () {
+            relicForm = layer.open({
+                type: 1,
+                content: $("#relicFormLayer"),
+                area: ['400px', '300px'],
+                title: '文物名片',
+                /*success: function () {
+                    url = "/trade/insertTrade";
+                }*/
+            })
+        });
+        $(document).on('click', '#picturezhanshi', function () {
+            photosdemo=layer.open({
+                type: 1,
+                content: $('#piclayer'),
+                area: ['420px', '600px'],
+                title: '文物图片',
+            });
+        })
     });
+
 </script>
 
 </body>
