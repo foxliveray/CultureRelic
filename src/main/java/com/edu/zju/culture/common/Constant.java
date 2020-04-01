@@ -44,5 +44,5 @@ public class Constant {
     /**
      * 用户默认图片
      */
-    public static final String IMAGES_DEFAULTAVATAR_JPG = "res/admin/images/avatar.jpg";
+    public static final String IMAGES_DEFAULTAVATAR_JPG = "avatar.jpg";
 }

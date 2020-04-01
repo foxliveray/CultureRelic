@@ -17,7 +17,9 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,15 +33,13 @@ import java.util.List;
  * @date 2020/3/14 12:42 AM
  * @description 前端登录请求控制器
  */
-@RestController
-@RequestMapping("login")
+@Controller
+@RequestMapping("/login")
 public class LoginController {
     @Autowired
     private ILogLoginService logLoginService;
 
-    @Autowired
-    private INoticeService noticeService;
-
+    @ResponseBody
     @RequestMapping("/login")
     public ResultObj login(String username, String password) {
         Subject subject = SecurityUtils.getSubject();
@@ -78,6 +78,7 @@ public class LoginController {
         return "system/index/login";
     }
 
+    @ResponseBody
     @RequestMapping("/getUserId")
     public String getUserId(HttpServletRequest servletRequest) {
         User user = (User) servletRequest.getSession().getAttribute("user");

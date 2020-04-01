@@ -122,4 +122,19 @@ public class UserRealm extends AuthorizingRealm {
         }
         return null;
     }
+
+    @Override
+    protected Object getAuthorizationCacheKey(PrincipalCollection principals) {
+        return principals.getPrimaryPrincipal() + ":authorization";
+    }
+
+    @Override
+    protected Object getAuthenticationCacheKey(PrincipalCollection principals) {
+        return principals.getPrimaryPrincipal() + ":authentication";
+    }
+
+    @Override
+    protected Object getAuthenticationCacheKey(AuthenticationToken token) {
+        return token.getPrincipal() + ":authentication";
+    }
 }
